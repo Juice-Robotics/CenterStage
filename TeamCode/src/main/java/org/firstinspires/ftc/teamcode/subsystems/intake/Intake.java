@@ -1,12 +1,9 @@
-package org.firstinspires.ftc.teamcode.susbsystems;
+package org.firstinspires.ftc.teamcode.subsystems.intake;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class noodleIntake {
+public class Intake {
 
     // Define class members
     double DOWNPOSITION = 0;
@@ -15,7 +12,7 @@ public class noodleIntake {
     double intakeSpeed = 0.8;
     double currentPos;
 
-    public noodleIntake(Servo intakeServo, DcMotor intakeMotor) {
+    public Intake(Servo intakeServo, DcMotor intakeMotor) {
         this.intakeServo = intakeServo;
         this.intakeMotor = intakeMotor;
         this.currentPos = intakeServo.getPosition();
