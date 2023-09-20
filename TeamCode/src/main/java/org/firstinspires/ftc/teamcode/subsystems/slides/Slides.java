@@ -42,14 +42,16 @@ public class Slides {
 
     public Motor slides1;
     public Motor slides2;
+    public Motor climbMotor;
     public Servo climbServo;
     public VoltageSensor voltageSensor;
-    public double ENGAGED_POS = 0;
-    public double DISENGAGED_POS = 1;
-    public double HEIGHT_CLIMB = 600;
+    private double ENGAGED_POS = 0;
+    private double DISENGAGED_POS = 1;
+    private double HEIGHT_CLIMB = 600;
     //public boolean climbing = false;
 
     private boolean threadState = false;
+    public boolean climbing = false;
 
 
     public Slides(Motor slides1, Motor slides2, VoltageSensor voltageSensor) {
@@ -70,10 +72,13 @@ public class Slides {
         MotionState state = profile.get(timer.time());
         target = state.getX();
 
-        int slides1Pos = slides1.motor.getCurrentPosition();
-//        int slides2Pos = slides2.motor.getCurrentPosition();
-
-        double pid1 = controller1.calculate(slides1Pos, target);
+        if climbing {
+            int motorPos = climbMotor.motor.getCurrentPosition();
+        }
+        else{
+            int motorPos = slides1.motor.getCurrentPosition(); // why not static int
+        }
+        double pid1 = controller1.calculate(motorPos, target);
 //        double pid2 = controller2.calculate(slides2Pos, target);
         double ff = Math.cos(Math.toRadians(target / ticks_in_degrees)) * f;
 
@@ -81,13 +86,18 @@ public class Slides {
         power1 = (pid1 + ff) * voltageCompensation;
 //        power2 = pid2 + ff;
 
-        if (target == groundTarget){
-            slides1.motor.setPower(power1);
-            slides2.motor.setPower(-power1); //was at *0.3 pre push
+        if climbing{
+            climbMotor.setPower(power1);
         }
-        else {
-            slides1.motor.setPower(power1);
-            slides2.motor.setPower(-power1);
+        else{ //huh why
+            if (target == groundTarget){
+                slides1.motor.setPower(power1);
+                slides2.motor.setPower(-power1); //was at *0.3 pre push
+            }
+            else {
+                slides1.motor.setPower(power1);
+                slides2.motor.setPower(-power1);
+            }
         }
     }
 
@@ -98,7 +108,9 @@ public class Slides {
     }
 
     public void runToClimb(){
+        climbing = true;
         profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(getPos(), 0), new MotionState(HEIGHT_CLIMB, 0), maxvel, maxaccel);
+        launchAsThreadBasic()
     }
 
     public void startClimb(){
@@ -107,7 +119,9 @@ public class Slides {
         slides1.motor.setPower(0.25);
         slides2.motor.setPower(-0.25);
         profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(getPos(), 0.25), new MotionState(HEIGHT_CLIMB, 0), maxvel, maxaccel);
-        launchAsThreadBasic();
+        if (threadState == false){
+            launchAsThreadBasic();
+        }
     }
 
     public void launchAsThread(Telemetry telemetry) {
