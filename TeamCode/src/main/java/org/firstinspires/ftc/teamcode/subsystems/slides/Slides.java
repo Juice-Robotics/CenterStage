@@ -54,7 +54,7 @@ public class Slides {
     public boolean climbing = false;
 
 
-    public Slides(Motor slides1, Motor slides2, VoltageSensor voltageSensor) {
+    public Slides(Motor slides1, Motor slides2, Motor climbMotor, VoltageSensor voltageSensor) {
         this.slides1 = slides1;
         this.slides2 = slides2;
         this.voltageSensor = voltageSensor;
@@ -86,10 +86,10 @@ public class Slides {
         power1 = (pid1 + ff) * voltageCompensation;
 //        power2 = pid2 + ff;
 
-        if climbing{
+        if (climbing) {
             climbMotor.setPower(power1);
         }
-        else{ //huh why
+        else { //huh why
             if (target == groundTarget){
                 slides1.motor.setPower(power1);
                 slides2.motor.setPower(-power1); //was at *0.3 pre push
