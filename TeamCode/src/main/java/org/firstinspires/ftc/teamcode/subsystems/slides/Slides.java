@@ -17,6 +17,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.Motor;
+import java.util.concurrent.TimeUnit;
 
 import java.util.function.Function;
 
@@ -71,12 +72,12 @@ public class Slides {
     public void update() {
         MotionState state = profile.get(timer.time());
         target = state.getX();
-
-        if climbing {
-            int motorPos = climbMotor.motor.getCurrentPosition();
+        int motorPos; // why not static int
+        if (climbing) {
+            motorPos = climbMotor.motor.getCurrentPosition();
         }
-        else{
-            int motorPos = slides1.motor.getCurrentPosition(); // why not static int
+        else {
+            motorPos = slides1.motor.getCurrentPosition();
         }
         double pid1 = controller1.calculate(motorPos, target);
 //        double pid2 = controller2.calculate(slides2Pos, target);
@@ -87,17 +88,11 @@ public class Slides {
 //        power2 = pid2 + ff;
 
         if (climbing) {
-            climbMotor.setPower(power1);
+            climbMotor.motor.setPower(power1);
         }
         else { //huh why
-            if (target == groundTarget){
-                slides1.motor.setPower(power1);
-                slides2.motor.setPower(-power1); //was at *0.3 pre push
-            }
-            else {
-                slides1.motor.setPower(power1);
-                slides2.motor.setPower(-power1);
-            }
+            slides1.motor.setPower(power1);
+            slides2.motor.setPower(-power1);
         }
     }
 
@@ -110,12 +105,16 @@ public class Slides {
     public void runToClimb(){
         climbing = true;
         profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(getPos(), 0), new MotionState(HEIGHT_CLIMB, 0), maxvel, maxaccel);
-        launchAsThreadBasic()
+        launchAsThreadBasic();
     }
 
     public void startClimb(){
         climbServo.setPosition(ENGAGED_POS);
-        delay()
+        try {
+            TimeUnit.SECONDS.sleep(1); //TEST
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         slides1.motor.setPower(0.25);
         slides2.motor.setPower(-0.25);
         profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(getPos(), 0.25), new MotionState(HEIGHT_CLIMB, 0), maxvel, maxaccel);
