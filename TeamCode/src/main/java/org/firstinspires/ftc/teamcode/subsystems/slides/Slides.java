@@ -72,12 +72,8 @@ public class Slides {
         MotionState state = profile.get(timer.time());
         target = state.getX();
 
-        if climbing {
-            int motorPos = climbMotor.motor.getCurrentPosition();
-        }
-        else{
-            int motorPos = slides1.motor.getCurrentPosition(); // why not static int
-        }
+        int motorPos = slides1.motor.getCurrentPosition();
+            
         double pid1 = controller1.calculate(motorPos, target);
 //        double pid2 = controller2.calculate(slides2Pos, target);
         double ff = Math.cos(Math.toRadians(target / ticks_in_degrees)) * f;
@@ -110,18 +106,13 @@ public class Slides {
     public void runToClimb(){
         climbing = true;
         profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(getPos(), 0), new MotionState(HEIGHT_CLIMB, 0), maxvel, maxaccel);
-        launchAsThreadBasic()
     }
 
     public void startClimb(){
         climbServo.setPosition(ENGAGED_POS);
+        climbMotor.motor.setPower(0.25);
         delay()
-        slides1.motor.setPower(0.25);
-        slides2.motor.setPower(-0.25);
         profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(getPos(), 0.25), new MotionState(HEIGHT_CLIMB, 0), maxvel, maxaccel);
-        if (threadState == false){
-            launchAsThreadBasic();
-        }
     }
 
     public void launchAsThread(Telemetry telemetry) {
