@@ -8,12 +8,14 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.Component;
 import org.firstinspires.ftc.teamcode.lib.Motor;
+import org.firstinspires.ftc.teamcode.subsystems.relocalization.Relocalization;
 
 public class Robot {
 
     // SUBSYSTEM DECLARATIONS
     public Component[] components;
     public SampleMecanumDrive drive;
+    public Relocalization relocalization;
     boolean auton;
 
     // STATE VARS

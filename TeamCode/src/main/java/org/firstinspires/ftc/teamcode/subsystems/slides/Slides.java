@@ -18,6 +18,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.Motor;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 public class Slides {
@@ -83,10 +84,10 @@ public class Slides {
 //        power2 = pid2 + ff;
 
         if (climbing) {
-            climbMotor.setPower(power1);
+            climbMotor.motor.setPower(power1);
         }
         else { //huh why
-            if (target == groundTarget){
+            if (target == 0){
                 slides1.motor.setPower(power1);
                 slides2.motor.setPower(-power1); //was at *0.3 pre push
             }
