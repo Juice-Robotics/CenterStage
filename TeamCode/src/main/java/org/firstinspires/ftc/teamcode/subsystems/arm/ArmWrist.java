@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems.arm;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.StepperServo;
 
 public class ArmWrist {
@@ -21,10 +22,16 @@ public class ArmWrist {
         arm1.servo.setDirection(Servo.Direction.REVERSE);
         currentAngle = arm1.servo.getPosition();
     }
-    public void turnToPreset(double [] preset){
-        arm1.setPosition(preset[0]);
-        arm2.setPosition(preset[0]);
-        wrist.setPosition(preset[1]);
+    public void turnToPreset(Levels level){
+        if (level == Levels.ZERO) {
+            arm1.setPosition(0);
+            arm2.setPosition(0);
+            wrist.setPosition(0);
+        } else if (level == Levels.INTAKE) {
+            arm1.setPosition(0);
+            arm2.setPosition(0);
+            wrist.setPosition(0);
+        }
     }
 
     public void wristToPos(double wristPos){

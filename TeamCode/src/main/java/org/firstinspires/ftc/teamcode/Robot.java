@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.Component;
+import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.Motor;
 import org.firstinspires.ftc.teamcode.lib.StepperServo;
 import org.firstinspires.ftc.teamcode.subsystems.arm.ArmWrist;
@@ -30,6 +31,7 @@ public class Robot {
 
     // STATE VARS
     boolean auton;
+    Levels subsystemState;
 
 
     public Robot(HardwareMap map, boolean auton){
@@ -68,9 +70,37 @@ public class Robot {
         this.intake = new Intake((StepperServo) components[11], (Motor) components[10]);
         this.slides = new Slides((Motor) components[4], (Motor) components[5], (Motor) components[6], voltageSensor);
         this.hardwareMap = map;
+
+        this.subsystemState = Levels.ZERO;
     }
 
+    // INTAKE
+    public void intakePreset() {
+        this.slides.runToPreset(Levels.INTAKE);
+        this.arm.turnToPreset(Levels.INTAKE);
+        this.deposit.open();
+        this.subsystemState = Levels.INTAKE;
+    }
 
+    public void startIntake() {
+        this.intake.startIntake();
+    }
+
+    public void startSmartIntake() {
+        // add sensor stuff to auto-stop
+    }
+
+    public void runToAutoSpikePreset() {
+        this.slides.runToPosition(100);
+        this.arm.armToPos(1);
+        this.arm.wristToPos(1);
+    }
+
+    public void runToAutoBackdropPreset() {
+        this.slides.runToPosition(100);
+        this.arm.armToPos(1);
+        this.arm.wristToPos(1);
+    }
 
 
 

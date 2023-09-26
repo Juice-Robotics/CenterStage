@@ -104,6 +104,14 @@ public class Slides {
         timer.reset();
     }
 
+    public void runToPreset(Levels preset) {
+        if (preset == Levels.ZERO) {
+            runToPosition(0);
+        } else if (preset == Levels.INTAKE) {
+            runToPosition(0);
+        }
+    }
+
     public void runToClimb(){
         climbing = true;
         profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(getPos(), 0), new MotionState(HEIGHT_CLIMB, 0), maxvel, maxaccel);
