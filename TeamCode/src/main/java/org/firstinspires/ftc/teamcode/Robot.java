@@ -5,21 +5,31 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
+import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.Component;
 import org.firstinspires.ftc.teamcode.lib.Motor;
+import org.firstinspires.ftc.teamcode.lib.StepperServo;
+import org.firstinspires.ftc.teamcode.subsystems.arm.ArmWrist;
+import org.firstinspires.ftc.teamcode.subsystems.deposit.Deposit;
+import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.relocalization.Relocalization;
+import org.firstinspires.ftc.teamcode.subsystems.slides.Slides;
 
 public class Robot {
 
     // SUBSYSTEM DECLARATIONS
     public Component[] components;
     public SampleMecanumDrive drive;
+    public Deposit deposit;
+    public ArmWrist arm;
+    public Intake intake;
+    public Slides slides;
     public Relocalization relocalization;
-    boolean auton;
+    public HardwareMap hardwareMap;
 
     // STATE VARS
-
+    boolean auton;
 
 
     public Robot(HardwareMap map, boolean auton){
@@ -34,12 +44,30 @@ public class Robot {
                 new Motor(2, "rightRear", map, false),        //1 right odometer
                 new Motor(1, "leftFront", map, true),         //2 middle odometer
                 new Motor(0, "rightFront", map, false),       //3
+
+                new Motor(0, "slides1", map, false),          //4
+                new Motor(0, "slides2", map, false),          //5
+                new Motor(0, "climb", map, false),            //6
+
+                new StepperServo(1, "arm1", map),                     //7
+                new StepperServo(1, "arm2", map),                     //8
+                new StepperServo(1, "wrist", map),                    //9
+
+                new Motor(0, "intakeMotor", map, false),      //10
+                new StepperServo(1, "intakeServo", map),              //11
+
+                new StepperServo(1, "deposit", map)                   //12
         };
+
+        VoltageSensor voltageSensor = map.voltageSensor.iterator().next();
 
         // INIT SUBSYSTEMS
 
-
-
+        this.deposit = new Deposit((StepperServo) components[12]);
+        this.arm = new ArmWrist((StepperServo) components[7], (StepperServo) components[8], (StepperServo) components[9]);
+        this.intake = new Intake((StepperServo) components[11], (Motor) components[10]);
+        this.slides = new Slides((Motor) components[4], (Motor) components[5], (Motor) components[6], voltageSensor);
+        this.hardwareMap = map;
     }
 
 

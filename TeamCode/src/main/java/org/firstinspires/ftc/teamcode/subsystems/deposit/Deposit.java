@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.subsystems.deposit;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.lib.StepperServo;
+
 public class Deposit {
     public Servo depositServo;
 
@@ -12,9 +14,9 @@ public class Deposit {
     public double close = 0;
     public double epsilon = 0.1;
 
-    public Deposit(Servo depositServo) {
-        this.depositServo = depositServo;
-        currentAngle = depositServo.getPosition();
+    public Deposit(StepperServo depositServo) {
+        this.depositServo = depositServo.servo;
+        currentAngle = depositServo.servo.getPosition();
     }
     public void open(){
         depositServo.setPosition(open);
@@ -32,7 +34,7 @@ public class Deposit {
             open();
         }
     }
-    public void depositToPos(double pos){
+    public void setPos(double pos){
         depositServo.setPosition(pos);
     }
 

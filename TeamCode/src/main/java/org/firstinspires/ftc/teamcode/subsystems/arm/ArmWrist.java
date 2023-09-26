@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.subsystems.arm;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.lib.StepperServo;
+
 public class ArmWrist {
     public Servo arm1;
     public Servo arm2;
@@ -12,12 +14,12 @@ public class ArmWrist {
     //presets
     public double[] preset1 = {1,1}; //arm, wrist
 
-    public ArmWrist(Servo arm1, Servo arm2, Servo wrist) {
-        this.arm1 = arm1;
-        this.arm2 = arm2;
-        this.wrist = wrist;
-        arm1.setDirection(Servo.Direction.REVERSE);
-        currentAngle = arm1.getPosition();
+    public ArmWrist(StepperServo arm1, StepperServo arm2, StepperServo wrist) {
+        this.arm1 = arm1.servo;
+        this.arm2 = arm2.servo;
+        this.wrist = wrist.servo;
+        arm1.servo.setDirection(Servo.Direction.REVERSE);
+        currentAngle = arm1.servo.getPosition();
     }
     public void turnToPreset(double [] preset){
         arm1.setPosition(preset[0]);

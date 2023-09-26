@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.subsystems.intake;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.lib.Motor;
+import org.firstinspires.ftc.teamcode.lib.StepperServo;
+
 public class Intake {
 
     // Define class members
@@ -12,10 +15,10 @@ public class Intake {
     double intakeSpeed = 0.8;
     double currentPos;
 
-    public Intake(Servo intakeServo, DcMotor intakeMotor) {
-        this.intakeServo = intakeServo;
-        this.intakeMotor = intakeMotor;
-        this.currentPos = intakeServo.getPosition();
+    public Intake(StepperServo intakeServo, Motor intakeMotor) {
+        this.intakeServo = intakeServo.servo;
+        this.intakeMotor = intakeMotor.motor;
+        this.currentPos = intakeServo.servo.getPosition();
     }
 
     public void setIntakeSpeed(double intakeSpeed){
