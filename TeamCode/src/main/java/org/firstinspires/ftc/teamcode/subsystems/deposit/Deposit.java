@@ -10,9 +10,8 @@ public class Deposit {
     public double currentAngle;
 
     //presets (????????????????????)
-    public double open = 1;
-    public double close = 0;
-    public double epsilon = 0.1;
+    public double open = 0.5;
+    public double close = 1;
 
     public Deposit(StepperServo depositServo) {
         this.depositServo = depositServo.servo;
