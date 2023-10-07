@@ -173,18 +173,13 @@ public class TeamElementCVProcessor implements VisionProcessor {
         Location propPosition;
         if (largestContour == null) {
             propPosition = Location.UNFOUND;
-            telemetry.addLine("Team Element Location: <b>NOT FOUND</b>");
         } else if (largestContourX < left.getAsDouble()) {
             propPosition = Location.LEFT;
-            telemetry.addData("Team Element Location", "left");
         } else if (largestContourX > right.getAsDouble()) {
             propPosition = Location.RIGHT;
-            telemetry.addData("Team Element Location", "right");
         } else {
             propPosition = Location.CENTER;
-            telemetry.addData("Team Element Location", "center");
         }
-        telemetry.update();
 
         // if we have found a new prop position, and it is not unfound, updates the recorded position,
         // this makes sure that if our camera is playing up, we only need to see the prop in the correct position
