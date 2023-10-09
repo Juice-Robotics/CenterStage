@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 //import com.outoftheboxrobotics.photoncore.PhotonCore;
@@ -34,8 +35,9 @@ public class TeleOpMain extends LinearOpMode {
 
 //        PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
 //        PhotonCore.EXPANSION_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
-//        PhotonCore.experimental.setMaximumParallelCommands(4);
+        PhotonCore.experimental.setMaximumParallelCommands(4);
 //        PhotonCore.enable();
+        PhotonCore.start(hardwareMap);
 
         ElapsedTime timer = new ElapsedTime();
         ElapsedTime matchTimer;
