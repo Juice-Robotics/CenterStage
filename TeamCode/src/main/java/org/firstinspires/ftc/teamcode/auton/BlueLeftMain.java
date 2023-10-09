@@ -45,45 +45,105 @@ public class BlueLeftMain extends LinearOpMode {
 
         // PRELOAD PATHS
         TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
+                .addTemporalMarker(0, () -> {
+                    robot.runToAutoSpikePreset();
+                })
                 .splineTo(new Vector2d(-45, 20), Math.toRadians(15))
+                .waitSeconds(1)
+                .addTemporalMarker(1, () -> {
+                    robot.deposit.open();
+                    robot.intakePreset();
+                    robot.deposit.close();
+                })
                 .strafeLeft(10)
                 .build();
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
                 .setReversed(false)
                 .splineTo(new Vector2d(-29, 49), Math.toRadians(90))
+                .addTemporalMarker(5, () -> {
+                    robot.runToAutoBackdropPreset();
+                    robot.deposit.open();
+                    robot.intakePreset();
+                })
+                .waitSeconds(2)
                 .build();
         TrajectorySequence leftToStack1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
                 .setReversed(true)
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
+                .addTemporalMarker(5, () -> {
+                    robot.startSmartIntake();
+                    robot.deposit.close();
+                })
+                .waitSeconds(2)
                 .build();
 
         TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
+                .addTemporalMarker(0, () -> {
+                    robot.runToAutoSpikePreset();
+                })
                 .forward(20)
+                .waitSeconds(1)
+                .addTemporalMarker(1, () -> {
+                    robot.deposit.open();
+                    robot.intakePreset();
+                    robot.deposit.close();
+                })
                 .back(10)
                 .build();
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(false)
                 .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
+                .addTemporalMarker(5, () -> {
+                    robot.runToAutoBackdropPreset();
+                    robot.deposit.open();
+                    robot.intakePreset();
+                })
+                .waitSeconds(2)
                 .build();
         TrajectorySequence centerToStack1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
                 .setReversed(true)
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
+                .addTemporalMarker(5, () -> {
+                    robot.startSmartIntake();
+                    robot.deposit.close();
+                })
+                .waitSeconds(2)
                 .build();
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
+                .addTemporalMarker(0, () -> {
+                    robot.runToAutoSpikePreset();
+                })
                 .splineTo(new Vector2d(-43, 8), Math.toRadians(-15))
+                .waitSeconds(1)
+                .addTemporalMarker(1, () -> {
+                    robot.deposit.open();
+                    robot.intakePreset();
+                    robot.deposit.close();
+                })
                 .back(10)
                 .build();
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(false)
                 .splineTo(new Vector2d(-40, 49), Math.toRadians(90))
+                .addTemporalMarker(5, () -> {
+                    robot.runToAutoBackdropPreset();
+                    robot.deposit.open();
+                    robot.intakePreset();
+                })
+                .waitSeconds(2)
                 .build();
         TrajectorySequence rightToStack1 = drive.trajectorySequenceBuilder(preloadBackdropRight.end())
                 .setReversed(true)
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
+                .addTemporalMarker(5, () -> {
+                    robot.startSmartIntake();
+                    robot.deposit.close();
+                })
+                .waitSeconds(2)
                 .build();
 
         // SHARED PATHS
@@ -91,28 +151,60 @@ public class BlueLeftMain extends LinearOpMode {
                 .setReversed(false)
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(90))
                 .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
+                .addTemporalMarker(5, () -> {
+                    robot.runToAutoBackdropPreset();
+                    robot.deposit.open();
+                    robot.intakePreset();
+                })
+                .waitSeconds(2)
                 .build();
 
         TrajectorySequence backdropToStack2 = drive.trajectorySequenceBuilder(stackToBackdrop1.end())
                 .setReversed(true)
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
+                .addTemporalMarker(5, () -> {
+                    robot.startSmartIntake();
+                    robot.deposit.close();
+                })
+                .waitSeconds(2)
                 .build();
         TrajectorySequence stackToBackdrop2 = drive.trajectorySequenceBuilder(backdropToStack2.end())
                 .setReversed(false)
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(90))
                 .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
+                .addTemporalMarker(5, () -> {
+                    robot.runToAutoBackdropPreset();
+                    robot.deposit.open();
+                    robot.intakePreset();
+                })
+                .waitSeconds(2)
                 .build();
 
         TrajectorySequence backdropToStack3 = drive.trajectorySequenceBuilder(stackToBackdrop2.end())
                 .setReversed(true)
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
+                .addTemporalMarker(5, () -> {
+                    robot.startSmartIntake();
+                    robot.deposit.close();
+                })
+                .waitSeconds(2)
                 .build();
         TrajectorySequence stackToBackdrop3 = drive.trajectorySequenceBuilder(backdropToStack3.end())
                 .setReversed(false)
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(90))
                 .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
+                .addTemporalMarker(5, () -> {
+                    robot.runToAutoBackdropPreset();
+                    robot.deposit.open();
+                    robot.intakePreset();
+                })
+                .waitSeconds(2)
+                .build();
+
+        TrajectorySequence park = drive.trajectorySequenceBuilder(stackToBackdrop3.end())
+                .strafeLeft(10)
                 .build();
 
         /*
@@ -178,6 +270,7 @@ public class BlueLeftMain extends LinearOpMode {
         drive.followTrajectorySequence(stackToBackdrop2);
         drive.followTrajectorySequence(backdropToStack3);
         drive.followTrajectorySequence(stackToBackdrop3);
+        drive.followTrajectorySequence(park);
 
         while (!isStopRequested() && opModeIsActive()) ;
     }
