@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.subsystems.deposit.Deposit;
 import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.relocalization.Relocalization;
 import org.firstinspires.ftc.teamcode.subsystems.slides.Slides;
+import org.firstinspires.ftc.teamcode.subsystems.launcher.DroneLauncher;
 
 public class Robot {
 
@@ -26,6 +27,7 @@ public class Robot {
     public ArmWrist arm;
     public Intake intake;
     public Slides slides;
+    public DroneLauncher drone;
     public Relocalization relocalization;
     public HardwareMap hardwareMap;
 
@@ -76,6 +78,7 @@ public class Robot {
 
     // INTAKE
     public void intakePreset() {
+        this.arm.wristToPos(90); //turning to get through the thingy
         this.slides.runToPreset(Levels.INTAKE);
         this.arm.turnToPreset(Levels.INTAKE);
         this.deposit.open();
@@ -90,6 +93,12 @@ public class Robot {
         // add sensor stuff to auto-stop
     }
 
+    public void depositPreset() {
+        this.arm.wristToPos(90); //turning to get through the thingy
+        this.slides.runToPreset(Levels.DEPOSIT);
+        this.arm.turnToPreset(Levels.DEPOSIT);
+        this.subsystemState = Levels.DEPOSIT;
+    }
     public void runToAutoSpikePreset() {
         this.slides.runToPosition(100);
         this.arm.armToPos(1);
@@ -101,8 +110,6 @@ public class Robot {
         this.arm.armToPos(1);
         this.arm.wristToPos(1);
     }
-
-
 
     //DRIVE
     public void setDrivePower(double x, double y, double rx) {

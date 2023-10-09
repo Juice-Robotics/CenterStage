@@ -36,11 +36,14 @@ public class ArmWrist {
         profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(1, 0), new MotionState(0, 0), maxvel, maxaccel);
     }
 
-    public void turnToPreset(Levels level){
+    public void turnToPreset(Levels level){ //testtesttesttesttest
         if (level == Levels.ZERO) {
             armToPos(0);
             wrist.setPosition(0);
         } else if (level == Levels.INTAKE) {
+            armToPos(0);
+            wrist.setPosition(0);
+        } else if (level == Levels.DEPOSIT){
             armToPos(0);
             wrist.setPosition(0);
         }

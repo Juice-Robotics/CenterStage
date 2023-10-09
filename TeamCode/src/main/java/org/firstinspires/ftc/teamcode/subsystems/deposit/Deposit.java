@@ -33,6 +33,9 @@ public class Deposit {
             open();
         }
     }
+    public void getPos(){
+        depositServo.getPosition();
+    }
     public void setPos(double pos){
         depositServo.setPosition(pos);
     }
