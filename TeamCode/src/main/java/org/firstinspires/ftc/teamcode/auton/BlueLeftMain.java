@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
+import org.firstinspires.ftc.teamcode.lib.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.vision.TeamElementCVProcessor;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -271,6 +272,9 @@ public class BlueLeftMain extends LinearOpMode {
         drive.followTrajectorySequence(backdropToStack3);
         drive.followTrajectorySequence(stackToBackdrop3);
         drive.followTrajectorySequence(park);
+
+        // Transfer the current pose to PoseStorage so we can use it in TeleOp
+        PoseStorage.currentPose = drive.getPoseEstimate();
 
         while (!isStopRequested() && opModeIsActive()) ;
     }

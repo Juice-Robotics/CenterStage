@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 public class Relocalization {
-    AprilTagsRelocalization aprilTags;
+    public AprilTagsRelocalization aprilTags;
 
     public Relocalization(HardwareMap map) {
         aprilTags =  new AprilTagsRelocalization(map.get(WebcamName.class, "Webcam 1"));

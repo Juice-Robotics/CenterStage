@@ -19,9 +19,13 @@ public class AprilTagsRelocalization {
     List<AprilTagDetection> aprilTagDetections;
     int aprilTagID;
 
-    double cameraOffsetX = 0.0;
-    double cameraOffsetY= 0.0;
-    double cameraOffsetRotation = 0.0;
+    double fcameraOffsetX = 0.0;
+    double fcameraOffsetY= 0.0;
+    double fcameraOffsetRotation = 0.0;
+
+    double rcameraOffsetX = 0.0;
+    double rcameraOffsetY= 0.0;
+    double rcameraOffsetRotation = 0.0;
 
     public AprilTagsRelocalization(WebcamName camera) {
         processor = AprilTagProcessor.easyCreateWithDefaults();
@@ -52,7 +56,7 @@ public class AprilTagsRelocalization {
 
     public Pose2d getAbsolutePose2d(Pose2d robotPose) {
         AprilTagPoseFtc tagRPose = getRelativePose();
-        Pose2d tagPose = new Pose2d(robotPose.getX() + tagRPose.x + cameraOffsetX, robotPose.getY() + tagRPose.y + cameraOffsetY);
+        Pose2d tagPose = new Pose2d(robotPose.getX() + tagRPose.x + fcameraOffsetX, robotPose.getY() + tagRPose.y + fcameraOffsetY);
 
         return tagPose;
     }

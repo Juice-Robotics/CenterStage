@@ -2,26 +2,49 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.control.PIDFController;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 //import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.exception.RobotCoreException;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
+import org.firstinspires.ftc.teamcode.lib.PoseStorage;
+import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 import java.util.concurrent.TimeUnit;
 
 @TeleOp(group = "competition")
 public class TeleOpMain extends LinearOpMode {
+    // Define 2 states, driver control or alignment control
+    enum Mode {
+        NORMAL_CONTROL,
+        ALIGN_TO_POINT
+    }
+    private Mode currentMode = Mode.NORMAL_CONTROL;
+
+    // Declare a PIDF Controller to regulate heading
+    // Use the same gains as SampleMecanumDrive's heading controller
+    private PIDFController headingController = new PIDFController(SampleMecanumDrive.HEADING_PID);
+
     @Override
     public void runOpMode() throws InterruptedException {
         // Initialize your own robot class
         Robot robot = new Robot(hardwareMap,false);
+
+        robot.drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.drive.getLocalizer().setPoseEstimate(PoseStorage.currentPose);
+        headingController.setInputBounds(-Math.PI, Math.PI);
 
         double x;
         double y;
@@ -35,9 +58,9 @@ public class TeleOpMain extends LinearOpMode {
 
 //        PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
 //        PhotonCore.EXPANSION_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
-        PhotonCore.experimental.setMaximumParallelCommands(4);
+//        PhotonCore.experimental.setMaximumParallelCommands(4);
 //        PhotonCore.enable();
-        PhotonCore.start(hardwareMap);
+//        PhotonCore.start(hardwareMap);
 
         ElapsedTime timer = new ElapsedTime();
         ElapsedTime matchTimer;
@@ -64,17 +87,68 @@ public class TeleOpMain extends LinearOpMode {
 //            }
 
             //DRIVE
-            if (gamepad1.left_trigger > 0.5){
-                x = -gamepad1.left_stick_x*(1-0.66*gamepad1.left_trigger);
-                y = -gamepad1.left_stick_y*(1-0.66*gamepad1.left_trigger);
-                rx = gamepad1.right_stick_x*(1-0.66*gamepad1.left_trigger);
+            switch (currentMode) {
+                case NORMAL_CONTROL:
+                    if (gamepad1.left_trigger > 0.5) {
+                        x = -gamepad1.left_stick_x * (1 - 0.66 * gamepad1.left_trigger);
+                        y = -gamepad1.left_stick_y * (1 - 0.66 * gamepad1.left_trigger);
+                        rx = gamepad1.right_stick_x * (1 - 0.66 * gamepad1.left_trigger);
 
-            } else{
-                x = -gamepad1.left_stick_x;
-                y = -gamepad1.left_stick_y;
-                rx = gamepad1.right_stick_x;
+                    } else {
+                        x = -gamepad1.left_stick_x;
+                        y = -gamepad1.left_stick_y;
+                        rx = gamepad1.right_stick_x;
+                    }
+                    robot.setDrivePower(-x, y, rx);
+                    break;
+                case ALIGN_TO_POINT:
+                    Pose2d poseEstimate = robot.drive.getLocalizer().getPoseEstimate();
+                    robot.relocalization.aprilTags.detectBackdrop();
+                    AprilTagPoseFtc rawDifference = robot.relocalization.aprilTags.getRelativePose();
+
+                    if (rawDifference == null) {
+                        currentMode = Mode.NORMAL_CONTROL;
+                        gamepad1.rumbleBlips(4);
+                        break;
+                    }
+
+                    Vector2d fieldFrameInput = new Vector2d(
+                            -gamepad1.left_stick_y,
+                            -gamepad1.left_stick_x
+                    );
+                    Vector2d robotFrameInput = fieldFrameInput.rotated(-poseEstimate.getHeading());
+
+
+                    Vector2d difference = new Vector2d(rawDifference.x, rawDifference.y);
+                    double theta = difference.angle();
+
+                    // Not technically omega because its power. This is the derivative of atan2
+                    double thetaFF = -fieldFrameInput.rotated(-Math.PI / 2).dot(difference) / (difference.norm() * difference.norm());
+
+                    // Set the target heading for the heading controller to our desired angle
+                    headingController.setTargetPosition(theta);
+
+                    // Set desired angular velocity to the heading controller output + angular
+                    // velocity feedforward
+                    double headingInput = (headingController.update(poseEstimate.getHeading())
+                            * DriveConstants.kV + thetaFF)
+                            * DriveConstants.TRACK_WIDTH;
+
+                    // Combine the field centric x/y velocity with our derived angular velocity
+                    Pose2d driveDirection = new Pose2d(
+                            robotFrameInput,
+                            headingInput
+                    );
+                    robot.drive.setWeightedDrivePower(driveDirection);
+                    headingController.update(poseEstimate.getHeading());
+                    if (headingInput <= 0.15 && headingInput >= -0.15) {
+                        //assume its aligned and switch back to hunty controls
+                        currentMode = Mode.NORMAL_CONTROL;
+                        gamepad1.rumbleBlips(2);
+                        robot.drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
+                    }
+                    break;
             }
-            robot.setDrivePower(-x, y, rx);
 
 
             //ARM
@@ -131,6 +205,12 @@ public class TeleOpMain extends LinearOpMode {
             }
             previousDroneState = isPressed2;
 
+            // AUTO ALIGN
+            if (gamepad1.circle) {
+                currentMode = Mode.ALIGN_TO_POINT;
+                gamepad1.rumble(250);
+            }
+
             //TIME ALERTS
             if (buzzers == 0 && matchTimer.time(TimeUnit.SECONDS) >= 75) {
                 gamepad1.rumble(500);
@@ -144,6 +224,7 @@ public class TeleOpMain extends LinearOpMode {
 
             //autoClosePreviousState = gamepad1.circle;
             robot.slides.update();
+            robot.drive.getLocalizer().update();
             telemetry.addData("TIME LEFT: ", ((120-matchTimer.time(TimeUnit.SECONDS))));
             telemetry.addData("CLAW POSITION: ", (robot.deposit.depositServo.getPosition()));
             //telemetry.addData("ARM TARGET: ", (robot.arm.v4b1.servo.getPosition()*180));
