@@ -66,8 +66,6 @@ public class Robot {
                 new StepperServo(1, "intakeServo", map),              //11
 
                 new StepperServo(1, "deposit", map),               //12
-                new NormalizedColorSensor(1, "idk", map),    //13
-                new NormalizedColorSensor(1, "idk2", map)    //14
         };
 
         VoltageSensor voltageSensor = map.voltageSensor.iterator().next();
@@ -77,7 +75,7 @@ public class Robot {
         this.deposit = new Deposit((StepperServo) components[12]);
         this.arm = new ArmWrist((StepperServo) components[7], (StepperServo) components[8], (StepperServo) components[9]);
         this.intake = new Intake((StepperServo) components[11], (Motor) components[10]);
-        this.intakeSensor = new IntakeSensor((NormalizedColorSensor) components[13],(NormalizedColorSensor) components[14], (float)2.0);
+        this.intakeSensor = new IntakeSensor(map.get(NormalizedColorSensor.class, "intakeSensor1"), map.get(NormalizedColorSensor.class, "intakeSensor2"), 2);
         this.slides = new Slides((Motor) components[4], (Motor) components[5], (Motor) components[6], voltageSensor);
         this.hardwareMap = map;
 
