@@ -71,6 +71,7 @@ public class TeleOpMain extends LinearOpMode {
         boolean autoClosePreviousState = false;
         boolean previousClawState = false;
         boolean previousDroneState = false;
+        boolean previousIntakeState = false;
         int dronePressed = 0;
 
 
@@ -161,7 +162,7 @@ public class TeleOpMain extends LinearOpMode {
             //CLAW
             boolean isPressed = gamepad1.triangle;
             if (isPressed && !previousClawState) {
-                robot.depositSmart();
+                robot.deposit.toggle();
             }
             previousClawState = isPressed;
 
@@ -170,9 +171,14 @@ public class TeleOpMain extends LinearOpMode {
             if (gamepad1.right_trigger > 0.5){
                 robot.intakePreset();
             }
-            if (gamepad1.right_bumper){
-                robot.startSmartIntake();
+            if (gamepad1.right_bumper && !previousIntakeState){
+                if (robot.intaking) {
+                    robot.stopIntake();
+                } else {
+                    robot.startIntake();
+                }
             }
+            previousIntakeState = gamepad1.right_bumper;
 
             //DEPOSIT
             if (gamepad1.left_bumper) {
@@ -224,6 +230,7 @@ public class TeleOpMain extends LinearOpMode {
 
             //autoClosePreviousState = gamepad1.circle;
             robot.slides.update();
+            robot.smartIntakeUpdate();
             robot.drive.getLocalizer().update();
             telemetry.addData("TIME LEFT: ", ((120-matchTimer.time(TimeUnit.SECONDS))));
             telemetry.addData("CLAW POSITION: ", (robot.deposit.depositServo.getPosition()));

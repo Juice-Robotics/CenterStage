@@ -39,6 +39,7 @@ public class Robot {
     // STATE VARS
     boolean auton;
     Levels subsystemState;
+    public boolean intaking = false;
 
 
     public Robot(HardwareMap map, boolean auton){
@@ -92,26 +93,33 @@ public class Robot {
     }
 
     public void startIntake() {
+        intaking = true;
         this.intake.startIntake();
     }
 
-    public void startSmartIntake() {
-        boolean[] state = intakeSensor.hasPixel();
+    public void stopIntake() {
+        intaking = false;
+        this.intake.stopIntake();
+    }
+
+    public void smartIntake(boolean[] state) {
         if (state[0] && state[1]){
             intake.stopIntake();
-        }
-        else {
-            intake.startIntake();
+            intaking = false;
         }
     }
 
-    public void depositSmart() {
-        boolean[] state = intakeSensor.hasPixel();
+    public void depositSmart(boolean[] state) {
         if (state[0] && state[1] && (this.subsystemState == Levels.INTAKE)){
             deposit.close();
         }
-        else{
-            deposit.toggle();
+    }
+
+    public void smartIntakeUpdate() {
+        if (intaking) {
+            boolean[] state = intakeSensor.hasPixel();
+            depositSmart(state);
+            smartIntake(state);
         }
     }
 
