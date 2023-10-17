@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.checkerframework.checker.units.qual.A;
@@ -15,6 +16,7 @@ import org.firstinspires.ftc.teamcode.lib.StepperServo;
 import org.firstinspires.ftc.teamcode.subsystems.arm.ArmWrist;
 import org.firstinspires.ftc.teamcode.subsystems.deposit.Deposit;
 import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeSensor;
 import org.firstinspires.ftc.teamcode.subsystems.relocalization.Relocalization;
 import org.firstinspires.ftc.teamcode.subsystems.slides.Slides;
 import org.firstinspires.ftc.teamcode.subsystems.launcher.DroneLauncher;
@@ -28,6 +30,7 @@ public class Robot {
     public Deposit deposit;
     public ArmWrist arm;
     public Intake intake;
+    public IntakeSensor intakeSensor;
     public Slides slides;
     public DroneLauncher drone;
     public Relocalization relocalization;
@@ -62,7 +65,9 @@ public class Robot {
                 new Motor(0, "intakeMotor", map, false),      //10
                 new StepperServo(1, "intakeServo", map),              //11
 
-                new StepperServo(1, "deposit", map)                   //12
+                new StepperServo(1, "deposit", map),               //12
+                new NormalizedColorSensor(1, "idk", map),    //13
+                new NormalizedColorSensor(1, "idk2", map)    //14
         };
 
         VoltageSensor voltageSensor = map.voltageSensor.iterator().next();
@@ -72,6 +77,7 @@ public class Robot {
         this.deposit = new Deposit((StepperServo) components[12]);
         this.arm = new ArmWrist((StepperServo) components[7], (StepperServo) components[8], (StepperServo) components[9]);
         this.intake = new Intake((StepperServo) components[11], (Motor) components[10]);
+        this.intakeSensor = new IntakeSensor((NormalizedColorSensor) components[13],(NormalizedColorSensor) components[14], (float)2.0);
         this.slides = new Slides((Motor) components[4], (Motor) components[5], (Motor) components[6], voltageSensor);
         this.hardwareMap = map;
 
@@ -92,7 +98,23 @@ public class Robot {
     }
 
     public void startSmartIntake() {
-        // add sensor stuff to auto-stop
+        boolean[] state = intakeSensor.hasPixel();
+        if (state[0] && state[1]){
+            intake.stopIntake();
+        }
+        else {
+            intake.startIntake();
+        }
+    }
+
+    public void depositSmart() {
+        boolean[] state = intakeSensor.hasPixel();
+        if (state[0] && state[1] && (this.subsystemState == Levels.INTAKE)){
+            deposit.close();
+        }
+        else{
+            deposit.toggle();
+        }
     }
 
     public void depositPreset() {
