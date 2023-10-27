@@ -62,6 +62,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .setReversed(false)
                 .splineTo(new Vector2d(-29, 49), Math.toRadians(90))
                 .addTemporalMarker(5, () -> {
+                    robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
                     robot.deposit.open();
                     robot.intakePreset();
@@ -73,7 +74,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
-                    robot.startSmartIntake();
+                    robot.startSmartIntake(2);
                     robot.deposit.close();
                 })
                 .waitSeconds(2)
@@ -96,6 +97,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .setReversed(false)
                 .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
                 .addTemporalMarker(5, () -> {
+                    robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
                     robot.deposit.open();
                     robot.intakePreset();
@@ -107,7 +109,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
-                    robot.startSmartIntake();
+                    robot.startSmartIntake(2);
                     robot.deposit.close();
                 })
                 .waitSeconds(2)
@@ -130,6 +132,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .setReversed(false)
                 .splineTo(new Vector2d(-40, 49), Math.toRadians(90))
                 .addTemporalMarker(5, () -> {
+                    robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
                     robot.deposit.open();
                     robot.intakePreset();
@@ -141,7 +144,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
-                    robot.startSmartIntake();
+                    robot.startSmartIntake(2);
                     robot.deposit.close();
                 })
                 .waitSeconds(2)
@@ -153,6 +156,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(90))
                 .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
                 .addTemporalMarker(5, () -> {
+                    robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
                     robot.deposit.open();
                     robot.intakePreset();
@@ -165,7 +169,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
-                    robot.startSmartIntake();
+                    robot.startSmartIntake(2);
                     robot.deposit.close();
                 })
                 .waitSeconds(2)
@@ -175,6 +179,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(90))
                 .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
                 .addTemporalMarker(5, () -> {
+                    robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
                     robot.deposit.open();
                     robot.intakePreset();
@@ -187,7 +192,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
-                    robot.startSmartIntake();
+                    robot.startSmartIntake(2);
                     robot.deposit.close();
                 })
                 .waitSeconds(2)
@@ -197,6 +202,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-10, 20), Math.toRadians(90))
                 .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
                 .addTemporalMarker(5, () -> {
+                    robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
                     robot.deposit.open();
                     robot.intakePreset();

@@ -50,19 +50,12 @@ public class TeleOpMain extends LinearOpMode {
         double y;
         double rx;
 
-        boolean previousClawSensorState = false;
-        ElapsedTime clawSensorTimeout = new ElapsedTime();
-
-        Gamepad previousGamepad1 = new Gamepad();
-        Gamepad previousGamepad2 = new Gamepad();
-
 //        PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
 //        PhotonCore.EXPANSION_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
 //        PhotonCore.experimental.setMaximumParallelCommands(4);
 //        PhotonCore.enable();
 //        PhotonCore.start(hardwareMap);
 
-        ElapsedTime timer = new ElapsedTime();
         ElapsedTime matchTimer;
 
         int buzzers = 0;
@@ -200,7 +193,7 @@ public class TeleOpMain extends LinearOpMode {
             }
 
             //DRONE
-            boolean isPressed2 = gamepad1.circle;
+            boolean isPressed2 = gamepad1.square;
             if (gamepad1.square && !previousDroneState && (dronePressed==0)) {
                 robot.drone.prime();
                 dronePressed = 1;

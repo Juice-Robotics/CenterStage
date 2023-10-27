@@ -60,16 +60,16 @@ public class MeepMeepTesting {
 //                                .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
 
                                 // RIGHT
-                                .splineTo(new Vector2d(-43, 8), Math.toRadians(-15))
-                                .back(10)
-                                .setReversed(false)
-                                .splineTo(new Vector2d(-40, 49), Math.toRadians(90))
+//                                .splineTo(new Vector2d(-43, 8), Math.toRadians(-15))
+//                                .back(10)
+//                                .setReversed(false)
+//                                .splineTo(new Vector2d(-40, 49), Math.toRadians(90))
 
                                 //LEFT
-//                                .splineTo(new Vector2d(-45, 20), Math.toRadians(15))
-//                                .strafeLeft(10)
-//                                .setReversed(false)
-//                                .splineTo(new Vector2d(-29, 49), Math.toRadians(90))
+                                .splineTo(new Vector2d(-45, 20), Math.toRadians(15))
+                                .strafeLeft(10)
+                                .setReversed(false)
+                                .splineTo(new Vector2d(-29, 49), Math.toRadians(90))
 
 
                                 .setReversed(true)

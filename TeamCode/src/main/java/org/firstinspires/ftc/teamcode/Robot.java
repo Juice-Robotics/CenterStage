@@ -102,6 +102,32 @@ public class Robot {
         this.intake.stopIntake();
     }
 
+    /**
+    * <h1>WARNING: BLOCKS THREAD</h1>
+     * Blocks thread until intake is complete with specified number of pixels (1-2)
+    */
+    public void startSmartIntake(int pixels) {
+        this.intake.startIntake();
+        if (pixels == 1) {
+            while (!intakeSensor.hasPixel()[0] && !intakeSensor.hasPixel()[1]) {
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else if (pixels == 2) {
+            while (!intakeSensor.hasPixel()[0] || !intakeSensor.hasPixel()[1]) {
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        this.intake.stopIntake();
+    }
+
     public void smartIntake(boolean[] state) {
         if (state[0] && state[1]){
             intake.stopIntake();
