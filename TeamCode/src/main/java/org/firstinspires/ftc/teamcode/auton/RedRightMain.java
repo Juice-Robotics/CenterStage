@@ -20,7 +20,7 @@ import java.util.ArrayList;
 @Config
 @Autonomous(group = "drive")
 
-public class BlueLeftMain extends LinearOpMode {
+public class RedRightMain extends LinearOpMode {
     Robot robot;
     VisionPortal visionPortal;
     TeamElementCVProcessor teamElementProcessor;
@@ -30,7 +30,7 @@ public class BlueLeftMain extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         robot = new Robot(hardwareMap, true);
-        Pose2d startPose = new Pose2d(-59, 12, 0);
+        Pose2d startPose = new Pose2d(59, 12, Math.toRadians(-180));
         drive.setPoseEstimate(startPose);
 
         teamElementProcessor = new TeamElementCVProcessor(
@@ -38,29 +38,29 @@ public class BlueLeftMain extends LinearOpMode {
                 () -> 213, // the left dividing line, in this case the left third of the frame
                 () -> 426, // the left dividing line, in this case the right third of the frame,
                 telemetry,
-                AllianceColor.BLUE);
+                AllianceColor.RED);
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
                 .addProcessor(teamElementProcessor)
                 .build();
 
         // PRELOAD PATHS
-        TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
+        TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
                 .addTemporalMarker(0, () -> {
                     robot.runToAutoSpikePreset();
                 })
-                .splineTo(new Vector2d(-45, 20), Math.toRadians(15))
+                .splineTo(new Vector2d(45, 20), Math.toRadians(165))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
                     robot.deposit.open();
                     robot.intakePreset();
                     robot.deposit.close();
                 })
-                .strafeLeft(10)
+                .strafeRight(10)
                 .build();
-        TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
+        TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(false)
-                .splineTo(new Vector2d(-29, 49), Math.toRadians(90))
+                .splineTo(new Vector2d(40, 49), Math.toRadians(90))
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
@@ -69,10 +69,10 @@ public class BlueLeftMain extends LinearOpMode {
                 })
                 .waitSeconds(2)
                 .build();
-        TrajectorySequence leftToStack1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
+        TrajectorySequence rightToStack1 = drive.trajectorySequenceBuilder(preloadBackdropRight.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
+                .splineTo(new Vector2d(10, 20), Math.toRadians(270))
+                .splineTo(new Vector2d(11, -61), Math.toRadians(270))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
                     robot.deposit.close();
@@ -95,7 +95,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .build();
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(false)
-                .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
+                .splineTo(new Vector2d(36, 49), Math.toRadians(90))
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
@@ -106,8 +106,8 @@ public class BlueLeftMain extends LinearOpMode {
                 .build();
         TrajectorySequence centerToStack1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
+                .splineTo(new Vector2d(10, 20), Math.toRadians(270))
+                .splineTo(new Vector2d(11, -61), Math.toRadians(270))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
                     robot.deposit.close();
@@ -115,11 +115,11 @@ public class BlueLeftMain extends LinearOpMode {
                 .waitSeconds(2)
                 .build();
 
-        TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
+        TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
                 .addTemporalMarker(0, () -> {
                     robot.runToAutoSpikePreset();
                 })
-                .splineTo(new Vector2d(-43, 8), Math.toRadians(-15))
+                .splineTo(new Vector2d(43, 8), Math.toRadians(200))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
                     robot.deposit.open();
@@ -128,9 +128,9 @@ public class BlueLeftMain extends LinearOpMode {
                 })
                 .back(10)
                 .build();
-        TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
+        TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
                 .setReversed(false)
-                .splineTo(new Vector2d(-40, 49), Math.toRadians(90))
+                .splineTo(new Vector2d(29, 49), Math.toRadians(90))
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
@@ -139,10 +139,10 @@ public class BlueLeftMain extends LinearOpMode {
                 })
                 .waitSeconds(2)
                 .build();
-        TrajectorySequence rightToStack1 = drive.trajectorySequenceBuilder(preloadBackdropRight.end())
+        TrajectorySequence leftToStack1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
+                .splineTo(new Vector2d(10, 20), Math.toRadians(270))
+                .splineTo(new Vector2d(11, -61), Math.toRadians(270))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
                     robot.deposit.close();
@@ -153,8 +153,8 @@ public class BlueLeftMain extends LinearOpMode {
         // SHARED PATHS
         TrajectorySequence stackToBackdrop1 = drive.trajectorySequenceBuilder(leftToStack1.end())
                 .setReversed(false)
-                .splineTo(new Vector2d(-10, 20), Math.toRadians(90))
-                .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
+                .splineTo(new Vector2d(10, 20), Math.toRadians(90))
+                .splineTo(new Vector2d(36, 49), Math.toRadians(90))
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
@@ -166,8 +166,8 @@ public class BlueLeftMain extends LinearOpMode {
 
         TrajectorySequence backdropToStack2 = drive.trajectorySequenceBuilder(stackToBackdrop1.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
+                .splineTo(new Vector2d(10, 20), Math.toRadians(270))
+                .splineTo(new Vector2d(11, -61), Math.toRadians(270))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
                     robot.deposit.close();
@@ -176,8 +176,8 @@ public class BlueLeftMain extends LinearOpMode {
                 .build();
         TrajectorySequence stackToBackdrop2 = drive.trajectorySequenceBuilder(backdropToStack2.end())
                 .setReversed(false)
-                .splineTo(new Vector2d(-10, 20), Math.toRadians(90))
-                .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
+                .splineTo(new Vector2d(10, 20), Math.toRadians(90))
+                .splineTo(new Vector2d(36, 49), Math.toRadians(90))
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
@@ -189,8 +189,8 @@ public class BlueLeftMain extends LinearOpMode {
 
         TrajectorySequence backdropToStack3 = drive.trajectorySequenceBuilder(stackToBackdrop2.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
+                .splineTo(new Vector2d(10, 20), Math.toRadians(270))
+                .splineTo(new Vector2d(11, -61), Math.toRadians(270))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
                     robot.deposit.close();
@@ -199,8 +199,8 @@ public class BlueLeftMain extends LinearOpMode {
                 .build();
         TrajectorySequence stackToBackdrop3 = drive.trajectorySequenceBuilder(backdropToStack3.end())
                 .setReversed(false)
-                .splineTo(new Vector2d(-10, 20), Math.toRadians(90))
-                .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
+                .splineTo(new Vector2d(10, 20), Math.toRadians(90))
+                .splineTo(new Vector2d(36, 49), Math.toRadians(90))
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
@@ -211,7 +211,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .build();
 
         TrajectorySequence park = drive.trajectorySequenceBuilder(stackToBackdrop3.end())
-                .strafeLeft(10)
+                .strafeRight(10)
                 .build();
 
         /*
