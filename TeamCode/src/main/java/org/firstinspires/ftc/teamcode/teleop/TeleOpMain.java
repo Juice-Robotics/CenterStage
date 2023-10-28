@@ -65,6 +65,7 @@ public class TeleOpMain extends LinearOpMode {
         boolean previousClawState = false;
         boolean previousDroneState = false;
         boolean previousIntakeState = false;
+        double previousAutoAlignState = 0.0;
         int dronePressed = 0;
 
 
@@ -100,18 +101,26 @@ public class TeleOpMain extends LinearOpMode {
                     robot.relocalization.aprilTags.detectBackdrop();
                     AprilTagPoseFtc rawDifference = robot.relocalization.aprilTags.getRelativePose();
 
-                    if (rawDifference == null) {
+                    // Switch back into normal driver control mode if trigger is pressed
+                    if (gamepad1.right_trigger > 0.2 && previousAutoAlignState < 0.2) {
                         currentMode = Mode.NORMAL_CONTROL;
-                        gamepad1.rumbleBlips(4);
-                        break;
+                        robot.drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
+                    }
+                    previousAutoAlignState = gamepad1.right_trigger;
+
+                    // ATTEMPTS TO TURN WILL CANCEL AUTO ALIGH
+                    if (gamepad1.right_stick_x != 0) {
+                        currentMode = Mode.NORMAL_CONTROL;
+                        robot.drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
                     }
 
+                    // Create a vector from the gamepad x/y inputs which is the field relative movement
+                    // Then, rotate that vector by the inverse of that heading for field centric control
                     Vector2d fieldFrameInput = new Vector2d(
                             -gamepad1.left_stick_y,
                             -gamepad1.left_stick_x
                     );
                     Vector2d robotFrameInput = fieldFrameInput.rotated(-poseEstimate.getHeading());
-
 
                     Vector2d difference = new Vector2d(rawDifference.x, rawDifference.y);
                     double theta = difference.angle();
@@ -133,14 +142,15 @@ public class TeleOpMain extends LinearOpMode {
                             robotFrameInput,
                             headingInput
                     );
+
                     robot.drive.setWeightedDrivePower(driveDirection);
                     headingController.update(poseEstimate.getHeading());
-                    if (headingInput <= 0.15 && headingInput >= -0.15) {
-                        //assume its aligned and switch back to hunty controls
-                        currentMode = Mode.NORMAL_CONTROL;
-                        gamepad1.rumbleBlips(2);
-                        robot.drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
-                    }
+//                    if (headingInput <= 0.15 && headingInput >= -0.15) {
+//                        //assume its aligned and switch back to hunty controls
+//                        currentMode = Mode.NORMAL_CONTROL;
+//                        gamepad1.rumbleBlips(2);
+//                        robot.drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
+//                    }
                     break;
             }
 
@@ -153,7 +163,7 @@ public class TeleOpMain extends LinearOpMode {
             }
 
             //CLAW
-            boolean isPressed = gamepad1.triangle;
+            boolean isPressed = gamepad1.cross;
             if (isPressed && !previousClawState) {
                 robot.deposit.toggle();
             }
@@ -161,9 +171,6 @@ public class TeleOpMain extends LinearOpMode {
 
 
             //INTAKE
-            if (gamepad1.right_trigger > 0.5){
-                robot.intakePreset();
-            }
             if (gamepad1.right_bumper && !previousIntakeState){
                 if (robot.intaking) {
                     robot.stopIntake();
@@ -179,9 +186,9 @@ public class TeleOpMain extends LinearOpMode {
             }
 
             //SLIDES
-            if (gamepad1.dpad_up) {
+            if (gamepad1.dpad_left) {
                 robot.slides.runToPosition((int) (robot.slides.slides1.motor.getCurrentPosition() + 70));
-            } else if (gamepad1.dpad_down) {
+            } else if (gamepad1.dpad_right) {
                 robot.slides.runToPosition((int) (robot.slides.slides1.motor.getCurrentPosition() - 70));
             }
 
@@ -193,21 +200,30 @@ public class TeleOpMain extends LinearOpMode {
             }
 
             //DRONE
-            boolean isPressed2 = gamepad1.square;
-            if (gamepad1.square && !previousDroneState && (dronePressed==0)) {
+            boolean isPressed2 = gamepad1.triangle;
+            if (gamepad1.triangle && !previousDroneState && (dronePressed==0)) {
                 robot.drone.prime();
                 dronePressed = 1;
             }
-            else if (gamepad1.square && !previousDroneState && (dronePressed==1)) {
+            else if (gamepad1.triangle && !previousDroneState && (dronePressed==1)) {
                 robot.drone.launch();
                 dronePressed = 2;
             }
             previousDroneState = isPressed2;
 
             // AUTO ALIGN
-            if (gamepad1.circle) {
+            if (gamepad1.right_trigger > 0.2 && previousAutoAlignState < 0.2 && currentMode != Mode.ALIGN_TO_POINT) {
                 currentMode = Mode.ALIGN_TO_POINT;
-                gamepad1.rumble(250);
+            }
+            previousAutoAlignState = gamepad1.right_trigger;
+
+            // CLIMB
+            if (gamepad1.dpad_up) {
+                robot.climbExtend();
+            }
+
+            if (gamepad1.dpad_down) {
+                robot.startClimb();
             }
 
             //TIME ALERTS

@@ -113,8 +113,8 @@ public class Slides {
     }
 
     public void runToClimb(){
-        climbing = true;
         profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(getPos(), 0), new MotionState(HEIGHT_CLIMB, 0), maxvel, maxaccel);
+        timer.reset();
     }
 
     public void startClimb(){
@@ -125,7 +125,9 @@ public class Slides {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        climbing = true;
         profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(getPos(), 0.25), new MotionState(HEIGHT_CLIMB, 0), maxvel, maxaccel);
+        timer.reset();
     }
 
     public void launchAsThread(Telemetry telemetry) {

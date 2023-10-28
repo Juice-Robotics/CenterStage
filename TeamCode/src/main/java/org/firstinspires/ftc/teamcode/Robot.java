@@ -167,6 +167,15 @@ public class Robot {
         this.arm.wristToPos(1);
     }
 
+    public void climbExtend() {
+        this.slides.runToClimb();
+        this.arm.armToPos(0);
+    }
+
+    public void startClimb() {
+        this.slides.startClimb();
+    }
+
     //DRIVE
     public void setDrivePower(double x, double y, double rx) {
         double powerFrontLeft = y + x + rx;
