@@ -30,7 +30,7 @@ public class BlueRightCycles extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         robot = new Robot(hardwareMap, true);
-        Pose2d startPose = new Pose2d(-59, 12, 0);
+        Pose2d startPose = new Pose2d(-59, -36, 0);
         drive.setPoseEstimate(startPose);
 
         teamElementProcessor = new TeamElementCVProcessor(
