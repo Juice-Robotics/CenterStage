@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.exception.RobotCoreException;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Robot;
@@ -17,15 +18,18 @@ import org.firstinspires.ftc.teamcode.subsystems.deposit.Deposit;
 @TeleOp(group = "competition")
 @Config
 public class ServoZero extends LinearOpMode {
-    Deposit deposit = new Deposit(new StepperServo(1, "deposit", hardwareMap));
+    Servo servo;
+    Servo servo2;
     public static double DEP_POS = 0;
     @Override
     public void runOpMode() throws InterruptedException {
+        servo = hardwareMap.get(Servo.class, "arm1");
+        servo2 = hardwareMap.get(Servo.class, "arm2");
         // Initialize your own robot class
         waitForStart();
         if (isStopRequested()) return;
         while (opModeIsActive() && !isStopRequested()) {
-            deposit.setPos(DEP_POS);
+            servo.setPosition(DEP_POS);
         }
     }
 }

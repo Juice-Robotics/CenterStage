@@ -22,7 +22,7 @@ public class MeepMeepTesting {
         RoadRunnerBotEntity myBot2Plus0 = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
-                .setDimensions(17, 17)
+                .setDimensions(14, 17)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(-59, 12, 0))
                                 .forward(20)
@@ -36,7 +36,7 @@ public class MeepMeepTesting {
         RoadRunnerBotEntity myBotCyclesObv = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
-                .setDimensions(18, 18)
+                .setDimensions(14, 17)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(-59, 12, 0))
                                 .forward(20)
@@ -54,7 +54,7 @@ public class MeepMeepTesting {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
 //                .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
-                .setDimensions(18, 18)
+                .setDimensions(14, 17)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(new Pose2d(-59, 12, 0))
                                 //CENTER
@@ -104,7 +104,7 @@ public class MeepMeepTesting {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
 //                .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
-                .setDimensions(18, 18)
+                .setDimensions(14, 17)
                 .followTrajectorySequence(drive ->
                                 drive.trajectorySequenceBuilder(new Pose2d(59, 12, Math.toRadians(-180)))
                                         //CENTER
@@ -154,17 +154,18 @@ public class MeepMeepTesting {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
 //                .setColorScheme(new ColorSchemeRedDark())
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
-                .setDimensions(18, 18)
+                .setDimensions(14, 17)
                 .followTrajectorySequence(drive ->
-                                drive.trajectorySequenceBuilder(new Pose2d(-59, -35, 0))
+                                drive.trajectorySequenceBuilder(new Pose2d(-59, -35, Math.toRadians(180)))
                                         //CENTER
-//                                        .forward(25)
-//                                        .back(10)
-//                                        .splineTo(new Vector2d(-35, -60), Math.toRadians(270))
-//                                        .setReversed(false)
-//                                        .splineTo(new Vector2d(-10, -42.5), Math.toRadians(90))
-//                                        .splineTo(new Vector2d(-10, 20), Math.toRadians(90))
-//                                        .splineTo(new Vector2d(-29, 49), Math.toRadians(90))
+                                        .back(25)
+                                        .forward(7)
+                                        .setReversed(false)
+                                        .splineTo(new Vector2d(-35, -60), Math.toRadians(270))
+                                        .setReversed(true)
+                                        .splineTo(new Vector2d(-10, -42.5), Math.toRadians(90))
+                                        .splineTo(new Vector2d(-10, 20), Math.toRadians(90))
+                                        .splineTo(new Vector2d(-29, 49), Math.toRadians(90))
 
                                         // RIGHT
 //                                        .splineTo(new Vector2d(-43, -42), Math.toRadians(-15))
@@ -179,21 +180,22 @@ public class MeepMeepTesting {
 //                                        .splineTo(new Vector2d(-29, 49), Math.toRadians(90))
 
                                         //RIGHT sussy
-                                        .forward(26)
-                                        .turn(Math.toRadians(90))
-                                        .strafeRight(21)
-                                        .turn(Math.toRadians(180))
-                                        .forward(20)
-//                                        .back(40)
-                                        .setReversed(true)
-                                        .splineTo(new Vector2d(-10, 20), Math.toRadians(90))
-                                        .splineTo(new Vector2d(-29, 49), Math.toRadians(90))
+//                                        .back(26)
+//                                        .turn(Math.toRadians(-90))
+//                                        .strafeRight(21)
+//                                        .turn(Math.toRadians(-180))
+//                                        .forward(20)
+////                                        .back(40)
+//                                        .setReversed(true)
+//                                        .splineTo(new Vector2d(-10, 20), Math.toRadians(90))
+//                                        .splineTo(new Vector2d(-29, 49), Math.toRadians(90))
 
                                         //LEFT
-//                                        .splineTo(new Vector2d(-36, -34), Math.toRadians(55))
 //                                        .setReversed(true)
-//                                        .splineTo(new Vector2d(-35, -60), Math.toRadians(270))
+//                                        .splineTo(new Vector2d(-36, -34), Math.toRadians(55))
 //                                        .setReversed(false)
+//                                        .splineTo(new Vector2d(-35, -60), Math.toRadians(270))
+//                                        .setReversed(true)
 //                                        .splineTo(new Vector2d(-10, -42.5), Math.toRadians(90))
 //                                        .splineTo(new Vector2d(-10, 20), Math.toRadians(90))
 //                                        .splineTo(new Vector2d(-29, 49), Math.toRadians(90))
