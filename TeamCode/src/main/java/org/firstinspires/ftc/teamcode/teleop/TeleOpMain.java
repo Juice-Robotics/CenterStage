@@ -65,7 +65,7 @@ public class TeleOpMain extends LinearOpMode {
         boolean previousClawState = false;
         boolean previousDroneState = false;
         boolean previousIntakeState = false;
-        double previousAutoAlignState = 0.0;
+        boolean previousAutoAlignState = false;
         int dronePressed = 0;
 
 
@@ -102,11 +102,11 @@ public class TeleOpMain extends LinearOpMode {
                     AprilTagPoseFtc rawDifference = robot.relocalization.aprilTags.getRelativePose();
 
                     // Switch back into normal driver control mode if trigger is pressed
-                    if (gamepad1.right_trigger > 0.2 && previousAutoAlignState < 0.2) {
+                    if (gamepad1.square && !previousAutoAlignState) {
                         currentMode = Mode.NORMAL_CONTROL;
                         robot.drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
                     }
-                    previousAutoAlignState = gamepad1.right_trigger;
+                    previousAutoAlignState = gamepad1.square;
 
                     // ATTEMPTS TO TURN WILL CANCEL AUTO ALIGH
                     if (gamepad1.right_stick_x != 0) {
@@ -157,15 +157,15 @@ public class TeleOpMain extends LinearOpMode {
 
             //ARM
             if (gamepad2.left_trigger > 0.1) {
-                robot.arm.armToPos((int) (robot.arm.arm1.getPosition() + (0.1*gamepad2.left_trigger)));
+                robot.arm.setAngleArm((int) (robot.arm.arm1.getAngle() + (0.1*gamepad2.left_trigger)));
             } else if (gamepad2.right_trigger > 0.1) {
-                robot.arm.armToPos((int) (robot.arm.arm1.getPosition() - (0.1*gamepad2.right_trigger)));
+                robot.arm.setAngleArm((int) (robot.arm.arm1.getAngle() - (0.1*gamepad2.right_trigger)));
             }
 
             //CLAW
             boolean isPressed = gamepad1.cross;
             if (isPressed && !previousClawState) {
-                robot.deposit.toggle();
+                robot.claw.toggle();
             }
             previousClawState = isPressed;
 
@@ -179,6 +179,9 @@ public class TeleOpMain extends LinearOpMode {
                 }
             }
             previousIntakeState = gamepad1.right_bumper;
+            if(gamepad1.right_trigger > 0.2){
+                robot.intakePreset();
+            }
 
             //DEPOSIT
             if (gamepad1.left_bumper) {
@@ -194,9 +197,9 @@ public class TeleOpMain extends LinearOpMode {
 
             //WRIST
             if (gamepad2.right_stick_x > 0.2) {
-                robot.arm.wristToPos(robot.arm.wrist.getPosition() + 70);
+                robot.arm.setAngleElbow(robot.arm.elbow.getAngle() + 70);
             } else if (gamepad2.right_stick_x < -0.2) {
-                robot.arm.wristToPos(robot.arm.wrist.getPosition() - 70);
+                robot.arm.setAngleElbow(robot.arm.elbow.getAngle() - 70);
             }
 
             //DRONE
@@ -212,10 +215,10 @@ public class TeleOpMain extends LinearOpMode {
             previousDroneState = isPressed2;
 
             // AUTO ALIGN
-            if (gamepad1.right_trigger > 0.2 && previousAutoAlignState < 0.2 && currentMode != Mode.ALIGN_TO_POINT) {
+            if (gamepad1.square && !previousAutoAlignState && currentMode != Mode.ALIGN_TO_POINT) {
                 currentMode = Mode.ALIGN_TO_POINT;
             }
-            previousAutoAlignState = gamepad1.right_trigger;
+            previousAutoAlignState = gamepad1.square;
 
             // CLIMB
             if (gamepad1.dpad_up) {
@@ -242,9 +245,9 @@ public class TeleOpMain extends LinearOpMode {
             robot.smartIntakeUpdate();
             robot.drive.getLocalizer().update();
             telemetry.addData("TIME LEFT: ", ((120-matchTimer.time(TimeUnit.SECONDS))));
-            telemetry.addData("CLAW POSITION: ", (robot.deposit.depositServo.getPosition()));
+            telemetry.addData("CLAW POSITION: ", (robot.claw.depositServo.getAngle()));
             //telemetry.addData("ARM TARGET: ", (robot.arm.v4b1.servo.getPosition()*180));
-            telemetry.addData("ARM POSITION: ", robot.arm.arm1.getPosition());
+            telemetry.addData("ARM POSITION: ", robot.arm.arm1.getAngle());
             telemetry.addData("SLIDES TARGET: ", robot.slides.target);
             telemetry.addData("SLIDES POSITION: ", robot.slides.slides1.motor.getCurrentPosition());
             telemetry.addData("LEVEL: ", robot.slides.currentLevel);

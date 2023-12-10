@@ -50,9 +50,9 @@ public class BlueSpikeLeftPark extends LinearOpMode {
                 .splineTo(new Vector2d(-45, 20), Math.toRadians(15))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .setReversed(false)
                 .splineTo(new Vector2d(-60, 60), Math.toRadians(90))
@@ -69,9 +69,9 @@ public class BlueSpikeLeftPark extends LinearOpMode {
                 .forward(20)
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .back(10)
                 .build();
@@ -87,9 +87,9 @@ public class BlueSpikeLeftPark extends LinearOpMode {
                 .splineTo(new Vector2d(-43, 8), Math.toRadians(-15))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .back(10)
                 .build();

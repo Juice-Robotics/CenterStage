@@ -50,9 +50,9 @@ public class RedSpikeRight extends LinearOpMode {
                 .splineTo(new Vector2d(45, 3), Math.toRadians(195))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .back(15)
                 .build();
@@ -64,9 +64,9 @@ public class RedSpikeRight extends LinearOpMode {
                 .forward(20)
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .back(20)
                 .build();
@@ -78,9 +78,9 @@ public class RedSpikeRight extends LinearOpMode {
                 .splineTo(new Vector2d(43, 20), Math.toRadians(165))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .back(15)
                 .build();

@@ -52,14 +52,14 @@ public class BlueRightCycles extends LinearOpMode {
                 .splineTo(new Vector2d(-36, -34), Math.toRadians(55))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .setReversed(true)
                 .splineTo(new Vector2d(-35, -60), Math.toRadians(270))
                 .addTemporalMarker(4, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .build();
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
@@ -70,7 +70,7 @@ public class BlueRightCycles extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -81,7 +81,7 @@ public class BlueRightCycles extends LinearOpMode {
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -93,7 +93,7 @@ public class BlueRightCycles extends LinearOpMode {
                 .forward(25)
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .back(10)
@@ -101,7 +101,7 @@ public class BlueRightCycles extends LinearOpMode {
                 .splineTo(new Vector2d(-35, -60), Math.toRadians(270))
                 .addTemporalMarker(4, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .build();
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
@@ -112,7 +112,7 @@ public class BlueRightCycles extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -123,7 +123,7 @@ public class BlueRightCycles extends LinearOpMode {
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -136,16 +136,16 @@ public class BlueRightCycles extends LinearOpMode {
                 .turn(Math.toRadians(90))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .strafeRight(21)
                 .turn(Math.toRadians(180))
                 .forward(20)
                 .addTemporalMarker(4, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .build();
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
@@ -155,7 +155,7 @@ public class BlueRightCycles extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -166,7 +166,7 @@ public class BlueRightCycles extends LinearOpMode {
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -179,7 +179,7 @@ public class BlueRightCycles extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -191,7 +191,7 @@ public class BlueRightCycles extends LinearOpMode {
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -202,7 +202,7 @@ public class BlueRightCycles extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -214,7 +214,7 @@ public class BlueRightCycles extends LinearOpMode {
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -225,7 +225,7 @@ public class BlueRightCycles extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)

@@ -52,9 +52,9 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-45, 20), Math.toRadians(15))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .strafeLeft(10)
                 .build();
@@ -64,7 +64,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -75,7 +75,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -87,9 +87,9 @@ public class BlueLeftMain extends LinearOpMode {
                 .forward(20)
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .back(10)
                 .build();
@@ -99,7 +99,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -110,7 +110,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -122,9 +122,9 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-43, 8), Math.toRadians(-15))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .back(10)
                 .build();
@@ -134,7 +134,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -145,7 +145,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -158,7 +158,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -170,7 +170,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -181,7 +181,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -193,7 +193,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(-11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -204,7 +204,7 @@ public class BlueLeftMain extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)

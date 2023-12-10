@@ -50,9 +50,9 @@ public class RedSpikeRightPark extends LinearOpMode {
                 .splineTo(new Vector2d(45, 6), Math.toRadians(195))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .build();
         TrajectorySequence preloadParkLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
@@ -68,9 +68,9 @@ public class RedSpikeRightPark extends LinearOpMode {
                 .forward(20)
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .back(10)
                 .build();
@@ -87,9 +87,9 @@ public class RedSpikeRightPark extends LinearOpMode {
                 .splineTo(new Vector2d(43, 20), Math.toRadians(165))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .back(10)
                 .build();

@@ -14,7 +14,6 @@ import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.Motor;
 import org.firstinspires.ftc.teamcode.lib.StepperServo;
 import org.firstinspires.ftc.teamcode.subsystems.arm.ArmElbow;
-import org.firstinspires.ftc.teamcode.subsystems.arm.ArmElbow;
 import org.firstinspires.ftc.teamcode.subsystems.deposit.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeSensor;
@@ -161,22 +160,21 @@ public class Robot {
         this.arm.runtoPreset(Levels.DEPOSIT);
         this.subsystemState = Levels.DEPOSIT;
     }
-//    public void runToAutoSpikePreset() {
-//        this.slides.runToPosition(100);
-//        this.arm.runtoPreset(1);
-//        this.arm.runtoPreset(1);
-//    }
+    public void runToAutoSpikePreset() {
+        this.slides.runToPosition(100);
+        this.arm.runtoPreset(Levels.DEPOSIT);
+        this.arm.runtoPreset(Levels.DEPOSIT);
+    }
 
-//    public void runToAutoBackdropPreset() {
-//        this.slides.runToPosition(100);
-//        this.arm.runtoPreset(1);
-//        this.arm.runtoPreset(1);
-//    }
+    public void runToAutoBackdropPreset() {
+        this.slides.runToPosition(100);
+        this.arm.runtoPreset(Levels.BACKDROP);
+    }
 
-//    public void climbExtend() {
-//        this.slides.runToClimb();
-//        this.arm.runtoPreset(0);
-//    }
+    public void climbExtend() {
+        this.slides.runToClimb();
+        this.arm.runtoPreset(Levels.BACKDROP);
+    }
 
     public void startClimb() {
         this.slides.startClimb();

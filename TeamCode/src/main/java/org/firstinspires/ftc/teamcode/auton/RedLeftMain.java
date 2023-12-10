@@ -52,13 +52,13 @@ public class RedLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(36, -40), Math.toRadians(235))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .splineTo(new Vector2d(35, -60), Math.toRadians(270))
                 .addTemporalMarker(4, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .build();
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
@@ -68,7 +68,7 @@ public class RedLeftMain extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -79,7 +79,7 @@ public class RedLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -91,14 +91,14 @@ public class RedLeftMain extends LinearOpMode {
                 .forward(25)
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .setReversed(true)
                 .splineTo(new Vector2d(35, -60), Math.toRadians(270))
                 .addTemporalMarker(4, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .build();
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
@@ -109,7 +109,7 @@ public class RedLeftMain extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -120,7 +120,7 @@ public class RedLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -133,16 +133,16 @@ public class RedLeftMain extends LinearOpMode {
                 .turn(Math.toRadians(90))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .strafeRight(21)
                 .turn(Math.PI)
                 .back(20)
                 .addTemporalMarker(4, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -153,7 +153,7 @@ public class RedLeftMain extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -164,7 +164,7 @@ public class RedLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -177,7 +177,7 @@ public class RedLeftMain extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -189,7 +189,7 @@ public class RedLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -200,7 +200,7 @@ public class RedLeftMain extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
@@ -212,7 +212,7 @@ public class RedLeftMain extends LinearOpMode {
                 .splineTo(new Vector2d(11, -61), Math.toRadians(-90))
                 .addTemporalMarker(5, () -> {
                     robot.startSmartIntake(2);
-                    robot.deposit.close();
+                    robot.claw.setClawClose();
                 })
                 .waitSeconds(2)
                 .build();
@@ -223,7 +223,7 @@ public class RedLeftMain extends LinearOpMode {
                 .addTemporalMarker(5, () -> {
                     robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.runToAutoBackdropPreset();
-                    robot.deposit.open();
+                    robot.claw.setClawOpen();
                     robot.intakePreset();
                 })
                 .waitSeconds(2)
