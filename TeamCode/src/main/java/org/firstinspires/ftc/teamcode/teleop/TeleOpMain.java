@@ -156,16 +156,16 @@ public class TeleOpMain extends LinearOpMode {
 
 
             //ARM
-            if (gamepad2.left_trigger > 0.1) {
-                robot.arm.armToPos((int) (robot.arm.arm1.getPosition() + (0.1*gamepad2.left_trigger)));
-            } else if (gamepad2.right_trigger > 0.1) {
-                robot.arm.armToPos((int) (robot.arm.arm1.getPosition() - (0.1*gamepad2.right_trigger)));
-            }
+//            if (gamepad2.left_trigger > 0.1) {
+//                robot.arm.armToPos((int) (robot.arm.arm1.getPosition() + (0.1*gamepad2.left_trigger)));
+//            } else if (gamepad2.right_trigger > 0.1) {
+//                robot.arm.armToPos((int) (robot.arm.arm1.getPosition() - (0.1*gamepad2.right_trigger)));
+//            }
 
             //CLAW
             boolean isPressed = gamepad1.cross;
             if (isPressed && !previousClawState) {
-                robot.deposit.toggle();
+                robot.claw.toggle();
             }
             previousClawState = isPressed;
 
@@ -193,11 +193,11 @@ public class TeleOpMain extends LinearOpMode {
             }
 
             //WRIST
-            if (gamepad2.right_stick_x > 0.2) {
-                robot.arm.wristToPos(robot.arm.wrist.getPosition() + 70);
-            } else if (gamepad2.right_stick_x < -0.2) {
-                robot.arm.wristToPos(robot.arm.wrist.getPosition() - 70);
-            }
+//            if (gamepad2.right_stick_x > 0.2) {
+//                robot.arm.wristToPos(robot.arm.wrist.getPosition() + 70);
+//            } else if (gamepad2.right_stick_x < -0.2) {
+//                robot.arm.wristToPos(robot.arm.wrist.getPosition() - 70);
+//            }
 
             //DRONE
             boolean isPressed2 = gamepad1.triangle;
@@ -218,9 +218,9 @@ public class TeleOpMain extends LinearOpMode {
             previousAutoAlignState = gamepad1.right_trigger;
 
             // CLIMB
-            if (gamepad1.dpad_up) {
-                robot.climbExtend();
-            }
+//            if (gamepad1.dpad_up) {
+//                robot.climbExtend();
+//            }
 
             if (gamepad1.dpad_down) {
                 robot.startClimb();
@@ -242,12 +242,6 @@ public class TeleOpMain extends LinearOpMode {
             robot.smartIntakeUpdate();
             robot.drive.getLocalizer().update();
             telemetry.addData("TIME LEFT: ", ((120-matchTimer.time(TimeUnit.SECONDS))));
-            telemetry.addData("CLAW POSITION: ", (robot.deposit.depositServo.getPosition()));
-            //telemetry.addData("ARM TARGET: ", (robot.arm.v4b1.servo.getPosition()*180));
-            telemetry.addData("ARM POSITION: ", robot.arm.arm1.getPosition());
-            telemetry.addData("SLIDES TARGET: ", robot.slides.target);
-            telemetry.addData("SLIDES POSITION: ", robot.slides.slides1.motor.getCurrentPosition());
-            telemetry.addData("LEVEL: ", robot.slides.currentLevel);
             telemetry.update();
 
 //            PhotonCore.CONTROL_HUB.clearBulkCache();
