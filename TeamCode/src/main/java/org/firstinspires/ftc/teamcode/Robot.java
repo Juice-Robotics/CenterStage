@@ -13,8 +13,9 @@ import org.firstinspires.ftc.teamcode.lib.Component;
 import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.Motor;
 import org.firstinspires.ftc.teamcode.lib.StepperServo;
-import org.firstinspires.ftc.teamcode.subsystems.arm.ArmWrist;
-import org.firstinspires.ftc.teamcode.subsystems.deposit.Deposit;
+import org.firstinspires.ftc.teamcode.subsystems.arm.ArmElbow;
+import org.firstinspires.ftc.teamcode.subsystems.arm.ArmElbow;
+import org.firstinspires.ftc.teamcode.subsystems.deposit.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.intake.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeSensor;
 import org.firstinspires.ftc.teamcode.subsystems.relocalization.Relocalization;
@@ -27,8 +28,8 @@ public class Robot {
     // SUBSYSTEM DECLARATIONS
     public Component[] components;
     public SampleMecanumDrive drive;
-    public Deposit deposit;
-    public ArmWrist arm;
+    public Claw claw;
+    public ArmElbow arm;
     public Intake intake;
     public IntakeSensor intakeSensor;
     public Slides slides;
@@ -58,26 +59,31 @@ public class Robot {
                 new Motor(0, "slides1", map, false),          //4
                 new Motor(0, "slides2", map, false),          //5
                 new Motor(0, "climb", map, false),            //6
+                new StepperServo(1, "shifter", map),                 //7
 
-                new StepperServo(1, "arm1", map),                     //7
-                new StepperServo(1, "arm2", map),                     //8
-                new StepperServo(1, "wrist", map),                    //9
+                new StepperServo(1, "arm1", map),                    //8
+                new StepperServo(1, "arm2", map),                    //9
+                new StepperServo(1, "elbow", map),                   //10
+                new StepperServo(1, "deposit", map),                 //11
+                new StepperServo(1, "wrist", map),                   //12
 
-                new Motor(0, "intakeMotor", map, false),      //10
-                new StepperServo(1, "intakeServo", map),              //11
+                new Motor(0, "intakeMotor", map, false),      //13
+                new StepperServo(1, "intakeServo1", map),            //14
+                new StepperServo(1, "intakeServo2", map),            //15
 
-                new StepperServo(1, "deposit", map),               //12
+                new StepperServo(1, "drone", map),                   //16
+
         };
 
         VoltageSensor voltageSensor = map.voltageSensor.iterator().next();
 
         // INIT SUBSYSTEMS
 
-        this.deposit = new Deposit((StepperServo) components[12]);
-        this.arm = new ArmWrist((StepperServo) components[7], (StepperServo) components[8], (StepperServo) components[9]);
-        this.intake = new Intake((StepperServo) components[11], (Motor) components[10]);
+        this.claw = new Claw((StepperServo) components[11], (StepperServo) components[12]);
+        this.arm = new ArmElbow((StepperServo) components[8], (StepperServo) components[9], (StepperServo) components[10]);
+        this.intake = new Intake((StepperServo) components[14], (StepperServo) components[15], (Motor) components[13]);
         this.intakeSensor = new IntakeSensor(map.get(NormalizedColorSensor.class, "intakeSensor1"), map.get(NormalizedColorSensor.class, "intakeSensor2"), 2);
-        this.slides = new Slides((Motor) components[4], (Motor) components[5], (Motor) components[6], voltageSensor);
+        this.slides = new Slides((Motor) components[4], (Motor) components[5], (Motor) components[6], (StepperServo) components[7], voltageSensor);
         this.hardwareMap = map;
 
         this.subsystemState = Levels.ZERO;
@@ -85,10 +91,10 @@ public class Robot {
 
     // INTAKE
     public void intakePreset() {
-        this.arm.wristToPos(90); //turning to get through the thingy
+        this.claw.setPositionWrist(90); //turning to get through the thingy
         this.slides.runToPreset(Levels.INTAKE);
-        this.arm.turnToPreset(Levels.INTAKE);
-        this.deposit.open();
+        this.arm.runtoPreset(Levels.INTAKE);
+        this.claw.setClawOpen();
         this.subsystemState = Levels.INTAKE;
     }
 
@@ -137,7 +143,7 @@ public class Robot {
 
     public void depositSmart(boolean[] state) {
         if (state[0] && state[1] && (this.subsystemState == Levels.INTAKE)){
-            deposit.close();
+            claw.setClawClose();
         }
     }
 
@@ -150,27 +156,27 @@ public class Robot {
     }
 
     public void depositPreset() {
-        this.arm.wristToPos(90); //turning to get through the thingy
+        this.claw.setPositionWrist(90); //turning to get through the thingy
         this.slides.runToPreset(Levels.DEPOSIT);
-        this.arm.turnToPreset(Levels.DEPOSIT);
+        this.arm.runtoPreset(Levels.DEPOSIT);
         this.subsystemState = Levels.DEPOSIT;
     }
-    public void runToAutoSpikePreset() {
-        this.slides.runToPosition(100);
-        this.arm.armToPos(1);
-        this.arm.wristToPos(1);
-    }
+//    public void runToAutoSpikePreset() {
+//        this.slides.runToPosition(100);
+//        this.arm.runtoPreset(1);
+//        this.arm.runtoPreset(1);
+//    }
 
-    public void runToAutoBackdropPreset() {
-        this.slides.runToPosition(100);
-        this.arm.armToPos(1);
-        this.arm.wristToPos(1);
-    }
+//    public void runToAutoBackdropPreset() {
+//        this.slides.runToPosition(100);
+//        this.arm.runtoPreset(1);
+//        this.arm.runtoPreset(1);
+//    }
 
-    public void climbExtend() {
-        this.slides.runToClimb();
-        this.arm.armToPos(0);
-    }
+//    public void climbExtend() {
+//        this.slides.runToClimb();
+//        this.arm.runtoPreset(0);
+//    }
 
     public void startClimb() {
         this.slides.startClimb();

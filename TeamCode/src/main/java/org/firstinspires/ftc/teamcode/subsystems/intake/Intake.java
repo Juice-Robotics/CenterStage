@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.subsystems.intake;
 
+import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.lib.Motor;
@@ -8,38 +10,32 @@ import org.firstinspires.ftc.teamcode.lib.StepperServo;
 
 public class Intake {
 
-    // Define class members
-    double DOWNPOSITION = 0;
-    Servo   intakeServo;
-    DcMotor intakeMotor;
-    double intakeSpeed = 0.8;
-    double currentPos;
+    public StepperServo intakeServo1;
+    public StepperServo intakeServo2;
 
-    public Intake(StepperServo intakeServo, Motor intakeMotor) {
-        this.intakeServo = intakeServo.servo;
-        this.intakeMotor = intakeMotor.motor;
-        this.currentPos = intakeServo.servo.getPosition();
-    }
+    public float intakeUp = 100;
 
-    public void setIntakeSpeed(double intakeSpeed){
-        this.intakeSpeed = intakeSpeed;
+    public float intakeDown = 25;
+
+    public Motor intakeMotor;
+
+    public Intake(StepperServo intakeServo1, StepperServo intakeServo2, Motor intakeMotor) {
+        this.intakeServo1 = intakeServo1;
+        this.intakeServo2 = intakeServo2;
+
+        this.intakeMotor = intakeMotor;
+        intakeServo2.servo.setDirection(Servo.Direction.REVERSE);
+        // intakeMotor.motor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void startIntake(){
-        intakeMotor.setPower(intakeSpeed);
-        intakeServo.setPosition(DOWNPOSITION);
+        intakeMotor.setSpeed(1);
+        intakeServo1.setAngle(intakeDown);
     }
+
     public void stopIntake(){
-        intakeServo.setPosition(DOWNPOSITION+0.5);
-        intakeMotor.setPower(0);
+        intakeMotor.setSpeed(0);
+        intakeServo1.setAngle(intakeUp);
     }
-    public void goToPos(double Position){
-        intakeServo.setPosition(Position);
-    }
-    public void startMotor(){
-        intakeMotor.setPower(intakeSpeed);
-    }
-
-
 
 }

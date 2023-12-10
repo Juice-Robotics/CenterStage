@@ -17,6 +17,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.Motor;
+import org.firstinspires.ftc.teamcode.lib.StepperServo;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -44,10 +45,10 @@ public class Slides {
     public Motor slides1;
     public Motor slides2;
     public Motor climbMotor;
-    public Servo climbServo;
+    public StepperServo climbServo;
     public VoltageSensor voltageSensor;
-    private double ENGAGED_POS = 0;
-    private double DISENGAGED_POS = 1;
+    private float ENGAGED_POS = 0;
+    private float DISENGAGED_POS = 100;
     private double HEIGHT_CLIMB = 600;
     //public boolean climbing = false;
 
@@ -55,9 +56,10 @@ public class Slides {
     public boolean climbing = false;
 
 
-    public Slides(Motor slides1, Motor slides2, Motor climbMotor, VoltageSensor voltageSensor) {
+    public Slides(Motor slides1, Motor slides2, Motor climbMotor, StepperServo climbServo, VoltageSensor voltageSensor) {
         this.slides1 = slides1;
         this.slides2 = slides2;
+        this.climbServo = climbServo;
         this.voltageSensor = voltageSensor;
 
         controller1 = new PIDController(p, i , d);
@@ -118,7 +120,7 @@ public class Slides {
     }
 
     public void startClimb(){
-        climbServo.setPosition(ENGAGED_POS);
+        climbServo.setAngle(ENGAGED_POS);
         climbMotor.motor.setPower(0.25);
         try {
             TimeUnit.SECONDS.sleep(1); //TEST
