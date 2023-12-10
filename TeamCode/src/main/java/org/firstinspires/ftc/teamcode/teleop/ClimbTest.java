@@ -17,14 +17,14 @@ import org.firstinspires.ftc.teamcode.lib.StepperServo;
 public class ClimbTest extends LinearOpMode {
     DcMotorEx motor;
     public static double MOT_POWER = 0;
-    public static double SHIFTER_POS = 0;
+    public static double SHIFTER_POS = 83;
 
     StepperServo shifterServo;
 
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        motor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        motor = hardwareMap.get(DcMotorEx.class, "climb");
         shifterServo = new StepperServo(0, "shifter", hardwareMap);
         // shifterServo.servo.setDirection(Servo.Direction.REVERSE);
 
