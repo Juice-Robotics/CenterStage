@@ -31,8 +31,8 @@ public class Claw {
         }
     }
 
-    public void setPositionClaw(double angle) {
-        this.depositServo.servo.setPosition(angle);
+    public void setPositionClaw(float angle) {
+        this.depositServo.setAngle(angle);
     }
 
     public void setPositionWrist(float rotation) {

@@ -175,7 +175,13 @@ public class Robot {
         this.slides.runToClimb();
         this.arm.runtoPreset(Levels.BACKDROP);
     }
+    public void depositToIntake(){
+        this.intake.i;
+        this.intake.startIntake();
+        this.claw.setPositionClaw(200);
+        this.arm.setAngleArm(0);
 
+    }
 
     public void startClimb() {
         this.slides.startClimb();

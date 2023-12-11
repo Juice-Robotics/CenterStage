@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
@@ -13,25 +14,26 @@ import org.firstinspires.ftc.teamcode.lib.StepperServo;
 
 @TeleOp(group = "competition")
 @Config
-public class ServoTest extends LinearOpMode {
-    public static double TWO_POS = 0;
-    public static double ONE_POS = 0;
+public class ClimbTest extends LinearOpMode {
+    DcMotorEx motor;
+    public static double MOT_POWER = 0;
+    public static double SHIFTER_POS = 83;
 
+    StepperServo shifterServo;
 
-    StepperServo one;
-    StepperServo two;
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        one = new StepperServo(0, "arm1", hardwareMap);
-        two = new StepperServo(0, "arm2", hardwareMap);
+        motor = hardwareMap.get(DcMotorEx.class, "climb");
+        shifterServo = new StepperServo(0, "shifter", hardwareMap);
+        // shifterServo.servo.setDirection(Servo.Direction.REVERSE);
 
         // Initialize your own robot class
         waitForStart();
         if (isStopRequested()) return;
         while (opModeIsActive() && !isStopRequested()) {
-            one.setAngle((float) ONE_POS);
-            two.setAngle((float) ONE_POS);
+            motor.setPower(MOT_POWER);
+            shifterServo.setAngle((float) SHIFTER_POS);
         }
     }
 }
