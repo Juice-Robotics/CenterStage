@@ -9,29 +9,46 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.lib.StepperServo;
 
 @TeleOp(group = "competition")
 @Config
-public class ServoTest extends LinearOpMode {
-    public static double TWO_POS = 0;
-    public static double ONE_POS = 0;
+public class TransferTest extends LinearOpMode {
 
-
-    StepperServo one;
-    StepperServo two;
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        one = new StepperServo(0, "arm1", hardwareMap);
-        two = new StepperServo(0, "arm2", hardwareMap);
+        Robot robot = new Robot(hardwareMap, false);
 
         // Initialize your own robot class
         waitForStart();
         if (isStopRequested()) return;
+        robot.startIntake();
+        robot.arm.setAngleArm(6);
+        robot.claw.setPositionClaw(140);
+        robot.intake.setAngle(192);
+        robot.claw.wrist.setAngle(123);
+        robot.arm.setAngleElbow(112);
+        boolean previousX = gamepad1.cross;
         while (opModeIsActive() && !isStopRequested()) {
-            one.setAngle((float) ONE_POS);
-            two.setAngle((float) ONE_POS);
+
+            if (gamepad1.cross && !previousX) {
+                robot.arm.setAngleArm(0);
+                robot.claw.setPositionClaw(200);
+                robot.intake.stopIntake();
+                robot.intake.setAngle(120);
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                robot.arm.setAngleArm(15);
+                robot.arm.setAngleElbow(115);
+
+            }
+
+            previousX = gamepad1.cross;
         }
     }
 }

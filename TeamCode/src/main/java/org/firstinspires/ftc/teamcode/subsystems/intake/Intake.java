@@ -38,4 +38,9 @@ public class Intake {
         intakeServo1.setAngle(intakeUp);
     }
 
+    public void setAngle(float angle) {
+        intakeServo1.setAngle(angle);
+        intakeServo2.setAngle(angle);
+    }
+
 }
