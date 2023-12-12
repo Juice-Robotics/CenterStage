@@ -29,11 +29,11 @@ public class Slides {
     private MotionProfile profile;
     public MotionState curState;
     private ElapsedTime timer;
-    double maxvel = 6000;
-    double maxaccel = 6000;
+    double maxvel = 3000;
+    double maxaccel = 3000;
 
-    public double p = 0.006, i = 0.00, d = 0.0001;
-    public double f = -0.001;
+    public double p = 0.032, i = 0.00, d = 0.0007;
+    public double f = 0.007;
     double voltageCompensation;
 
     public double target = 0;
@@ -91,11 +91,11 @@ public class Slides {
         else { //huh why
             if (target == 0){
                 slides1.motor.setPower(power1);
-                slides2.motor.setPower(-power1); //was at *0.3 pre push
+                slides2.motor.setPower(power1); //was at *0.3 pre push
             }
             else {
                 slides1.motor.setPower(power1);
-                slides2.motor.setPower(-power1);
+                slides2.motor.setPower(power1);
             }
         }
     }
