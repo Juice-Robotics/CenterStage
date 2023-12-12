@@ -9,8 +9,8 @@ public class Claw {
     public boolean isOpen = false; // if open, true
 
     // CONSTANTS
-    public double clawOpen = 0.65;
-    public double clawClose = 0.25; //smaller = tighter
+    public double clawOpen = 140;
+    public double clawClose = 215; //larger = tighter
 
     public Claw(StepperServo depositServo, StepperServo wrist) {
         this.depositServo = depositServo;

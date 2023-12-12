@@ -111,6 +111,8 @@ public class Slides {
             runToPosition(0);
         } else if (preset == Levels.INTAKE) {
             runToPosition(0);
+        } else if (preset == Levels.DEPOSIT){
+            runToPosition(400);
         }
     }
 

@@ -11,10 +11,10 @@ public class ArmElbow {
     public double currentAngle;
 
     // TARGETS
-    public double intakeTargetArm = 29;
-    public double depositTargetArm = 29;
-    public double intakeTargetElbow = 29;
-    public double depositTargetElbow = 29;
+    public double intakeTargetArm = 6;
+    public double depositTargetArm = 150;
+    public double intakeTargetElbow = 112;
+    public double depositTargetElbow = 180;
 
     public ArmElbow(StepperServo arm1, StepperServo arm2, StepperServo elbow) {
         this.arm1 = arm1;
@@ -41,7 +41,11 @@ public class ArmElbow {
         if (level == Levels.INTAKE) {
             this.setAngleArm(intakeTargetArm);
             this.setAngleElbow(intakeTargetElbow);
-        } else if (level == Levels.DEPOSIT) {
+        } else if (level == Levels.ZERO){
+            this.setAngleArm(15);
+            this.setAngleElbow(115);
+        }
+        else if (level == Levels.DEPOSIT) {
             this.setAngleArm(depositTargetArm);
             this.setAngleElbow(depositTargetElbow);
         }

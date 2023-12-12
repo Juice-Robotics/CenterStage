@@ -90,21 +90,44 @@ public class Robot {
 
     // INTAKE
     public void intakePreset() {
-        this.claw.setPositionWrist(90); //turning to get through the thingy
+        //turning to get through the thingy
         this.slides.runToPreset(Levels.INTAKE);
         this.arm.runtoPreset(Levels.INTAKE);
         this.claw.setClawOpen();
+        this.claw.wrist.setAngle(123);
+        this.intake.setAngle(192);
         this.subsystemState = Levels.INTAKE;
     }
 
     public void startIntake() {
         intaking = true;
+        this.claw.setClawOpen();
+        this.arm.setAngleArm(0);
+        this.arm.setAngleElbow(112);
+        this.claw.wrist.setAngle(123);
+        this.intake.setAngle(192);
+        this.arm.setAngleArm(6);
         this.intake.startIntake();
     }
 
     public void stopIntake() {
         intaking = false;
+        this.arm.setAngleArm(0);
+        try {
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.claw.setPositionClaw(215);
         this.intake.stopIntake();
+        this.intake.setAngle(130);
+        try {
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.arm.setAngleArm(15);
+        this.arm.setAngleElbow(115);
     }
 
     /**
@@ -175,23 +198,42 @@ public class Robot {
         this.slides.runToClimb();
         this.arm.runtoPreset(Levels.BACKDROP);
     }
-    public void depositToIntake(){
-        this.arm.setAngleElbow(125);
-        this.arm.setAngleArm(15);
-        this.intake.setAngle(120);
-        this.claw.setPositionClaw(200);
-        this.arm.setAngleArm(0);
-        this.arm.setAngleElbow(112);
-        this.claw.wrist.setAngle(123);
-        this.intake.setAngle(192);
-        this.claw.setPositionClaw(140);
-        this.arm.setAngleArm(6);
-        this.intake.startIntake();
-    }
+//    public void depositToIntake(){
+//        this.arm.setAngleElbow(125);
+//        this.arm.setAngleArm(15);
+//        this.intake.setAngle(120);
+//        this.claw.setPositionClaw(200);
+//        this.arm.setAngleArm(0);
+//        this.arm.setAngleElbow(112);
+//        this.claw.wrist.setAngle(123);
+//        this.intake.setAngle(192);
+//        this.claw.setPositionClaw(140);
+//        this.arm.setAngleArm(6);
+//        this.intake.startIntake();
+//    }
 
     public void startClimb() {
         this.slides.startClimb();
     }
+//    public void intakeToReady() {
+//        this.arm.setAngleArm(0);
+//        try {
+//            Thread.sleep(250);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        this.claw.setPositionClaw(215);
+//        this.intake.stopIntake();
+//        this.intake.setAngle(130);
+//        try {
+//            Thread.sleep(250);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        this.arm.setAngleArm(15);
+//        this.arm.setAngleElbow(115);
+//    }
+
 
     //DRIVE
     public void setDrivePower(double x, double y, double rx) {
