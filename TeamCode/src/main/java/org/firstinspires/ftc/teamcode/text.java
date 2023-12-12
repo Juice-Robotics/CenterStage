@@ -44,9 +44,7 @@ public class text extends LinearOpMode {
 
 
         while (opModeIsActive() && !isStopRequested()) {
-            robot.arm.setAngleElbow(125);
-            robot.arm.setAngleArm(15);
-            robot.claw.setClawOpen();
+
             if (gamepad1.square) {
                 robot.depositToIntake();
             }

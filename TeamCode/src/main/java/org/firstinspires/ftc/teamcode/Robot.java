@@ -176,11 +176,17 @@ public class Robot {
         this.arm.runtoPreset(Levels.BACKDROP);
     }
     public void depositToIntake(){
-        this.intake.i;
-        this.intake.startIntake();
+        this.arm.setAngleElbow(125);
+        this.arm.setAngleArm(15);
+        this.intake.setAngle(120);
         this.claw.setPositionClaw(200);
         this.arm.setAngleArm(0);
-
+        this.arm.setAngleElbow(112);
+        this.claw.wrist.setAngle(123);
+        this.intake.setAngle(192);
+        this.claw.setPositionClaw(140);
+        this.arm.setAngleArm(6);
+        this.intake.startIntake();
     }
 
     public void startClimb() {
