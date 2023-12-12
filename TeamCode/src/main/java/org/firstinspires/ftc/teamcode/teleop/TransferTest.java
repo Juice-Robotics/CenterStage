@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
@@ -25,30 +26,68 @@ public class TransferTest extends LinearOpMode {
         waitForStart();
         if (isStopRequested()) return;
         robot.startIntake();
+        robot.slides.resetAllEncoders();
         robot.arm.setAngleArm(6);
         robot.claw.setPositionClaw(140);
         robot.intake.setAngle(192);
         robot.claw.wrist.setAngle(123);
         robot.arm.setAngleElbow(112);
+        robot.slides.runToPosition(0);
         boolean previousX = gamepad1.cross;
+        boolean previousBumper = gamepad1.left_bumper;
         while (opModeIsActive() && !isStopRequested()) {
 
             if (gamepad1.cross && !previousX) {
                 robot.arm.setAngleArm(0);
-                robot.claw.setPositionClaw(200);
-                robot.intake.stopIntake();
-                robot.intake.setAngle(120);
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                robot.claw.setPositionClaw(215);
+                robot.intake.stopIntake();
+                robot.intake.setAngle(130);
+                try {
+                    Thread.sleep(250);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 robot.arm.setAngleArm(15);
                 robot.arm.setAngleElbow(115);
+//                ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+//                double start = timer.time();
+//                while (timer.time() - start <= 200) {
+//                    robot.slides.update();
+//                }
+//                robot.slides.runToPosition(100);
+//                try {'mm
+//                    Thread.sleep(75);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                robot.arm.setAngleArm(135);
+//                try {
+//                    Thread.sleep(75);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                robot.slides.runToPosition(0);
+            }
 
+            if (gamepad1.left_bumper && !previousBumper) {
+                robot.slides.runToPosition(400);
+                ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+                double start = timer.time();
+                while (timer.time() - start <= 600) {
+                    robot.slides.update();
+                }
+                robot.arm.setAngleArm(150);
+                robot.arm.setAngleElbow(180);
             }
 
             previousX = gamepad1.cross;
+            previousBumper = gamepad2.left_bumper;
+            robot.slides.update();
         }
     }
 }
