@@ -67,6 +67,7 @@ public class TeleOpSafe extends LinearOpMode {
         float previousIntakeState = 0;
         boolean previousAutoAlignState = false;
         int dronePressed = 0;
+        boolean isPressed = false;
 
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -74,6 +75,7 @@ public class TeleOpSafe extends LinearOpMode {
         waitForStart();
         if (isStopRequested()) return;
         matchTimer = new ElapsedTime();
+        robot.slides.runToPosition(0);
 
         while (opModeIsActive() && !isStopRequested()) {
 
@@ -163,9 +165,8 @@ public class TeleOpSafe extends LinearOpMode {
             }
 
             //CLAW
-            boolean isPressed = gamepad1.cross;
-            if (isPressed && !previousClawState) {
-                robot.claw.toggle();
+            if (gamepad1.cross) {
+                robot.claw.setClawOpen();
             }
             previousClawState = isPressed;
 

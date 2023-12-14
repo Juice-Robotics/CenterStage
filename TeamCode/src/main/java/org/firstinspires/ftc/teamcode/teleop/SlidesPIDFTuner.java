@@ -18,8 +18,8 @@ public class SlidesPIDFTuner extends OpMode {
     private PIDController controller1;
     private PIDController controller2;
 
-    public static double p = 0, i = 0, d = 0;
-    public static double f = 0;
+    public double p = 0.032, i = 0.00, d = 0.0007;
+    public double f = 0.007;
 
     public static double power = 0;
     public static double power3 = 0;
@@ -52,8 +52,8 @@ public class SlidesPIDFTuner extends OpMode {
 
         double power1 = pid1 + ff;
 
-        slides1.setPower(power1);
-        slides2.setPower(power1);
+        slides1.setPower(-power1);
+        slides2.setPower(-power1);
 //        slides1.setPower(power);
 //        slides2.setPower(power3);
 

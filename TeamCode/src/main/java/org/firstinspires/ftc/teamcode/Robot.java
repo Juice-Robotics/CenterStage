@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -63,7 +64,7 @@ public class Robot {
                 new StepperServo(1, "arm1", map),                    //8
                 new StepperServo(1, "arm2", map),                    //9
                 new StepperServo(1, "elbow", map),                   //10
-                new StepperServo(1, "deposit", map),                 //11
+                new StepperServo(1, "claw", map),                 //11
                 new StepperServo(1, "wrist", map),                   //12
 
                 new Motor(0, "intakeMotor", map, false),      //13
@@ -81,7 +82,7 @@ public class Robot {
         this.claw = new Claw((StepperServo) components[11], (StepperServo) components[12]);
         this.arm = new ArmElbow((StepperServo) components[8], (StepperServo) components[9], (StepperServo) components[10]);
         this.intake = new Intake((StepperServo) components[14], (StepperServo) components[15], (Motor) components[13]);
-        this.intakeSensor = new IntakeSensor(map.get(NormalizedColorSensor.class, "intakeSensor1"), map.get(NormalizedColorSensor.class, "intakeSensor2"), 2);
+//        this.intakeSensor = new IntakeSensor(map.get(NormalizedColorSensor.class, "intakeSensor1"), map.get(NormalizedColorSensor.class, "intakeSensor2"), 2);
         this.slides = new Slides((Motor) components[4], (Motor) components[5], (Motor) components[6], (StepperServo) components[7], voltageSensor);
         this.hardwareMap = map;
 
@@ -101,13 +102,14 @@ public class Robot {
 
     public void startIntake() {
         intaking = true;
-        this.claw.setClawOpen();
-        this.arm.setAngleArm(0);
-        this.arm.setAngleElbow(112);
-        this.claw.wrist.setAngle(123);
-        this.intake.setAngle(192);
-        this.arm.setAngleArm(6);
         this.intake.startIntake();
+        this.slides.resetAllEncoders();
+        this.arm.setAngleArm(6);
+        this.claw.setPositionClaw(140);
+        this.intake.setAngle(192);
+        this.claw.wrist.setAngle(123);
+        this.arm.setAngleElbow(112);
+        this.slides.runToPosition(0);
     }
 
     public void stopIntake() {
@@ -120,7 +122,7 @@ public class Robot {
         }
         this.claw.setPositionClaw(215);
         this.intake.stopIntake();
-        this.intake.setAngle(130);
+        this.intake.setAngle(120);
         try {
             Thread.sleep(250);
         } catch (InterruptedException e) {
@@ -178,8 +180,13 @@ public class Robot {
     }
 
     public void depositPreset() {
-        this.claw.setPositionWrist(90); //turning to get through the thingy
+        this.claw.setPositionWrist(95); //turning to get through the thingy
         this.slides.runToPreset(Levels.DEPOSIT);
+        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+        double start = timer.time();
+        while (timer.time() - start <= 600) {
+            this.slides.update();
+        }
         this.arm.runtoPreset(Levels.DEPOSIT);
         this.subsystemState = Levels.DEPOSIT;
     }
