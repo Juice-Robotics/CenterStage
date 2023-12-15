@@ -77,13 +77,13 @@ public class TeleOpSafe extends LinearOpMode {
 
         while (opModeIsActive() && !isStopRequested()) {
 
-//            if (gamepad1.dpad_up) {
-//                robot.slides.resetAllEncoders();
-//            }
+            if (gamepad1.dpad_up) {
+                robot.slides.resetAllEncoders();
+            }
 
             //DRIVE
-//            switch (currentMode) {
-//                case NORMAL_CONTROL:
+            switch (currentMode) {
+                case NORMAL_CONTROL:
             if (gamepad1.left_trigger > 0.5) {
                 x = -gamepad1.left_stick_x * (1 - 0.66 * gamepad1.left_trigger);
                 y = -gamepad1.left_stick_y * (1 - 0.66 * gamepad1.left_trigger);
@@ -95,64 +95,64 @@ public class TeleOpSafe extends LinearOpMode {
                 rx = gamepad1.right_stick_x;
             }
             robot.setDrivePower(-x, y, rx);
-                    //break;
-//                case ALIGN_TO_POINT:
-//                    Pose2d poseEstimate = robot.drive.getLocalizer().getPoseEstimate();
-//                    robot.relocalization.aprilTags.detectBackdrop();
-//                    AprilTagPoseFtc rawDifference = robot.relocalization.aprilTags.getRelativePose();
-//
-//                    // Switch back into normal driver control mode if trigger is pressed
-//                    if (gamepad1.square && !previousAutoAlignState) {
+                    break;
+                case ALIGN_TO_POINT:
+                    Pose2d poseEstimate = robot.drive.getLocalizer().getPoseEstimate();
+                    robot.relocalization.aprilTags.detectBackdrop();
+                    AprilTagPoseFtc rawDifference = robot.relocalization.aprilTags.getRelativePose();
+
+                    // Switch back into normal driver control mode if trigger is pressed
+                    if (gamepad1.square && !previousAutoAlignState) {
+                        currentMode = Mode.NORMAL_CONTROL;
+                        robot.drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
+                    }
+                    previousAutoAlignState = gamepad1.square;
+
+                    // ATTEMPTS TO TURN WILL CANCEL AUTO ALIGH
+                    if (gamepad1.right_stick_x != 0) {
+                        currentMode = Mode.NORMAL_CONTROL;
+                        robot.drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
+                    }
+
+                    // Create a vector from the gamepad x/y inputs which is the field relative movement
+                    // Then, rotate that vector by the inverse of that heading for field centric control
+                    Vector2d fieldFrameInput = new Vector2d(
+                            -gamepad1.left_stick_y,
+                            -gamepad1.left_stick_x
+                    );
+                    Vector2d robotFrameInput = fieldFrameInput.rotated(-poseEstimate.getHeading());
+
+                    Vector2d difference = new Vector2d(rawDifference.x, rawDifference.y);
+                    double theta = difference.angle();
+
+                    // Not technically omega because its power. This is the derivative of atan2
+                    double thetaFF = -fieldFrameInput.rotated(-Math.PI / 2).dot(difference) / (difference.norm() * difference.norm());
+
+                    // Set the target heading for the heading controller to our desired angle
+                    headingController.setTargetPosition(theta);
+
+                    // Set desired angular velocity to the heading controller output + angular
+                    // velocity feedforward
+                    double headingInput = (headingController.update(poseEstimate.getHeading())
+                            * DriveConstants.kV + thetaFF)
+                            * DriveConstants.TRACK_WIDTH;
+
+                    // Combine the field centric x/y velocity with our derived angular velocity
+                    Pose2d driveDirection = new Pose2d(
+                            robotFrameInput,
+                            headingInput
+                    );
+
+                    robot.drive.setWeightedDrivePower(driveDirection);
+                    headingController.update(poseEstimate.getHeading());
+//                    if (headingInput <= 0.15 && headingInput >= -0.15) {
+//                        //assume its aligned and switch back to hunty controls
 //                        currentMode = Mode.NORMAL_CONTROL;
+//                        gamepad1.rumbleBlips(2);
 //                        robot.drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
 //                    }
-//                    previousAutoAlignState = gamepad1.square;
-//
-//                    // ATTEMPTS TO TURN WILL CANCEL AUTO ALIGH
-//                    if (gamepad1.right_stick_x != 0) {
-//                        currentMode = Mode.NORMAL_CONTROL;
-//                        robot.drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
-//                    }
-//
-//                    // Create a vector from the gamepad x/y inputs which is the field relative movement
-//                    // Then, rotate that vector by the inverse of that heading for field centric control
-//                    Vector2d fieldFrameInput = new Vector2d(
-//                            -gamepad1.left_stick_y,
-//                            -gamepad1.left_stick_x
-//                    );
-//                    Vector2d robotFrameInput = fieldFrameInput.rotated(-poseEstimate.getHeading());
-//
-//                    Vector2d difference = new Vector2d(rawDifference.x, rawDifference.y);
-//                    double theta = difference.angle();
-//
-//                    // Not technically omega because its power. This is the derivative of atan2
-//                    double thetaFF = -fieldFrameInput.rotated(-Math.PI / 2).dot(difference) / (difference.norm() * difference.norm());
-//
-//                    // Set the target heading for the heading controller to our desired angle
-//                    headingController.setTargetPosition(theta);
-//
-//                    // Set desired angular velocity to the heading controller output + angular
-//                    // velocity feedforward
-//                    double headingInput = (headingController.update(poseEstimate.getHeading())
-//                            * DriveConstants.kV + thetaFF)
-//                            * DriveConstants.TRACK_WIDTH;
-//
-//                    // Combine the field centric x/y velocity with our derived angular velocity
-//                    Pose2d driveDirection = new Pose2d(
-//                            robotFrameInput,
-//                            headingInput
-//                    );
-//
-//                    robot.drive.setWeightedDrivePower(driveDirection);
-//                    headingController.update(poseEstimate.getHeading());
-////                    if (headingInput <= 0.15 && headingInput >= -0.15) {
-////                        //assume its aligned and switch back to hunty controls
-////                        currentMode = Mode.NORMAL_CONTROL;
-////                        gamepad1.rumbleBlips(2);
-////                        robot.drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
-////                    }
-                    //break;
-            //}
+                    break;
+            }
 
 
             //ARM
@@ -212,11 +212,11 @@ public class TeleOpSafe extends LinearOpMode {
             }
             previousDroneState = isPressed2;
 
-//            // AUTO ALIGN
-//            if (gamepad1.square && !previousAutoAlignState && currentMode != Mode.ALIGN_TO_POINT) {
-//                currentMode = Mode.ALIGN_TO_POINT;
-//            }
-            //previousAutoAlignState = gamepad1.square;
+            // AUTO ALIGN
+            if (gamepad1.square && !previousAutoAlignState && currentMode != Mode.ALIGN_TO_POINT) {
+                currentMode = Mode.ALIGN_TO_POINT;
+            }
+            previousAutoAlignState = gamepad1.square;
 
             // CLIMB
             if (gamepad1.dpad_up) {
