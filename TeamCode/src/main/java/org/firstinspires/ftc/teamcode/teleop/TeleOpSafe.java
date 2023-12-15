@@ -75,6 +75,7 @@ public class TeleOpSafe extends LinearOpMode {
         waitForStart();
         if (isStopRequested()) return;
         matchTimer = new ElapsedTime();
+        robot.slides.resetAllEncoders();
         robot.slides.runToPosition(0);
 
         while (opModeIsActive() && !isStopRequested()) {
@@ -166,9 +167,8 @@ public class TeleOpSafe extends LinearOpMode {
 
             //CLAW
             if (gamepad1.cross) {
-                robot.claw.setClawOpen();
+                robot.smartClawOpen();
             }
-            previousClawState = isPressed;
 
 
             //INTAKE

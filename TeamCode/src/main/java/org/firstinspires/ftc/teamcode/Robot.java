@@ -108,7 +108,7 @@ public class Robot {
         this.claw.setPositionClaw(140);
         this.intake.setAngle(192);
         this.claw.wrist.setAngle(123);
-        this.arm.setAngleElbow(112);
+        this.arm.setAngleElbow(120);
         this.slides.runToPosition(0);
     }
 
@@ -158,6 +158,27 @@ public class Robot {
         this.intake.stopIntake();
     }
 
+    public void smartClawOpen() {
+        this.claw.setClawOpen();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.arm.setAngleArm(15);
+        this.arm.setAngleElbow(115);
+        this.claw.wrist.setAngle(123);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.slides.runToPosition(0);
+
+
+
+    }
+
     public void smartIntake(boolean[] state) {
         if (state[0] && state[1]){
             intake.stopIntake();
@@ -188,6 +209,7 @@ public class Robot {
             this.slides.update();
         }
         this.arm.runtoPreset(Levels.DEPOSIT);
+        this.claw.wrist.setAngle(123);
         this.subsystemState = Levels.DEPOSIT;
     }
     public void runToAutoSpikePreset() {
