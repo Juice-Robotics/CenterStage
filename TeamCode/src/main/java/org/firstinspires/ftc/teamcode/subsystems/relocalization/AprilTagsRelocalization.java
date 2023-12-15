@@ -43,10 +43,10 @@ public class AprilTagsRelocalization {
         aprilTagDetections = processor.getDetections();
 
         for (AprilTagDetection laprilTagDetection : aprilTagDetections) {
-            if (laprilTagDetection.metadata != null && laprilTagDetection.id <= 6) {
+//            if (laprilTagDetection.metadata != null && laprilTagDetection.id <= 6) {
                 aprilTagID = laprilTagDetection.id;
                 aprilTagDetection = laprilTagDetection;
-            }
+//            }
         }
     }
 

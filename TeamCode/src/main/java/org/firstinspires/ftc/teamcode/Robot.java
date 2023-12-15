@@ -51,7 +51,7 @@ public class Robot {
         this.drive = new SampleMecanumDrive(map);
 
 //        this.cv = new CVMaster(map);
-        this.intake.intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+        //this.intake.intakeMotor = map.get(DcMotorEx.class, "intakeMotor");
         this.components = new Component[]{
                 new Motor(3, "leftRear", map, true),          //0 left odometer
                 new Motor(2, "rightRear", map, false),        //1 right odometer
@@ -68,8 +68,7 @@ public class Robot {
                 new StepperServo(1, "elbow", map),                   //10
                 new StepperServo(1, "claw", map),                 //11
                 new StepperServo(1, "wrist", map),                   //12
-
-                //     //13
+                new Motor(1, "intakeMotor", map, false),   //13
                 new StepperServo(1, "intakeServo1", map),            //14
                 new StepperServo(1, "intakeServo2", map),            //15
 
@@ -83,9 +82,10 @@ public class Robot {
 
         this.claw = new Claw((StepperServo) components[11], (StepperServo) components[12]);
         this.arm = new ArmElbow((StepperServo) components[8], (StepperServo) components[9], (StepperServo) components[10]);
-        this.intake = new Intake((StepperServo) components[14], (StepperServo) components[15], (Motor) components[13]);
+        this.intake = new Intake((StepperServo) components[14], (StepperServo) components[15], (Motor) (Motor) components[13]);
 //        this.intakeSensor = new IntakeSensor(map.get(NormalizedColorSensor.class, "intakeSensor1"), map.get(NormalizedColorSensor.class, "intakeSensor2"), 2);
         this.slides = new Slides((Motor) components[4], (Motor) components[5], (Motor) components[6], (StepperServo) components[7], voltageSensor);
+        this.relocalization = new Relocalization(map);
         this.hardwareMap = map;
 
         this.subsystemState = Levels.ZERO;
@@ -229,18 +229,18 @@ public class Robot {
         this.slides.runToClimb();
         this.arm.runtoPreset(Levels.BACKDROP);
     }
-    public double checkJam(double previousPosition){
-        if ((this.intake.intakeMotor.getCurrent(CurrentUnit.AMPS)> CURRENT_HIGH) && (this.intake.intakeMotor.getCurrentPosition()-previousPosition < ENCODER_MAX_DIFFERENCE)) {
-            this.intake.reverse();
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            this.intake.startIntake();
-        }
-        return this.intake.intakeMotor.getCurrentPosition();
-    }
+//    public double checkJam(double previousPosition){
+//        if ((this.intake.intakeMotor.g(CurrentUnit.AMPS)> CURRENT_HIGH) && (this.intake.intakeMotor.getCurrentPosition()-previousPosition < ENCODER_MAX_DIFFERENCE)) {
+//            this.intake.reverse();
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            this.intake.startIntake();
+//        }
+//        return this.intake.intakeMotor.getCurrentPosition();
+//    }
 //    public void depositToIntake(){
 //        this.arm.setAngleElbow(125);
 //        this.arm.setAngleArm(15);

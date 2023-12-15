@@ -75,14 +75,14 @@ public class TeleOpMain extends LinearOpMode {
         waitForStart();
         if (isStopRequested()) return;
         matchTimer = new ElapsedTime();
-        intakePreviousPos = robot.intake.intakeMotor.getCurrentPosition();
+        //intakePreviousPos = robot.intake.intakeMotor.getCurrentPosition();
 
         while (opModeIsActive() && !isStopRequested()) {
 
 //            if (gamepad1.dpad_up) {
 //                robot.slides.resetAllEncoders();
 //            }
-            intakePreviousPos = robot.checkJam(intakePreviousPos);
+            //intakePreviousPos = robot.checkJam(intakePreviousPos);
             //DRIVE
             switch (currentMode) {
                 case NORMAL_CONTROL:
