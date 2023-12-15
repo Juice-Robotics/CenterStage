@@ -215,7 +215,9 @@ public class TeleOpSafe extends LinearOpMode {
 
             // AUTO ALIGN
             if (gamepad1.square && !previousAutoAlignState && currentMode != Mode.ALIGN_TO_POINT) {
+                ;
                 currentMode = Mode.ALIGN_TO_POINT;
+                gamepad1.rumble(1);
             }
             previousAutoAlignState = gamepad1.square;
 

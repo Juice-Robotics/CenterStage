@@ -49,7 +49,7 @@ public class Robot {
         this.drive = new SampleMecanumDrive(map);
 
 //        this.cv = new CVMaster(map);
-
+        this.intake.intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
         this.components = new Component[]{
                 new Motor(3, "leftRear", map, true),          //0 left odometer
                 new Motor(2, "rightRear", map, false),        //1 right odometer
@@ -64,10 +64,10 @@ public class Robot {
                 new StepperServo(1, "arm1", map),                    //8
                 new StepperServo(1, "arm2", map),                    //9
                 new StepperServo(1, "elbow", map),                   //10
-                new StepperServo(1, "deposit", map),                 //11
+                new StepperServo(1, "claw", map),                 //11
                 new StepperServo(1, "wrist", map),                   //12
 
-                new Motor(0, "intakeMotor", map, false),      //13
+                //     //13
                 new StepperServo(1, "intakeServo1", map),            //14
                 new StepperServo(1, "intakeServo2", map),            //15
 
