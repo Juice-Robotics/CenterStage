@@ -2,12 +2,12 @@ package org.firstinspires.ftc.teamcode;
 
 // IMPORT SUBSYSTEMS
 
-import com.arcrobotics.ftclib.controller.PIDController;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
-import org.checkerframework.checker.units.qual.A;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.Component;
 import org.firstinspires.ftc.teamcode.lib.Levels;
@@ -20,7 +20,6 @@ import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeSensor;
 import org.firstinspires.ftc.teamcode.subsystems.relocalization.Relocalization;
 import org.firstinspires.ftc.teamcode.subsystems.slides.Slides;
 import org.firstinspires.ftc.teamcode.subsystems.launcher.DroneLauncher;
-import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 public class Robot {
 
@@ -35,6 +34,8 @@ public class Robot {
     public DroneLauncher drone;
     public Relocalization relocalization;
     public HardwareMap hardwareMap;
+    public double CURRENT_HIGH = 1;
+    public double ENCODER_MAX_DIFFERENCE = 1;
 
     // STATE VARS
     boolean auton;
@@ -80,7 +81,7 @@ public class Robot {
 
         this.claw = new Claw((StepperServo) components[11], (StepperServo) components[12]);
         this.arm = new ArmElbow((StepperServo) components[8], (StepperServo) components[9], (StepperServo) components[10]);
-        this.intake = new Intake((StepperServo) components[14], (StepperServo) components[15], (Motor) components[13]);
+        this.intake = new Intake((StepperServo) components[14], (StepperServo) components[15], (DcMotorEx) components[13]);
         this.intakeSensor = new IntakeSensor(map.get(NormalizedColorSensor.class, "intakeSensor1"), map.get(NormalizedColorSensor.class, "intakeSensor2"), 2);
         this.slides = new Slides((Motor) components[4], (Motor) components[5], (Motor) components[6], (StepperServo) components[7], voltageSensor);
         this.hardwareMap = map;
@@ -197,6 +198,18 @@ public class Robot {
     public void climbExtend() {
         this.slides.runToClimb();
         this.arm.runtoPreset(Levels.BACKDROP);
+    }
+    public double checkJam(double previousPosition){
+        if ((this.intake.intakeMotor.getCurrent(CurrentUnit.AMPS)> CURRENT_HIGH) && (this.intake.intakeMotor.getCurrentPosition()-previousPosition < ENCODER_MAX_DIFFERENCE)) {
+            this.intake.reverse();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            this.intake.startIntake();
+        }
+        return this.intake.intakeMotor.getCurrentPosition();
     }
 //    public void depositToIntake(){
 //        this.arm.setAngleElbow(125);

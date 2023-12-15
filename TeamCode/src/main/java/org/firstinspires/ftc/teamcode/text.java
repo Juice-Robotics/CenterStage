@@ -46,7 +46,7 @@ public class text extends LinearOpMode {
         while (opModeIsActive() && !isStopRequested()) {
 
             if (gamepad1.square) {
-                robot.depositToIntake();
+                robot.startIntake();
             }
 
         }

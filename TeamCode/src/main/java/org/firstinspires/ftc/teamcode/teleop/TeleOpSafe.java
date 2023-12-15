@@ -67,6 +67,7 @@ public class TeleOpSafe extends LinearOpMode {
         float previousIntakeState = 0;
         boolean previousAutoAlignState = false;
         int dronePressed = 0;
+        double intakePreviousPos = 0;
 
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -74,13 +75,13 @@ public class TeleOpSafe extends LinearOpMode {
         waitForStart();
         if (isStopRequested()) return;
         matchTimer = new ElapsedTime();
-
+        intakePreviousPos = robot.intake.intakeMotor.getCurrentPosition();
         while (opModeIsActive() && !isStopRequested()) {
-
-            if (gamepad1.dpad_up) {
-                robot.slides.resetAllEncoders();
-            }
-
+//
+//            if (gamepad1.dpad_up) {
+//                robot.slides.resetAllEncoders();
+//            }
+            intakePreviousPos = robot.checkJam(intakePreviousPos);
             //DRIVE
             switch (currentMode) {
                 case NORMAL_CONTROL:
