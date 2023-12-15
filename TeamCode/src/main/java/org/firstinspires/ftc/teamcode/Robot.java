@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -20,6 +21,7 @@ import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeSensor;
 import org.firstinspires.ftc.teamcode.subsystems.relocalization.Relocalization;
 import org.firstinspires.ftc.teamcode.subsystems.slides.Slides;
 import org.firstinspires.ftc.teamcode.subsystems.launcher.DroneLauncher;
+import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 public class Robot {
 
@@ -81,8 +83,8 @@ public class Robot {
 
         this.claw = new Claw((StepperServo) components[11], (StepperServo) components[12]);
         this.arm = new ArmElbow((StepperServo) components[8], (StepperServo) components[9], (StepperServo) components[10]);
-        this.intake = new Intake((StepperServo) components[14], (StepperServo) components[15], (DcMotorEx) components[13]);
-        this.intakeSensor = new IntakeSensor(map.get(NormalizedColorSensor.class, "intakeSensor1"), map.get(NormalizedColorSensor.class, "intakeSensor2"), 2);
+        this.intake = new Intake((StepperServo) components[14], (StepperServo) components[15], (Motor) components[13]);
+//        this.intakeSensor = new IntakeSensor(map.get(NormalizedColorSensor.class, "intakeSensor1"), map.get(NormalizedColorSensor.class, "intakeSensor2"), 2);
         this.slides = new Slides((Motor) components[4], (Motor) components[5], (Motor) components[6], (StepperServo) components[7], voltageSensor);
         this.hardwareMap = map;
 
@@ -102,13 +104,14 @@ public class Robot {
 
     public void startIntake() {
         intaking = true;
-        this.claw.setClawOpen();
-        this.arm.setAngleArm(0);
-        this.arm.setAngleElbow(112);
-        this.claw.wrist.setAngle(123);
-        this.intake.setAngle(192);
-        this.arm.setAngleArm(6);
         this.intake.startIntake();
+        this.slides.resetAllEncoders();
+        this.arm.setAngleArm(6);
+        this.claw.setPositionClaw(140);
+        this.intake.setAngle(192);
+        this.claw.wrist.setAngle(123);
+        this.arm.setAngleElbow(120);
+        this.slides.runToPosition(0);
     }
 
     public void stopIntake() {
@@ -121,7 +124,7 @@ public class Robot {
         }
         this.claw.setPositionClaw(215);
         this.intake.stopIntake();
-        this.intake.setAngle(130);
+        this.intake.setAngle(120);
         try {
             Thread.sleep(250);
         } catch (InterruptedException e) {
@@ -157,6 +160,27 @@ public class Robot {
         this.intake.stopIntake();
     }
 
+    public void smartClawOpen() {
+        this.claw.setClawOpen();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.arm.setAngleArm(15);
+        this.arm.setAngleElbow(115);
+        this.claw.wrist.setAngle(123);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.slides.runToPosition(0);
+
+
+
+    }
+
     public void smartIntake(boolean[] state) {
         if (state[0] && state[1]){
             intake.stopIntake();
@@ -179,9 +203,15 @@ public class Robot {
     }
 
     public void depositPreset() {
-        this.claw.setPositionWrist(90); //turning to get through the thingy
+        this.claw.setPositionWrist(95); //turning to get through the thingy
         this.slides.runToPreset(Levels.DEPOSIT);
+        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+        double start = timer.time();
+        while (timer.time() - start <= 600) {
+            this.slides.update();
+        }
         this.arm.runtoPreset(Levels.DEPOSIT);
+        this.claw.wrist.setAngle(123);
         this.subsystemState = Levels.DEPOSIT;
     }
     public void runToAutoSpikePreset() {
