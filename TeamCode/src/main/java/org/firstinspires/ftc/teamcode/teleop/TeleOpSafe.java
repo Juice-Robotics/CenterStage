@@ -79,6 +79,7 @@ public class TeleOpSafe extends LinearOpMode {
         //intakePreviousPos = robot.intake.intakeMotor.getCurrentPosition();
         robot.slides.resetAllEncoders();
         robot.slides.runToPosition(0);
+        robot.drone.prime();
 
         while (opModeIsActive() && !isStopRequested()) {
 //

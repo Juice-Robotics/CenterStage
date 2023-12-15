@@ -13,10 +13,10 @@ public class DroneLauncher {
     }
 
     public void prime() {
-        drone.setAngle(0);
+        drone.setAngle(105);
     }
 
     public void launch() {
-        drone.setAngle(100);
+        drone.setAngle(80);
     }
 }
