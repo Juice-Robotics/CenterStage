@@ -17,9 +17,9 @@ public class Intake {
 
     public float intakeDown = 25;
 
-    public Motor intakeMotor;
+    public DcMotorEx intakeMotor;
 
-    public Intake(StepperServo intakeServo1, StepperServo intakeServo2, Motor intakeMotor) {
+    public Intake(StepperServo intakeServo1, StepperServo intakeServo2, DcMotorEx intakeMotor) {
         this.intakeServo1 = intakeServo1;
         this.intakeServo2 = intakeServo2;
 
@@ -29,18 +29,21 @@ public class Intake {
     }
 
     public void startIntake(){
-        intakeMotor.setSpeed(1);
+        intakeMotor.setPower(1);
         intakeServo1.setAngle(intakeDown);
     }
 
     public void stopIntake(){
-        intakeMotor.setSpeed(0);
+        intakeMotor.setPower(0);
         intakeServo1.setAngle(intakeUp);
     }
 
     public void setAngle(float angle) {
         intakeServo1.setAngle(angle);
         intakeServo2.setAngle(angle);
+    }
+    public void reverse(){
+        intakeMotor.setPower(-1);
     }
 
 }

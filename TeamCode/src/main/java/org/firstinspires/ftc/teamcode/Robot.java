@@ -2,13 +2,13 @@ package org.firstinspires.ftc.teamcode;
 
 // IMPORT SUBSYSTEMS
 
-import com.arcrobotics.ftclib.controller.PIDController;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.checkerframework.checker.units.qual.A;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.Component;
 import org.firstinspires.ftc.teamcode.lib.Levels;
@@ -36,6 +36,8 @@ public class Robot {
     public DroneLauncher drone;
     public Relocalization relocalization;
     public HardwareMap hardwareMap;
+    public double CURRENT_HIGH = 1;
+    public double ENCODER_MAX_DIFFERENCE = 1;
 
     // STATE VARS
     boolean auton;
@@ -226,6 +228,18 @@ public class Robot {
     public void climbExtend() {
         this.slides.runToClimb();
         this.arm.runtoPreset(Levels.BACKDROP);
+    }
+    public double checkJam(double previousPosition){
+        if ((this.intake.intakeMotor.getCurrent(CurrentUnit.AMPS)> CURRENT_HIGH) && (this.intake.intakeMotor.getCurrentPosition()-previousPosition < ENCODER_MAX_DIFFERENCE)) {
+            this.intake.reverse();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            this.intake.startIntake();
+        }
+        return this.intake.intakeMotor.getCurrentPosition();
     }
 //    public void depositToIntake(){
 //        this.arm.setAngleElbow(125);
