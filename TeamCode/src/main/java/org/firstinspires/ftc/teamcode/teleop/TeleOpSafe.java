@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
+import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
@@ -62,11 +63,11 @@ public class TeleOpSafe extends LinearOpMode {
 
         boolean autoCloseEnabled = true;
         boolean autoClosePreviousState = false;
-        boolean previousClawState = false;
+        boolean previousDpadLeftState = false;
+        boolean previousDpadRightState = false;
         boolean previousDroneState = false;
-        float previousIntakeState = 0;
+        boolean previousIntakeState = false;
         boolean previousAutoAlignState = false;
-        int dronePressed = 0;
         boolean isPressed = false;
         double intakePreviousPos;
 
@@ -77,8 +78,8 @@ public class TeleOpSafe extends LinearOpMode {
         if (isStopRequested()) return;
         matchTimer = new ElapsedTime();
         //intakePreviousPos = robot.intake.intakeMotor.getCurrentPosition();
-        robot.slides.resetAllEncoders();
         robot.slides.runToPosition(0);
+        robot.slides.resetAllEncoders();
         robot.drone.prime();
 
         while (opModeIsActive() && !isStopRequested()) {
@@ -169,33 +170,35 @@ public class TeleOpSafe extends LinearOpMode {
             }
 
             //CLAW
-            if (gamepad1.cross) {
+            if (gamepad1.cross && robot.subsystemState == Levels.BACKDROP) {
                 robot.smartClawOpen();
             }
 
 
             //INTAKE
-            if ((gamepad1.right_trigger>0.2) && (gamepad1.right_trigger != previousIntakeState)){
+            if (gamepad1.right_bumper && (gamepad1.right_bumper != previousIntakeState) && (robot.subsystemState == Levels.INTAKE || robot.subsystemState == Levels.INTERMEDIATE)){
                 if (robot.intaking) {
                     robot.stopIntake();
                 } else {
                     robot.startIntake();
                 }
             }
-            previousIntakeState = gamepad1.right_trigger;
+            previousIntakeState = gamepad1.right_bumper;
 
 
             //DEPOSIT
-            if (gamepad1.left_bumper) {
+            if (gamepad1.left_bumper && robot.subsystemState == Levels.INTAKE) {
                 robot.depositPreset();
             }
 
             //SLIDES
-            if (gamepad1.dpad_left) {
+            if (gamepad1.dpad_left && !previousDpadLeftState) {
                 robot.slides.runToPosition((int) (robot.slides.slides1.motor.getCurrentPosition() + 70));
-            } else if (gamepad1.dpad_right) {
+            } else if (gamepad1.dpad_right && !previousDpadRightState) {
                 robot.slides.runToPosition((int) (robot.slides.slides1.motor.getCurrentPosition() - 70));
             }
+            previousDpadLeftState = gamepad1.dpad_left;
+            previousDpadRightState = gamepad1.dpad_right;
 
             //WRIST
             if (gamepad2.right_stick_x > 0.2) {
@@ -205,20 +208,13 @@ public class TeleOpSafe extends LinearOpMode {
             }
 
             //DRONE
-            boolean isPressed2 = gamepad1.triangle;
-            if (gamepad1.triangle && !previousDroneState && (dronePressed==0)) {
-                robot.drone.prime();
-                dronePressed = 1;
-            }
-            else if (gamepad1.triangle && !previousDroneState && (dronePressed==1)) {
+            if (gamepad1.triangle && !previousDroneState) {
                 robot.drone.launch();
-                dronePressed = 2;
             }
-            previousDroneState = isPressed2;
+            previousDroneState = gamepad1.triangle;
 
             // AUTO ALIGN
             if (gamepad1.square && !previousAutoAlignState && currentMode != Mode.ALIGN_TO_POINT) {
-                ;
                 currentMode = Mode.ALIGN_TO_POINT;
                 gamepad1.rumble(1);
             }

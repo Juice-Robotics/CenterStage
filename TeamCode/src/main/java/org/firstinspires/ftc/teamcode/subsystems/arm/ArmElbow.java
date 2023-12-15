@@ -49,6 +49,10 @@ public class ArmElbow {
             this.setAngleArm(depositTargetArm);
             this.setAngleElbow(depositTargetElbow);
         }
+        else if (level == Levels.CLIMB_EXTEND) {
+            this.setAngleArm(0);
+            this.setAngleElbow(0);
+        }
     }
 
 }

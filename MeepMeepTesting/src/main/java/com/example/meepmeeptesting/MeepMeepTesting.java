@@ -127,25 +127,25 @@ public class MeepMeepTesting {
 
 
                                         .setReversed(true)
-                                        .splineTo(new Vector2d(10, 20), Math.toRadians(270))
-                                        .splineTo(new Vector2d(11, -61), Math.toRadians(270))
+                                        .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(270))
+                                        .splineToConstantHeading(new Vector2d(11, -61), Math.toRadians(270))
                                         .setReversed(false)
-                                        .splineTo(new Vector2d(10, 20), Math.toRadians(90))
-                                        .splineTo(new Vector2d(36, 49), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(36, 49), Math.toRadians(90))
 
                                         .setReversed(true)
-                                        .splineTo(new Vector2d(10, 20), Math.toRadians(270))
-                                        .splineTo(new Vector2d(11, -61), Math.toRadians(270))
+                                        .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(270))
+                                        .splineToConstantHeading(new Vector2d(11, -61), Math.toRadians(270))
                                         .setReversed(false)
-                                        .splineTo(new Vector2d(10, 20), Math.toRadians(90))
-                                        .splineTo(new Vector2d(36, 49), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(36, 49), Math.toRadians(90))
 
                                         .setReversed(true)
-                                        .splineTo(new Vector2d(10, 20), Math.toRadians(270))
-                                        .splineTo(new Vector2d(11, -61), Math.toRadians(270))
+                                        .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(270))
+                                        .splineToConstantHeading(new Vector2d(11, -61), Math.toRadians(270))
                                         .setReversed(false)
-                                        .splineTo(new Vector2d(10, 20), Math.toRadians(90))
-                                        .splineTo(new Vector2d(36, 49), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(36, 49), Math.toRadians(90))
 
                                         .build()
                 );
@@ -234,8 +234,9 @@ public class MeepMeepTesting {
 //        meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-                .addEntity(myBotCyclesUnsafeSide)
+//                .addEntity(myBotCyclesUnsafeSide)
 //                .addEntity(myBotCyclesSafeRed)
+                .addEntity(myBotCyclesObv)
                 .start();
     }
 }

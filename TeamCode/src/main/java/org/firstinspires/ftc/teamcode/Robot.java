@@ -41,7 +41,7 @@ public class Robot {
 
     // STATE VARS
     boolean auton;
-    Levels subsystemState;
+    public Levels subsystemState;
     public boolean intaking = false;
 
 
@@ -106,7 +106,6 @@ public class Robot {
     public void startIntake() {
         intaking = true;
         this.intake.startIntake();
-        this.slides.resetAllEncoders();
         this.arm.setAngleArm(6);
         this.claw.setPositionClaw(140);
         this.intake.setAngle(192);
@@ -133,6 +132,7 @@ public class Robot {
         }
         this.arm.setAngleArm(15);
         this.arm.setAngleElbow(115);
+        this.subsystemState = Levels.INTERMEDIATE;
     }
 
     /**
@@ -140,7 +140,7 @@ public class Robot {
      * Blocks thread until intake is complete with specified number of pixels (1-2)
     */
     public void startSmartIntake(int pixels) {
-        this.intake.startIntake();
+        this.startIntake();
         if (pixels == 1) {
             while (!intakeSensor.hasPixel()[0] && !intakeSensor.hasPixel()[1]) {
                 try {
@@ -177,29 +177,15 @@ public class Robot {
             e.printStackTrace();
         }
         this.slides.runToPosition(0);
-
-
-
-    }
-
-    public void smartIntake(boolean[] state) {
-        if (state[0] && state[1]){
-            intake.stopIntake();
-            intaking = false;
-        }
-    }
-
-    public void depositSmart(boolean[] state) {
-        if (state[0] && state[1] && (this.subsystemState == Levels.INTAKE)){
-            claw.setClawClose();
-        }
     }
 
     public void smartIntakeUpdate() {
         if (intaking) {
             boolean[] state = intakeSensor.hasPixel();
-            depositSmart(state);
-            smartIntake(state);
+            if (state[0] && state[1]){
+                this.stopIntake();
+                intaking = false;
+            }
         }
     }
 
@@ -228,7 +214,8 @@ public class Robot {
 
     public void climbExtend() {
         this.slides.runToClimb();
-        this.arm.runtoPreset(Levels.BACKDROP);
+        this.arm.runtoPreset(Levels.CLIMB_EXTEND);
+        this.subsystemState = Levels.CLIMB_EXTEND;
     }
 //    public double checkJam(double previousPosition){
 //        if ((this.intake.intakeMotor.g(CurrentUnit.AMPS)> CURRENT_HIGH) && (this.intake.intakeMotor.getCurrentPosition()-previousPosition < ENCODER_MAX_DIFFERENCE)) {
@@ -258,6 +245,7 @@ public class Robot {
 
     public void startClimb() {
         this.slides.startClimb();
+        this.subsystemState = Levels.CLIMB;
     }
 //    public void intakeToReady() {
 //        this.arm.setAngleArm(0);
