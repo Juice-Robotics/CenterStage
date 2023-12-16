@@ -51,6 +51,7 @@ public class Slides {
     private float DISENGAGED_POS = 100;
     private double HEIGHT_CLIMB = 600;
     //public boolean climbing = false;
+    public int backdropTarget = 350;
 
     private boolean threadState = false;
     public boolean climbing = false;
@@ -112,7 +113,7 @@ public class Slides {
         } else if (preset == Levels.INTAKE) {
             runToPosition(0);
         } else if (preset == Levels.DEPOSIT){
-            runToPosition(400);
+            runToPosition(backdropTarget);
         }
     }
 
@@ -148,6 +149,11 @@ public class Slides {
             telemetry.update();
         });
         t1.start();
+    }
+
+    public void incrementBackdropTarget(double ticks) {
+        backdropTarget += ticks;
+        runToPosition(backdropTarget);
     }
 
     public void destroyThreads(Telemetry telemetry) {
