@@ -47,9 +47,9 @@ public class Slides {
     public Motor climbMotor;
     public StepperServo climbServo;
     public VoltageSensor voltageSensor;
-    private float ENGAGED_POS = 0;
-    private float DISENGAGED_POS = 100;
-    private double HEIGHT_CLIMB = 600;
+    private float ENGAGED_POS = 82;
+    private float DISENGAGED_POS = 20;
+    private double HEIGHT_CLIMB = 500;
     //public boolean climbing = false;
     public int backdropTarget = 350;
 
@@ -60,8 +60,10 @@ public class Slides {
     public Slides(Motor slides1, Motor slides2, Motor climbMotor, StepperServo climbServo, VoltageSensor voltageSensor) {
         this.slides1 = slides1;
         this.slides2 = slides2;
+        this.climbMotor = climbMotor;
         this.climbServo = climbServo;
         this.voltageSensor = voltageSensor;
+        this.climbServo.setAngle(DISENGAGED_POS);
 
         controller1 = new PIDController(p, i , d);
         controller2 = new PIDController(p, i , d);
@@ -117,21 +119,34 @@ public class Slides {
         }
     }
 
+    public void setPower(float power) {
+        slides1.motor.setPower(power);
+        slides2.motor.setPower(power);
+    }
+
+    public void setPower(float power1, float power2) {
+        slides1.motor.setPower(power1);
+        slides2.motor.setPower(power2);
+    }
+
     public void runToClimb(){
         profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(getPos(), 0), new MotionState(HEIGHT_CLIMB, 0), maxvel, maxaccel);
         timer.reset();
     }
 
-    public void startClimb(){
+    public void shiftGear() {
         climbServo.setAngle(ENGAGED_POS);
-        climbMotor.motor.setPower(0.25);
+        climbMotor.motor.setPower(0);
         try {
             TimeUnit.SECONDS.sleep(1); //TEST
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void startClimb(){
         climbing = true;
-        profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(getPos(), 0.25), new MotionState(HEIGHT_CLIMB, 0), maxvel, maxaccel);
+        profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(getPos(), 0.25), new MotionState(100, 0), maxvel, maxaccel);
         timer.reset();
     }
 

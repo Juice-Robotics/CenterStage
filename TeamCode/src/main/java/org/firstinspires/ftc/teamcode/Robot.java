@@ -215,7 +215,22 @@ public class Robot {
     public void climbExtend() {
         this.slides.runToClimb();
         this.arm.runtoPreset(Levels.CLIMB_EXTEND);
+        this.intake.setAngle(100);
         this.subsystemState = Levels.CLIMB_EXTEND;
+
+        while (this.slides.getPos() <= 460) {
+            this.slides.update();
+        }
+
+        this.slides.setPower((float) 0.6);
+        this.slides.shiftGear();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.slides.setPower(0);
+
     }
 //    public double checkJam(double previousPosition){
 //        if ((this.intake.intakeMotor.g(CurrentUnit.AMPS)> CURRENT_HIGH) && (this.intake.intakeMotor.getCurrentPosition()-previousPosition < ENCODER_MAX_DIFFERENCE)) {
