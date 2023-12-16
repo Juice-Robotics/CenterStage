@@ -110,20 +110,20 @@ public class Robot {
         this.claw.setPositionClaw(140);
         this.intake.setAngle(194);
         this.claw.wrist.setAngle(123);
-        this.arm.setAngleElbow(112);
+        this.arm.setAngleElbow(113);
         this.slides.runToPosition(0);
     }
 
     public void stopIntake() {
         intaking = false;
         this.arm.setAngleArm(3);
-        this.arm.setAngleElbow(111);
+        this.arm.setAngleElbow(112);
         try {
             Thread.sleep(250);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        this.claw.setPositionClaw(215);
+        this.claw.setPositionClaw(240);
         this.intake.stopIntake();
         this.intake.setAngle(120);
         try {
@@ -194,7 +194,7 @@ public class Robot {
         this.slides.runToPreset(Levels.DEPOSIT);
         ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         double start = timer.time();
-        while (timer.time() - start <= 200) {
+        while (timer.time() - start <= 300) {
             this.slides.update();
         }
         this.arm.runtoPreset(Levels.DEPOSIT);
