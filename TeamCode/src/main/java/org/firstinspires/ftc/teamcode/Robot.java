@@ -41,7 +41,7 @@ public class Robot {
 
     // STATE VARS
     boolean auton;
-    public Levels subsystemState;
+    public Levels subsystemState = Levels.INTAKE;
     public boolean intaking = false;
 
 
@@ -106,11 +106,11 @@ public class Robot {
     public void startIntake() {
         intaking = true;
         this.intake.startIntake();
-        this.arm.setAngleArm(6);
+        this.arm.setAngleArm(9);
         this.claw.setPositionClaw(140);
         this.intake.setAngle(192);
         this.claw.wrist.setAngle(123);
-        this.arm.setAngleElbow(120);
+        this.arm.setAngleElbow(111);
         this.slides.runToPosition(0);
     }
 
@@ -190,7 +190,7 @@ public class Robot {
     }
 
     public void depositPreset() {
-        this.claw.setPositionWrist(95); //turning to get through the thingy
+        this.claw.setPositionWrist(123); //turning to get through the thingy
         this.slides.runToPreset(Levels.DEPOSIT);
         ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         double start = timer.time();

@@ -170,13 +170,13 @@ public class TeleOpSafe extends LinearOpMode {
             }
 
             //CLAW
-            if (gamepad1.cross && robot.subsystemState == Levels.BACKDROP) {
+            if (gamepad1.cross) {
                 robot.smartClawOpen();
             }
 
 
             //INTAKE
-            if (gamepad1.right_bumper && (gamepad1.right_bumper != previousIntakeState) && (robot.subsystemState == Levels.INTAKE || robot.subsystemState == Levels.INTERMEDIATE)){
+            if (gamepad1.right_bumper && (gamepad1.right_bumper != previousIntakeState)){
                 if (robot.intaking) {
                     robot.stopIntake();
                 } else {
@@ -187,7 +187,7 @@ public class TeleOpSafe extends LinearOpMode {
 
 
             //DEPOSIT
-            if (gamepad1.left_bumper && robot.subsystemState == Levels.INTAKE) {
+            if (gamepad1.left_bumper) {
                 robot.depositPreset();
             }
 
@@ -214,7 +214,7 @@ public class TeleOpSafe extends LinearOpMode {
             previousDroneState = gamepad1.triangle;
 
             // AUTO ALIGN
-            if (gamepad1.square && !previousAutoAlignState && currentMode != Mode.ALIGN_TO_POINT) {
+            if (gamepad1.square && !previousAutoAlignState) {
                 currentMode = Mode.ALIGN_TO_POINT;
                 gamepad1.rumble(1);
             }

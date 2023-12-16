@@ -100,6 +100,56 @@ public class MeepMeepTesting {
                                 .build()
                 );
 
+        RoadRunnerBotEntity myBotCyclesSafeOpti = new DefaultBotBuilder(meepMeep)
+                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
+//                .setColorScheme(new ColorSchemeBlueDark())
+                .setConstraints(50, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .setDimensions(14, 17)
+                .followTrajectorySequence(drive ->
+                                drive.trajectorySequenceBuilder(new Pose2d(-59, 12, 0))
+                                        //CENTER
+                                .forward(20)
+                                .back(10)
+                                .setReversed(false)
+                                .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
+
+                                        // RIGHT
+//                                .splineTo(new Vector2d(-43, 8), Math.toRadians(-15))
+//                                .back(10)
+//                                .setReversed(false)
+//                                .splineTo(new Vector2d(-40, 49), Math.toRadians(90))
+
+                                        //LEFT
+//                                        .splineTo(new Vector2d(-45, 20), Math.toRadians(15))
+//                                        .strafeLeft(10)
+//                                        .setReversed(false)
+//                                        .splineTo(new Vector2d(-29, 49), Math.toRadians(90))
+
+
+                                        .setReversed(true)
+                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
+                                        .splineToConstantHeading(new Vector2d(-11, -61), Math.toRadians(-90))
+                                        .setReversed(false)
+                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(-36, 49), Math.toRadians(90))
+
+                                        .setReversed(true)
+                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
+                                        .splineToConstantHeading(new Vector2d(-11, -61), Math.toRadians(-90))
+                                        .setReversed(false)
+                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(-36, 49), Math.toRadians(90))
+
+                                        .setReversed(true)
+                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
+                                        .splineToConstantHeading(new Vector2d(-11, -61), Math.toRadians(-90))
+                                        .setReversed(false)
+                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(-36, 49), Math.toRadians(90))
+
+                                        .build()
+                );
+
         RoadRunnerBotEntity myBotCyclesSafeRed = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
 //                .setColorScheme(new ColorSchemeRedDark())
@@ -236,7 +286,7 @@ public class MeepMeepTesting {
                 .setBackgroundAlpha(0.95f)
 //                .addEntity(myBotCyclesUnsafeSide)
 //                .addEntity(myBotCyclesSafeRed)
-                .addEntity(myBotCyclesObv)
+                .addEntity(myBotCyclesSafeOpti)
                 .start();
     }
 }
