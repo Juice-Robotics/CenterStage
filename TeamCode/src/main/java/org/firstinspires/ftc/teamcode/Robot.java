@@ -106,17 +106,18 @@ public class Robot {
     public void startIntake() {
         intaking = true;
         this.intake.startIntake();
-        this.arm.setAngleArm(9);
+        this.arm.setAngleArm(24);
         this.claw.setPositionClaw(140);
-        this.intake.setAngle(192);
+        this.intake.setAngle(194);
         this.claw.wrist.setAngle(123);
-        this.arm.setAngleElbow(111);
+        this.arm.setAngleElbow(112);
         this.slides.runToPosition(0);
     }
 
     public void stopIntake() {
         intaking = false;
-        this.arm.setAngleArm(0);
+        this.arm.setAngleArm(3);
+        this.arm.setAngleElbow(111);
         try {
             Thread.sleep(250);
         } catch (InterruptedException e) {
@@ -130,7 +131,7 @@ public class Robot {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        this.arm.setAngleArm(15);
+        this.arm.setAngleArm(30);
         this.arm.setAngleElbow(115);
         this.subsystemState = Levels.INTERMEDIATE;
     }
@@ -164,12 +165,12 @@ public class Robot {
     public void smartClawOpen() {
         this.claw.setClawOpen();
         try {
-            Thread.sleep(500);
+            Thread.sleep(300);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        this.arm.setAngleArm(15);
-        this.arm.setAngleElbow(115);
+        this.arm.setAngleArm(24);
+        this.arm.setAngleElbow(120);
         this.claw.wrist.setAngle(123);
         try {
             Thread.sleep(100);
@@ -190,11 +191,10 @@ public class Robot {
     }
 
     public void depositPreset() {
-        this.claw.setPositionWrist(123); //turning to get through the thingy
         this.slides.runToPreset(Levels.DEPOSIT);
         ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         double start = timer.time();
-        while (timer.time() - start <= 600) {
+        while (timer.time() - start <= 200) {
             this.slides.update();
         }
         this.arm.runtoPreset(Levels.DEPOSIT);

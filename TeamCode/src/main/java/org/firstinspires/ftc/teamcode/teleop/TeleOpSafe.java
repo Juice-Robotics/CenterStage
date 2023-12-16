@@ -193,9 +193,9 @@ public class TeleOpSafe extends LinearOpMode {
 
             //SLIDES
             if (gamepad1.dpad_left && !previousDpadLeftState) {
-                robot.slides.runToPosition((int) (robot.slides.slides1.motor.getCurrentPosition() + 70));
+                robot.slides.incrementBackdropTarget(-70);
             } else if (gamepad1.dpad_right && !previousDpadRightState) {
-                robot.slides.runToPosition((int) (robot.slides.slides1.motor.getCurrentPosition() - 70));
+                robot.slides.incrementBackdropTarget(70);
             }
             previousDpadLeftState = gamepad1.dpad_left;
             previousDpadRightState = gamepad1.dpad_right;
