@@ -30,6 +30,7 @@ public class testauto extends LinearOpMode {
 
         // PRELOAD PATHS
         TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
+                .setReversed(true)
                 .splineTo(new Vector2d(36, -40), Math.toRadians(235))
                 .waitSeconds(1)
                 .splineTo(new Vector2d(35, -60), Math.toRadians(270))
@@ -41,17 +42,18 @@ public class testauto extends LinearOpMode {
                 .waitSeconds(2)
                 .build();
         TrajectorySequence leftToStack1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
-                //.setReversed(true)
+                .setReversed(true)
                 .splineTo(new Vector2d(10, 20), Math.toRadians(-90))
                 .splineTo(new Vector2d(11, -61), Math.toRadians(-90))
                 .waitSeconds(2)
                 .build();
 
         TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
-                .forward(25)
-                .waitSeconds(1)
-                .setReversed(false)
-                .splineTo(new Vector2d(15, -60), Math.toRadians(270))
+                .setReversed(true)
+                .back(20)
+                .forward(10)
+                .setReversed(true)
+                .splineTo(new Vector2d(-36, 49), Math.toRadians(90))
 
                 .build();
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
