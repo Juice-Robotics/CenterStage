@@ -29,11 +29,11 @@ public class Slides {
     private MotionProfile profile;
     public MotionState curState;
     private ElapsedTime timer;
-    double maxvel = 3000;
-    double maxaccel = 3000;
+    double maxvel = 4000;
+    double maxaccel = 4000;
 
-    public double p = 0.032, i = 0.00, d = 0.0007;
-    public double f = 0.007;
+    public double p = 0.01, i = 0.00, d = 0.0001;
+    public double f = 0.012;
     double voltageCompensation;
 
     public double target = 0;
@@ -51,7 +51,7 @@ public class Slides {
     private float DISENGAGED_POS = 20;
     private double HEIGHT_CLIMB = 500;
     //public boolean climbing = false;
-    public int backdropTarget = 350;
+    public int backdropTarget = 300;
 
     private boolean threadState = false;
     public boolean climbing = false;

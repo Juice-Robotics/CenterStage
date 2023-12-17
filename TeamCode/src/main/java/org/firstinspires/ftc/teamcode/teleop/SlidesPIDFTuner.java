@@ -16,13 +16,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 @TeleOp
 public class SlidesPIDFTuner extends OpMode {
     private PIDController controller1;
-    private PIDController controller2;
 
-    public double p = 0.032, i = 0.00, d = 0.0007;
-    public double f = 0.007;
-
-    public static double power = 0;
-    public static double power3 = 0;
+    public static double p = 0.01, i = 0, d = 0.0001;
+    public static double f = 0.012;
 
     public static int target = 0;
     private final double ticks_in_degrees = 700 / 180.0;
@@ -37,9 +33,11 @@ public class SlidesPIDFTuner extends OpMode {
 
         slides1 = hardwareMap.get(DcMotorEx.class, "slides1");
         slides2 = hardwareMap.get(DcMotorEx.class, "slides2");
-//        slides1.setDirection(DcMotorSimple.Direction.REVERSE);
+        slides1.setDirection(DcMotorSimple.Direction.REVERSE);
         slides1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slides2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slides1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slides2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     @Override
@@ -52,10 +50,8 @@ public class SlidesPIDFTuner extends OpMode {
 
         double power1 = pid1 + ff;
 
-        slides1.setPower(-power1);
-        slides2.setPower(-power1);
-//        slides1.setPower(power);
-//        slides2.setPower(power3);
+        slides1.setPower(power1);
+        slides2.setPower(power1);
 
         telemetry.addData("pos1 ", slides1Pos);
         telemetry.addData("target ", target);
