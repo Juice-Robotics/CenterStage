@@ -51,7 +51,7 @@ public class TestPreloadAuto extends LinearOpMode {
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(34, 49.5), Math.toRadians(90))
+                .splineTo(new Vector2d(34, 49), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -68,28 +68,40 @@ public class TestPreloadAuto extends LinearOpMode {
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineTo(new Vector2d(43, 8), Math.toRadians(-15))
-                .forward(10)
+                .splineTo(new Vector2d(38, 25), Math.toRadians(180))
+                .forward(15)
+                .turn(Math.toRadians(-90))
                 .build();
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(40, 49), Math.toRadians(90))
-                .waitSeconds(2)
+                .splineToConstantHeading(new Vector2d(29, 49), Math.toRadians(90))
+                .addTemporalMarker(0, () -> {
+                    this.robot.intake.setAngle(120);
+                })
+                .addTemporalMarker(2, () -> {
+                    robot.autoPreloadDepositPreset();
+                })
+                .addTemporalMarker(3.5, () -> {
+                    robot.smartClawOpen();
+                })
+                .waitSeconds(3)
+                .strafeRight(15)
+                .back(10)
                 .build();
 
-        TrajectorySequence cycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
-                .setReversed(false)
-                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(11, -58), Math.toRadians(-90))
-                .addTemporalMarker(2, () -> {
-                    robot.autoIntake(3, 170);
-                })
-                .setReversed(true)
-                .waitSeconds(4)
-                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(34, 49), Math.toRadians(90))
-                .build();
+//        TrajectorySequence cycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
+//                .setReversed(false)
+//                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+//                .splineToConstantHeading(new Vector2d(11, -58), Math.toRadians(-90))
+//                .addTemporalMarker(2, () -> {
+//                    robot.autoIntake(3, 170);
+//                })
+//                .setReversed(true)
+//                .waitSeconds(4)
+//                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+//                .splineToConstantHeading(new Vector2d(34, 49), Math.toRadians(90))
+//                .build();
 
 
 //        TrajectorySequence park = drive.trajectorySequenceBuilder(prel.end())
@@ -113,7 +125,7 @@ public class TestPreloadAuto extends LinearOpMode {
 
         // shuts down the camera once the match starts, we dont need to look any more
 
-        TeamElementCVProcessor.Location propLocation = TeamElementCVProcessor.Location.CENTER;
+        TeamElementCVProcessor.Location propLocation = TeamElementCVProcessor.Location.RIGHT;
 
 
         waitForStart();
