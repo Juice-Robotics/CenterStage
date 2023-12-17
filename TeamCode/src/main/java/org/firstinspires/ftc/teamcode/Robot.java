@@ -108,7 +108,7 @@ public class Robot {
         this.intake.startIntake();
         this.arm.setAngleArm(26);
         this.claw.setPositionClaw(200);
-        this.intake.setAngle(194);
+        this.intake.setAngle(196);
         this.claw.wrist.setAngle(123);
         this.arm.setAngleElbow(110);
         this.slides.runToPosition(0);
@@ -214,14 +214,17 @@ public class Robot {
 
     public void climbExtend() {
         this.slides.runToClimb();
-        this.arm.runtoPreset(Levels.CLIMB_EXTEND);
-        this.intake.setAngle(100);
-        this.subsystemState = Levels.CLIMB_EXTEND;
-
+        this.intake.setAngle(120);
+        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+        double start = timer.time();
+        while (timer.time() - start <= 250) {
+            this.slides.update();
+        }
+        this.arm.runtoPreset(Levels.DEPOSIT);
+        this.claw.wrist.setAngle(123);
         while (this.slides.getPos() <= 460) {
             this.slides.update();
         }
-
         this.slides.setPower((float) 0.6);
         this.slides.shiftGear();
         try {
