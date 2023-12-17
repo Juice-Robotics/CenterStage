@@ -50,12 +50,12 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(30, 10, Math.toRadians(90)), Math.toRadians(0))
                 .forward(15)
-                .turn(Math.toRadians(185))
+                .turn(Math.toRadians(180))
                 .build();
 
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(42, 49.5), Math.toRadians(90))
+                .back(25)
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -66,7 +66,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(3)
-                .strafeRight(30)
+                .strafeRight(20)
                 .back(10)
                 .build();
 
@@ -102,7 +102,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(true)
-                .splineToConstantHeading(new Vector2d(29, 49.5), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(42, 52, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
