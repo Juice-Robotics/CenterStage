@@ -106,24 +106,24 @@ public class Robot {
     public void startIntake() {
         intaking = true;
         this.intake.startIntake();
-        this.arm.setAngleArm(24);
-        this.claw.setPositionClaw(140);
+        this.arm.setAngleArm(26);
+        this.claw.setPositionClaw(200);
         this.intake.setAngle(194);
         this.claw.wrist.setAngle(123);
-        this.arm.setAngleElbow(113);
+        this.arm.setAngleElbow(110);
         this.slides.runToPosition(0);
     }
 
     public void stopIntake() {
         intaking = false;
-        this.arm.setAngleArm(3);
+        this.arm.setAngleArm(0);
         this.arm.setAngleElbow(112);
         try {
             Thread.sleep(250);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        this.claw.setPositionClaw(240);
+        this.claw.setPositionClaw(245);
         this.intake.stopIntake();
         this.intake.setAngle(120);
         try {
@@ -169,7 +169,7 @@ public class Robot {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        this.arm.setAngleArm(24);
+        this.arm.setAngleArm(27);
         this.arm.setAngleElbow(120);
         this.claw.wrist.setAngle(123);
         try {
