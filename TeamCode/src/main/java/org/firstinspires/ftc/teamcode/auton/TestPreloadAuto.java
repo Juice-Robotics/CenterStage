@@ -19,13 +19,16 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Autonomous(group = "drive")
 
 public class TestPreloadAuto extends LinearOpMode {
-    SampleMecanumDrive drive;
-
+    Robot robot;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        drive = new SampleMecanumDrive(hardwareMap);
+
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        robot = new Robot(hardwareMap, true);
         Pose2d startPose = new Pose2d(62, 12, Math.toRadians(0));
+        robot.stopIntake();
+
         drive.setPoseEstimate(startPose);
 
         // PRELOAD PATHS
@@ -48,7 +51,13 @@ public class TestPreloadAuto extends LinearOpMode {
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(34, 49), Math.toRadians(90))
+                .splineTo(new Vector2d(34, 48), Math.toRadians(90))
+                .addTemporalMarker(2, () -> {
+                    robot.depositPreset();
+                })
+                .addTemporalMarker(3.5, () -> {
+                    robot.smartClawOpen();
+                })
                 .waitSeconds(2)
                 .build();
 
@@ -69,6 +78,7 @@ public class TestPreloadAuto extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
                 .splineToConstantHeading(new Vector2d(11, -61), Math.toRadians(-90))
                 .setReversed(true)
+                .waitSeconds(4)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(34, 49), Math.toRadians(90))
                 .build();
@@ -102,6 +112,7 @@ public class TestPreloadAuto extends LinearOpMode {
 
         if (isStopRequested()) return;
 
+        robot.slides.launchAsThread(telemetry);
         switch (propLocation) {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
@@ -124,6 +135,8 @@ public class TestPreloadAuto extends LinearOpMode {
 
         // Transfer the current pose to PoseStorage so we can use it in TeleOp
         PoseStorage.currentPose = drive.getPoseEstimate();
+
+        robot.slides.destroyThreads(telemetry);
 
         while (!isStopRequested() && opModeIsActive()) ;
     }
