@@ -277,7 +277,7 @@ public class MeepMeepTesting {
                 );
 
         Image img = null;
-        try { img = ImageIO.read(new File("/Users/siddharth/dev/Juice/CenterStage/MeepMeepTesting/src/main/java/com/example/meepmeeptesting/Juice-CENTERSTAGE-Dark.png")); }
+        try { img = ImageIO.read(new File("/Users/huntert/CenterStage/MeepMeepTesting/src/main/java/com/example/meepmeeptesting/Juice-CENTERSTAGE-Dark.png")); }
         catch (IOException e) {}
 
         meepMeep.setBackground(img)
