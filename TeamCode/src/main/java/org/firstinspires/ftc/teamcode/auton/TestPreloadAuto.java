@@ -33,14 +33,27 @@ public class TestPreloadAuto extends LinearOpMode {
 
         // PRELOAD PATHS
         TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(45, 20), Math.toRadians(15))
-                .strafeRight(10)
+                .setReversed(true)
+                .splineToLinearHeading(new Pose2d(30, 10, Math.toRadians(90)), Math.toRadians(0))
+                .forward(15)
+                .turn(Math.toRadians(185))
                 .build();
 
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(29, 49), Math.toRadians(90))
-                .waitSeconds(2)
+                .splineTo(new Vector2d(42, 49.5), Math.toRadians(90))
+                .addTemporalMarker(0, () -> {
+                    this.robot.intake.setAngle(120);
+                })
+                .addTemporalMarker(2, () -> {
+                    robot.autoPreloadDepositPreset();
+                })
+                .addTemporalMarker(3.5, () -> {
+                    robot.smartClawOpen();
+                })
+                .waitSeconds(3)
+                .strafeRight(30)
+                .back(10)
                 .build();
 
         TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
@@ -51,7 +64,7 @@ public class TestPreloadAuto extends LinearOpMode {
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(34, 49), Math.toRadians(90))
+                .splineTo(new Vector2d(34, 49.5), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -75,7 +88,7 @@ public class TestPreloadAuto extends LinearOpMode {
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(true)
-                .splineToConstantHeading(new Vector2d(29, 49), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(29, 49.5), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -125,7 +138,7 @@ public class TestPreloadAuto extends LinearOpMode {
 
         // shuts down the camera once the match starts, we dont need to look any more
 
-        TeamElementCVProcessor.Location propLocation = TeamElementCVProcessor.Location.RIGHT;
+        TeamElementCVProcessor.Location propLocation = TeamElementCVProcessor.Location.LEFT;
 
 
         waitForStart();

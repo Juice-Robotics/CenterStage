@@ -108,25 +108,13 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                                 drive.trajectorySequenceBuilder(new Pose2d(62, 12, Math.toRadians(0)))
                                         .setReversed(true)
-                                        .splineTo(new Vector2d(32, 25), Math.toRadians(180))
+//                                        .splineTo(new Vector2d(30, 25), Math.toRadians(180))
+//                                        .splineTo(new Vector2d(30, 5), Math.toRadians(270))
+                                        .splineToLinearHeading(new Pose2d(32, 9, Math.toRadians(90)), Math.toRadians(0))
                                         .forward(15)
-                                        .turn(Math.toRadians(-90))
-                                        .splineToConstantHeading(new Vector2d(29, 49.5), Math.toRadians(90))
-//                                        .strafeRight(10)
-//                                        .setReversed(false)
-//                                        .splineTo(new Vector2d(43, 8), Math.toRadians(-15))
-//                                        .forward(10)
-                                        // RIGHT
-//                                .splineTo(new Vector2d(-43, 8), Math.toRadians(-15))
-//                                .back(10)
-//                                .setReversed(true)
-//                                .splineTo(new Vector2d(-40, 49), Math.toRadians(90))
-
-                                        //LEFT
-//                                        .splineTo(new Vector2d(-45, 20), Math.toRadians(15))
-//                                        .strafeLeft(10)
-//                                        .setReversed(true)
-//                                        .splineTo(new Vector2d(-29, 49), Math.toRadians(90))
+                                        .turn(Math.toRadians(180))
+                                        .setReversed(true)
+                                        .splineTo(new Vector2d(42, 49), Math.toRadians(90))
 
 //
 //                                        .setReversed(false)
