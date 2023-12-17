@@ -171,9 +171,9 @@ public class TeamElementCVProcessor implements VisionProcessor {
         if (largestContour == null) {
             propPosition = Location.UNFOUND;
         } else if (largestContourX < left.getAsDouble()) {
-            propPosition = Location.RIGHT; //upside down
-        } else if (largestContourX > right.getAsDouble()) {
             propPosition = Location.LEFT;
+        } else if (largestContourX > right.getAsDouble()) {
+            propPosition = Location.RIGHT;
         } else {
             propPosition = Location.CENTER;
         }

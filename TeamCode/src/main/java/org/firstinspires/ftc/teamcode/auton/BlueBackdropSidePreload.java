@@ -170,7 +170,6 @@ public class BlueBackdropSidePreload extends LinearOpMode {
         if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
             visionPortal.stopLiveView();
             visionPortal.stopStreaming();
-            visionPortal.close();
         }
 
         propLocation = teamElementProcessor.getLocation();
@@ -204,6 +203,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
         PoseStorage.currentPose = drive.getPoseEstimate();
 
         robot.slides.destroyThreads(telemetry);
+        visionPortal.close();
 
         while (!isStopRequested() && opModeIsActive()) ;
     }

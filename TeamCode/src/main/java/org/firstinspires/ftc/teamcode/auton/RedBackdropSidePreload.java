@@ -203,6 +203,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
         PoseStorage.currentPose = drive.getPoseEstimate();
 
         robot.slides.destroyThreads(telemetry);
+        visionPortal.close();
 
         while (!isStopRequested() && opModeIsActive()) ;
     }
