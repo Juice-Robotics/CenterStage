@@ -139,7 +139,7 @@ public class TeamElementCVProcessor implements VisionProcessor {
         Imgproc.findContours(frame, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
         // this sets up our largest contour area to be 0
-        largestContourArea = -1;
+        largestContourArea = 0;
         // and our currently found largest contour to be null
         largestContour = null;
 
