@@ -18,7 +18,6 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import java.util.ArrayList;
 
 @Config
-@Disabled
 @Autonomous(group = "drive")
 
 public class RedRightMain extends LinearOpMode {
