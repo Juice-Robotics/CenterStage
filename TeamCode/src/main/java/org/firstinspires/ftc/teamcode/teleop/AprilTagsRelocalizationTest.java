@@ -24,6 +24,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 @TeleOp(name = "Concept: AprilTag", group = "Concept")
+@Disabled
 public class AprilTagsRelocalizationTest extends LinearOpMode {
     Robot robot = new Robot(hardwareMap, false);
 
