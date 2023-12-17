@@ -35,7 +35,6 @@ public class RedBackdropSidePreload extends LinearOpMode {
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
                 .addProcessor(teamElementProcessor)
-
                 .build();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -168,8 +167,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
         // shuts down the camera once the match starts, we dont need to look any more
 
         if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
-            visionPortal.stopLiveView();
-            visionPortal.stopStreaming();
+            visionPortal.close();
         }
 
         propLocation = teamElementProcessor.getLocation();

@@ -168,8 +168,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
         // shuts down the camera once the match starts, we dont need to look any more
 
         if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
-            visionPortal.stopLiveView();
-            visionPortal.stopStreaming();
+            visionPortal.close();
         }
 
         propLocation = teamElementProcessor.getLocation();

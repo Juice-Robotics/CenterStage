@@ -239,27 +239,34 @@ public class Robot {
 
     public void depositPreset() {
         this.slides.runToPreset(Levels.DEPOSIT);
-        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        double start = timer.time();
-        while (timer.time() - start <= 300) {
-            this.slides.update();
-        }
-        this.arm.runtoPreset(Levels.DEPOSIT);
-        this.claw.wrist.setAngle(123);
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(300);
+                } catch (Exception e) {
+                }
+                arm.runtoPreset(Levels.DEPOSIT);
+                claw.wrist.setAngle(123);
+            }});
+        thread.start();
         this.subsystemState = Levels.DEPOSIT;
     }
 
     public void autoPreloadDepositPreset() {
         this.slides.runToPosition(200);
-        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        double start = timer.time();
-        while (timer.time() - start <= 300) {
-            this.slides.update();
-        }
-        this.arm.runtoPreset(Levels.DEPOSIT);
-        this.claw.wrist.setAngle(123);
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(300);
+                } catch (Exception e) {
+                }
+                arm.runtoPreset(Levels.DEPOSIT);
+                claw.wrist.setAngle(123);
+            }});
+        thread.start();
         this.subsystemState = Levels.DEPOSIT;
     }
+
     public void runToAutoSpikePreset() {
         this.slides.runToPosition(100);
         this.arm.runtoPreset(Levels.DEPOSIT);
