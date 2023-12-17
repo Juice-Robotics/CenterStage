@@ -71,6 +71,8 @@ public class TeleOpSafe extends LinearOpMode {
         boolean isPressed = false;
         double intakePreviousPos;
         float previousLeftTriggerState = 0;
+        boolean previousSquare = false;
+        boolean previousCircle = false;
 
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -175,6 +177,15 @@ public class TeleOpSafe extends LinearOpMode {
                 robot.smartClawOpen();
             }
 
+            if (gamepad1.square && !previousSquare) {
+                robot.claw.wrist.setAngle(78);
+            }
+            if (gamepad1.circle && !previousCircle) {
+                robot.claw.wrist.setAngle(168);
+            }
+            previousCircle = gamepad1.circle;
+            previousSquare = gamepad1.square;
+
 
             //INTAKE
             if (gamepad1.right_bumper && (gamepad1.right_bumper != previousIntakeState)){
@@ -220,12 +231,12 @@ public class TeleOpSafe extends LinearOpMode {
             }
             previousDroneState = gamepad1.triangle;
 
-            // AUTO ALIGN
-            if (gamepad1.square && !previousAutoAlignState) {
-                currentMode = Mode.ALIGN_TO_POINT;
-                gamepad1.rumble(1);
-            }
-            previousAutoAlignState = gamepad1.square;
+//            // AUTO ALIGN
+//            if (gamepad1.square && !previousAutoAlignState) {
+//                currentMode = Mode.ALIGN_TO_POINT;
+//                gamepad1.rumble(1);
+//            }
+//            previousAutoAlignState = gamepad1.square;
 
             // CLIMB
             if (gamepad1.dpad_up) {
