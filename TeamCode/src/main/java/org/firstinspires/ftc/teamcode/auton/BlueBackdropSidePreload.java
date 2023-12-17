@@ -18,7 +18,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Config
 @Autonomous(group = "drive")
 
-public class TestPreloadAuto extends LinearOpMode {
+public class BlueBackdropSidePreload extends LinearOpMode {
     Robot robot;
 
     @Override
@@ -26,7 +26,7 @@ public class TestPreloadAuto extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         robot = new Robot(hardwareMap, true);
-        Pose2d startPose = new Pose2d(62, 12, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(-62, 12, Math.toRadians(180));
         robot.autoIntake();
 
         drive.setPoseEstimate(startPose);
@@ -34,14 +34,14 @@ public class TestPreloadAuto extends LinearOpMode {
         // PRELOAD PATHS
         TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(30, 10, Math.toRadians(90)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-30, 10, Math.toRadians(90)), Math.toRadians(0))
                 .forward(15)
                 .turn(Math.toRadians(185))
                 .build();
 
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(42, 49.5), Math.toRadians(90))
+                .splineTo(new Vector2d(-42, 52), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -52,7 +52,7 @@ public class TestPreloadAuto extends LinearOpMode {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(3)
-                .strafeRight(30)
+                .strafeLeft(30)
                 .back(10)
                 .build();
 
@@ -64,7 +64,7 @@ public class TestPreloadAuto extends LinearOpMode {
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(34, 49.5), Math.toRadians(90))
+                .splineTo(new Vector2d(-34, 52), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -75,20 +75,20 @@ public class TestPreloadAuto extends LinearOpMode {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(3)
-                .strafeRight(22)
+                .strafeLeft(22)
                 .back(10)
                 .build();
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineTo(new Vector2d(38, 25), Math.toRadians(180))
+                .splineTo(new Vector2d(-38, 25), Math.toRadians(180))
                 .forward(15)
                 .turn(Math.toRadians(-90))
                 .build();
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(true)
-                .splineToConstantHeading(new Vector2d(29, 49.5), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-29, 52), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -99,7 +99,7 @@ public class TestPreloadAuto extends LinearOpMode {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(3)
-                .strafeRight(15)
+                .strafeLeft(15)
                 .back(10)
                 .build();
 
@@ -138,7 +138,7 @@ public class TestPreloadAuto extends LinearOpMode {
 
         // shuts down the camera once the match starts, we dont need to look any more
 
-        TeamElementCVProcessor.Location propLocation = TeamElementCVProcessor.Location.LEFT;
+        TeamElementCVProcessor.Location propLocation = TeamElementCVProcessor.Location.CENTER;
 
 
         waitForStart();
