@@ -170,6 +170,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
         if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
             visionPortal.stopLiveView();
             visionPortal.stopStreaming();
+            visionPortal.close();
         }
 
         propLocation = teamElementProcessor.getLocation();

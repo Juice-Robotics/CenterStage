@@ -62,7 +62,7 @@ public class TeamElementCVProcessor implements VisionProcessor {
             lower = new Scalar(100, 150,80);
             upper = new Scalar(300,254,254);
         } else {
-            lower = new Scalar(0,150,100);
+            lower = new Scalar(0,80,20);
             upper = new Scalar(60,254,254);
         }
 
@@ -171,9 +171,9 @@ public class TeamElementCVProcessor implements VisionProcessor {
         if (largestContour == null) {
             propPosition = Location.UNFOUND;
         } else if (largestContourX < left.getAsDouble()) {
-            propPosition = Location.LEFT;
+            propPosition = Location.RIGHT; //upside down
         } else if (largestContourX > right.getAsDouble()) {
-            propPosition = Location.RIGHT;
+            propPosition = Location.LEFT;
         } else {
             propPosition = Location.CENTER;
         }
