@@ -9,7 +9,7 @@ public class Claw {
     public boolean isOpen = false; // if open, true
 
     // CONSTANTS
-    public float clawOpen = 200;
+    public float clawOpen = 185;
     public float clawClose = 245; //larger = tighter
 
     public Claw(StepperServo depositServo, StepperServo wrist) {

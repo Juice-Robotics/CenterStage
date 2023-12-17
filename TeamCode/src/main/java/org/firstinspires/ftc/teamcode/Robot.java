@@ -107,7 +107,7 @@ public class Robot {
         intaking = true;
         this.intake.startIntake();
         this.arm.setAngleArm(26);
-        this.claw.setPositionClaw(200);
+        this.claw.setPositionClaw(185);
         this.intake.setAngle(196);
         this.claw.wrist.setAngle(123);
         this.arm.setAngleElbow(110);
@@ -127,7 +127,7 @@ public class Robot {
         this.intake.stopIntake();
         this.intake.setAngle(120);
         try {
-            Thread.sleep(250);
+            Thread.sleep(350);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
