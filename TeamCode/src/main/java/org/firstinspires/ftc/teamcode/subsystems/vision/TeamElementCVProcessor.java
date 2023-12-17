@@ -48,8 +48,8 @@ public class TeamElementCVProcessor implements VisionProcessor {
     /**
      * Uses HSVs for the scalars
      *
-     * @param lower   the lower masked bound, a three a value scalar in the form of a HSV
-     * @param upper   the upper masked bound, a three a value scalar in the form of a HSV
+//     * @param lower   the lower masked bound, a three a value scalar in the form of a HSV
+//     * @param upper   the upper masked bound, a three a value scalar in the form of a HSV
      * @param minArea the minimum area for a detected blob to be considered the prop
      * @param left    the dividing point for the prop to be on the left
      * @param right   the diving point for the prop to be on the right
@@ -62,11 +62,11 @@ public class TeamElementCVProcessor implements VisionProcessor {
         telemetry = t;
 
         if (alliance == AllianceColor.BLUE) {
-            lower = new Scalar(150, 100, 100);
-            upper = new Scalar(180, 255, 255);
+            lower = new Scalar(100,100,100);
+            upper = new Scalar(300,225,220);
         } else {
-            upper = new Scalar(0, 0, 255);
-            lower = new Scalar(0, 255, 0);
+            lower = new Scalar(0,120,100);
+            upper = new Scalar(60,225,220);
         }
 
         this.contours = new ArrayList<>();
@@ -139,7 +139,7 @@ public class TeamElementCVProcessor implements VisionProcessor {
         Imgproc.findContours(frame, contours, hierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
         // this sets up our largest contour area to be 0
-        largestContourArea = -1;
+        largestContourArea = 0;
         // and our currently found largest contour to be null
         largestContour = null;
 
