@@ -67,6 +67,7 @@ public class TeleOpMain extends LinearOpMode {
         boolean previousIntakeState = false;
         boolean previousAutoAlignState = false;
         float previousRightTriggerState = 0;
+        float previousLeftTriggerState = 0;
         int dronePressed = 0;
 
 
@@ -182,12 +183,17 @@ public class TeleOpMain extends LinearOpMode {
             }
             previousIntakeState = gamepad1.right_bumper;
 
-            if ((gamepad1.right_trigger > 0.2)){
+            if ((gamepad1.right_trigger >0.2)){
+                robot.smartIntakeUpdate();
+            }
+            previousIntakeState = gamepad1.right_bumper;
+
+            if ((gamepad1.left_trigger > 0.2)){
                 robot.intake.reverse();
-            } else if ((gamepad1.right_trigger<0.2)  && (gamepad1.right_trigger != previousRightTriggerState)){
+            } else if ((gamepad1.left_trigger<0.2)  && (gamepad1.left_trigger != previousLeftTriggerState)){
                 robot.intake.stopIntake();
             }
-            previousRightTriggerState = gamepad1.right_trigger;
+            previousLeftTriggerState = gamepad1.left_trigger;
 
 
             //DEPOSIT

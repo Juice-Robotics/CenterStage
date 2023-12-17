@@ -49,7 +49,7 @@ public class BlueRightCycles extends LinearOpMode {
                 .addTemporalMarker(0, () -> {
                     robot.runToAutoSpikePreset();
                 })
-                .splineTo(new Vector2d(-36, -34), Math.toRadians(55))
+                .lineToLinearHeading(new Pose2d(-36, -34, Math.toRadians(55)))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
                     robot.claw.setClawOpen();
