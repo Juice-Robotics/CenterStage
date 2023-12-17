@@ -27,7 +27,7 @@ public class TestPreloadAuto extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         robot = new Robot(hardwareMap, true);
         Pose2d startPose = new Pose2d(62, 12, Math.toRadians(0));
-        robot.stopIntake();
+        robot.autoIntake();
 
         drive.setPoseEstimate(startPose);
 
@@ -51,14 +51,19 @@ public class TestPreloadAuto extends LinearOpMode {
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(34, 48), Math.toRadians(90))
+                .splineTo(new Vector2d(34, 49.5), Math.toRadians(90))
+                .addTemporalMarker(0, () -> {
+                    this.robot.intake.setAngle(120);
+                })
                 .addTemporalMarker(2, () -> {
-                    robot.depositPreset();
+                    robot.autoPreloadDepositPreset();
                 })
                 .addTemporalMarker(3.5, () -> {
                     robot.smartClawOpen();
                 })
-                .waitSeconds(2)
+                .waitSeconds(3)
+                .strafeRight(22)
+                .back(10)
                 .build();
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
@@ -76,7 +81,10 @@ public class TestPreloadAuto extends LinearOpMode {
         TrajectorySequence cycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(11, -61), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(11, -58), Math.toRadians(-90))
+                .addTemporalMarker(2, () -> {
+                    robot.autoIntake(3, 170);
+                })
                 .setReversed(true)
                 .waitSeconds(4)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
@@ -117,7 +125,6 @@ public class TestPreloadAuto extends LinearOpMode {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
                 drive.followTrajectorySequence(preloadBackdropCenter);
-                drive.followTrajectorySequence(cycle1);
                 break;
             case LEFT:
                 drive.followTrajectorySequence(preloadSpikeLeft);

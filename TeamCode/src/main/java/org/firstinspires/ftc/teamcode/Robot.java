@@ -136,6 +136,34 @@ public class Robot {
         this.subsystemState = Levels.INTERMEDIATE;
     }
 
+    public void autoIntake() {
+        intaking = false;
+        this.arm.setAngleArm(0);
+        this.arm.setAngleElbow(112);
+        try {
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.claw.setPositionClaw(245);
+        this.intake.stopIntake();
+        this.intake.setAngle(120);
+        try {
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.arm.setAngleArm(30);
+        this.arm.setAngleElbow(115);
+        try {
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.intake.setAngle(50);
+        this.subsystemState = Levels.INTERMEDIATE;
+    }
+
     /**
     * <h1>WARNING: BLOCKS THREAD</h1>
      * Blocks thread until intake is complete with specified number of pixels (1-2)
@@ -190,8 +218,39 @@ public class Robot {
         }
     }
 
+    public void autoIntake(long time, float intakeAngle) {
+        intaking = true;
+        this.intake.startIntake();
+        this.arm.setAngleArm(26);
+        this.claw.setPositionClaw(200);
+        this.intake.setAngle(intakeAngle);
+        this.claw.wrist.setAngle(123);
+        this.arm.setAngleElbow(110);
+        this.slides.runToPosition(0);
+
+        try {
+            Thread.sleep(time*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        this.stopIntake();
+    }
+
     public void depositPreset() {
         this.slides.runToPreset(Levels.DEPOSIT);
+        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+        double start = timer.time();
+        while (timer.time() - start <= 300) {
+            this.slides.update();
+        }
+        this.arm.runtoPreset(Levels.DEPOSIT);
+        this.claw.wrist.setAngle(123);
+        this.subsystemState = Levels.DEPOSIT;
+    }
+
+    public void autoPreloadDepositPreset() {
+        this.slides.runToPosition(200);
         ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         double start = timer.time();
         while (timer.time() - start <= 300) {
