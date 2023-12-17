@@ -70,6 +70,7 @@ public class TeleOpSafe extends LinearOpMode {
         boolean previousAutoAlignState = false;
         boolean isPressed = false;
         double intakePreviousPos;
+        float previousLeftTriggerState = 0;
 
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -185,6 +186,12 @@ public class TeleOpSafe extends LinearOpMode {
             }
             previousIntakeState = gamepad1.right_bumper;
 
+            if ((gamepad1.left_trigger > 0.2)){
+                robot.intake.reverse();
+            } else if ((gamepad1.left_trigger<0.2)  && (gamepad1.left_trigger != previousLeftTriggerState)){
+                robot.intake.stopIntake();
+            }
+            previousLeftTriggerState = gamepad1.left_trigger;
 
             //DEPOSIT
             if (gamepad1.left_bumper) {
