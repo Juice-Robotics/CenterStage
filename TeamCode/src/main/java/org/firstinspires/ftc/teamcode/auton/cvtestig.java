@@ -20,7 +20,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Disabled
 @Autonomous(group = "drive")
 
-public class RedSpikeLeft extends LinearOpMode {
+public class cvtestig extends LinearOpMode {
     Robot robot;
     VisionPortal visionPortal;
     TeamElementCVProcessor teamElementProcessor;
@@ -28,64 +28,18 @@ public class RedSpikeLeft extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        robot = new Robot(hardwareMap, true);
-        Pose2d startPose = new Pose2d(59, -36, Math.PI);
-        drive.setPoseEstimate(startPose);
+
 
         teamElementProcessor = new TeamElementCVProcessor(
                 () -> 100, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
                 () -> 213, // the left dividing line, in this case the left third of the frame
                 () -> 426, // the left dividing line, in this case the right third of the frame,
                 telemetry,
-                AllianceColor.BLUE);
+                AllianceColor.RED);
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
                 .addProcessor(teamElementProcessor)
-                .build();
 
-        // PRELOAD PATHS
-        TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
-                .addTemporalMarker(0, () -> {
-                    robot.runToAutoSpikePreset();
-                })
-                .splineTo(new Vector2d(45, -44), Math.toRadians(195))
-                .waitSeconds(1)
-                .addTemporalMarker(1, () -> {
-                    robot.claw.setClawOpen();
-                    robot.intakePreset();
-                    robot.claw.setClawClose();
-                })
-                .setReversed(true)
-                .back(15)
-                .build();
-
-        TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
-                .addTemporalMarker(0, () -> {
-                    robot.runToAutoSpikePreset();
-                })
-                .forward(20)
-                .waitSeconds(1)
-                .addTemporalMarker(1, () -> {
-                    robot.claw.setClawOpen();
-                    robot.intakePreset();
-                    robot.claw.setClawClose();
-                })
-                .back(10)
-                .build();
-
-        TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
-                .addTemporalMarker(0, () -> {
-                    robot.runToAutoSpikePreset();
-                })
-                .splineTo(new Vector2d(43, -27), Math.toRadians(165))
-                .waitSeconds(1)
-                .addTemporalMarker(1, () -> {
-                    robot.claw.setClawOpen();
-                    robot.intakePreset();
-                    robot.claw.setClawClose();
-                })
-                .back(15)
                 .build();
 
 
@@ -113,6 +67,7 @@ public class RedSpikeLeft extends LinearOpMode {
          */
 
         // shuts down the camera once the match starts, we dont need to look any more
+
         if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
             visionPortal.stopLiveView();
             visionPortal.stopStreaming();
@@ -120,30 +75,24 @@ public class RedSpikeLeft extends LinearOpMode {
 
         propLocation = teamElementProcessor.getLocation();
 
-        // if it is UNFOUND, you can manually set it to any of the other positions to guess
-        if (propLocation == TeamElementCVProcessor.Location.UNFOUND) {
-            propLocation = TeamElementCVProcessor.Location.CENTER;
-        }
+//        // if it is UNFOUND, you can manually set it to any of the other positions to guess
+//        if (propLocation == TeamElementCVProcessor.Location.UNFOUND) {
+//            propLocation = TeamElementCVProcessor.Location.CENTER;
+//        }
+
 
         waitForStart();
 
         if (isStopRequested()) return;
 
-        switch (propLocation) {
-            case CENTER:
-                drive.followTrajectorySequence(preloadSpikeCenter);
-                break;
-            case LEFT:
-                drive.followTrajectorySequence(preloadSpikeLeft);
-                break;
-            case RIGHT:
-                drive.followTrajectorySequence(preloadSpikeRight);
-                break;
-        }
+
+//        drive.followTrajectorySequence(park);
+
 
 
         // Transfer the current pose to PoseStorage so we can use it in TeleOp
-        PoseStorage.currentPose = drive.getPoseEstimate();
+
+        robot.slides.destroyThreads(telemetry);
 
         while (!isStopRequested() && opModeIsActive()) ;
     }

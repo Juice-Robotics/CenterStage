@@ -27,11 +27,6 @@ public class BlueBackdropSidePreload extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        robot = new Robot(hardwareMap, true);
-        Pose2d startPose = new Pose2d(-62, 12, Math.toRadians(180));
-        robot.autoIntake();
-
         teamElementProcessor = new TeamElementCVProcessor(
                 () -> 100, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
                 () -> 213, // the left dividing line, in this case the left third of the frame
@@ -41,7 +36,13 @@ public class BlueBackdropSidePreload extends LinearOpMode {
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
                 .addProcessor(teamElementProcessor)
+
                 .build();
+
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        robot = new Robot(hardwareMap, true);
+        Pose2d startPose = new Pose2d(-62, 12, Math.toRadians(180));
+        robot.autoIntake();
 
         drive.setPoseEstimate(startPose);
 
@@ -159,24 +160,23 @@ public class BlueBackdropSidePreload extends LinearOpMode {
          * during the init loop.
          */
 
+        waitForStart();
+
+        if (isStopRequested()) return;
+
         // shuts down the camera once the match starts, we dont need to look any more
 
-//        if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
-//            visionPortal.stopLiveView();
-//            visionPortal.stopStreaming();
-//        }
+        if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
+            visionPortal.stopLiveView();
+            visionPortal.stopStreaming();
+        }
 
         propLocation = teamElementProcessor.getLocation();
 
 //        // if it is UNFOUND, you can manually set it to any of the other positions to guess
-//        if (propLocation == TeamElementCVProcessor.Location.UNFOUND) {
-//            propLocation = TeamElementCVProcessor.Location.CENTER;
-//        }
-
-
-        waitForStart();
-
-        if (isStopRequested()) return;
+        if (propLocation == TeamElementCVProcessor.Location.UNFOUND) {
+            propLocation = TeamElementCVProcessor.Location.CENTER;
+        }
 
         robot.slides.launchAsThread(telemetry);
         switch (propLocation) {

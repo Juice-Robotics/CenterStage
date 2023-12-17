@@ -59,11 +59,11 @@ public class TeamElementCVProcessor implements VisionProcessor {
         telemetry = t;
 
         if (a == AllianceColor.BLUE) {
-            lower = new Scalar(100,20,70);
-            upper = new Scalar(300,225,225);
+            lower = new Scalar(100, 150,80);
+            upper = new Scalar(300,254,254);
         } else {
-            lower = new Scalar(0,120,100);
-            upper = new Scalar(60,225,220);
+            lower = new Scalar(0,150,100);
+            upper = new Scalar(60,254,254);
         }
 
         this.contours = new ArrayList<>();
