@@ -106,18 +106,18 @@ public class Robot {
     public void startIntake() {
         intaking = true;
         this.intake.startIntake();
-        this.arm.setAngleArm(26);
+        this.arm.setAngleArm(29);
         this.claw.setPositionClaw(185);
         this.intake.setAngle(196);
         this.claw.wrist.setAngle(123);
-        this.arm.setAngleElbow(110);
+        this.arm.setAngleElbow(111);
         this.slides.runToPosition(0);
     }
 
     public void stopIntake() {
         intaking = false;
         this.arm.setAngleArm(0);
-        this.arm.setAngleElbow(112);
+        this.arm.setAngleElbow(119);
         try {
             Thread.sleep(250);
         } catch (InterruptedException e) {
@@ -125,9 +125,9 @@ public class Robot {
         }
         this.claw.setPositionClaw(245);
         this.intake.stopIntake();
-        this.intake.setAngle(120);
+        this.intake.setAngle(130);
         try {
-            Thread.sleep(350);
+            Thread.sleep(600);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -145,7 +145,7 @@ public class Robot {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        this.claw.setPositionClaw(245);
+        this.claw.setPositionClaw(250);
         this.intake.stopIntake();
         this.intake.setAngle(120);
         try {
@@ -197,8 +197,8 @@ public class Robot {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        this.arm.setAngleArm(27);
-        this.arm.setAngleElbow(120);
+        this.arm.setAngleArm(29);
+        this.arm.setAngleElbow(124);
         this.claw.wrist.setAngle(123);
         try {
             Thread.sleep(100);
@@ -242,7 +242,7 @@ public class Robot {
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 try {
-                    Thread.sleep(300);
+                    Thread.sleep(700);
                 } catch (Exception e) {
                 }
                 arm.runtoPreset(Levels.DEPOSIT);
@@ -280,7 +280,7 @@ public class Robot {
 
     public void climbExtend() {
         this.slides.runToClimb();
-        this.intake.setAngle(120);
+        this.intake.setAngle(130);
         ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         double start = timer.time();
         while (timer.time() - start <= 250) {

@@ -6,22 +6,18 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.vision.TeamElementCVProcessor;
-import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkElementCVProccesor;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.vision.VisionPortal;
 
 @Config
 @Autonomous(group = "drive")
 
-public class BlueBackdropSidePreload extends LinearOpMode {
+public class BlueSpikeFar extends LinearOpMode {
     Robot robot;
-//    VisionPortal visionPortal;
+    //    VisionPortal visionPortal;
 //    TeamElementCVProcessor teamElementProcessor;
 //    YoinkElementCVProccesor teamElementProcessor;
     TeamElementCVProcessor.Location propLocation = TeamElementCVProcessor.Location.UNFOUND;
@@ -45,7 +41,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         robot = new Robot(hardwareMap, true);
-        Pose2d startPose = new Pose2d(-62, 12, Math.toRadians(180));
+        Pose2d startPose = new Pose2d(-62, -34, Math.toRadians(180));
         robot.autoIntake();
 
         drive.setPoseEstimate(startPose);
@@ -53,9 +49,8 @@ public class BlueBackdropSidePreload extends LinearOpMode {
         // PRELOAD PATHS
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-30, 10, Math.toRadians(90)), Math.toRadians(0))
-                .forward(15)
-                .turn(Math.toRadians(180))
+                .back(20)
+                .forward(10)
                 .build();
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
@@ -178,14 +173,13 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
 //        // if it is UNFOUND, you can manually set it to any of the other positions to guess
 //        if (propLocation == TeamElementCVProcessor.Location.UNFOUND) {
-            propLocation = TeamElementCVProcessor.Location.CENTER;
+        propLocation = TeamElementCVProcessor.Location.CENTER;
 //        }
 
         robot.slides.launchAsThread(telemetry);
         switch (propLocation) {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
-                drive.followTrajectorySequence(preloadBackdropCenter);
                 break;
             case LEFT:
                 drive.followTrajectorySequence(preloadSpikeLeft);
