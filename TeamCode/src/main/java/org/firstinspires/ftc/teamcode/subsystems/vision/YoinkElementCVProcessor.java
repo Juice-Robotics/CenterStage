@@ -35,17 +35,17 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
 
     private Mat finalMat = new Mat();
 
-    public static int blueLeftX = 800;
-    public static int blueLeftY = 550;
+    public static int blueLeftX = 248;
+    public static int blueLeftY = 243;
 
-    public static int blueCenterX = 1175;
-    public static int blueCenterY = 175;
+    public static int blueCenterX = 415;
+    public static int blueCenterY = 76;
 
-    public static int redLeftX = 900;
-    public static int redLeftY = 525;
+    public static int redLeftX = 293;
+    public static int redLeftY = 232;
 
-    public static int redCenterX = 1325;
-    public static int redCenterY = 100;
+    public static int redCenterX = 482;
+    public static int redCenterY = 42;
 
     public static int width = 125;
     public static int height = 125;
