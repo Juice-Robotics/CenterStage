@@ -106,9 +106,9 @@ public class Robot {
     public void startIntake() {
         intaking = true;
         this.intake.startIntake();
-        this.arm.setAngleArm(29);
+        this.arm.setAngleArm(27);
         this.claw.setPositionClaw(185);
-        this.intake.setAngle(196);
+        this.intake.setAngle(202);
         this.claw.wrist.setAngle(123);
         this.arm.setAngleElbow(111);
         this.slides.runToPosition(0);
