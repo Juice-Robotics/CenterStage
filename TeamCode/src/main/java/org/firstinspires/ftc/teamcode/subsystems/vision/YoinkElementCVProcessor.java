@@ -23,7 +23,7 @@ import org.opencv.imgproc.Imgproc;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Config
-public class YoinkElementCVProccesor implements VisionProcessor, CameraStreamSource {
+public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSource {
     private final AtomicReference<Bitmap> lastFrame = new AtomicReference<>(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565));
 
     private PropLocation location = PropLocation.RIGHT;

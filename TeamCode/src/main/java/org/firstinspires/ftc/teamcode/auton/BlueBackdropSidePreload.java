@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.auton;
 
+import android.util.Size;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -12,7 +14,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.vision.TeamElementCVProcessor;
-import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkElementCVProccesor;
+import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkElementCVProcessor;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
 
@@ -21,27 +23,23 @@ import org.firstinspires.ftc.vision.VisionPortal;
 
 public class BlueBackdropSidePreload extends LinearOpMode {
     Robot robot;
-//    VisionPortal visionPortal;
+    VisionPortal visionPortal;
 //    TeamElementCVProcessor teamElementProcessor;
-//    YoinkElementCVProccesor teamElementProcessor;
-    TeamElementCVProcessor.Location propLocation = TeamElementCVProcessor.Location.UNFOUND;
-//    YoinkElementCVProccesor.PropLocation propLocation = YoinkElementCVProccesor.PropLocation.UNFOUND;
+    YoinkElementCVProcessor teamElementProcessor;
+    YoinkElementCVProcessor.PropLocation propLocation = YoinkElementCVProcessor.PropLocation.UNFOUND;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-//        teamElementProcessor = new TeamElementCVProcessor(
-//                () -> 100, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
-//                () -> 175,//213 // the left dividing line, in this case the left third of the frame
-//                () -> 350, //426// the left dividing line, in this case the right third of the frame,
-//                telemetry,
-//                AllianceColor.BLUE);
-////        teamElementProcessor = new YoinkElementCVProccesor();
-//        visionPortal = new VisionPortal.Builder()
-//                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
-//                .addProcessor(teamElementProcessor)
-//
-//                .build();
+        teamElementProcessor = new YoinkElementCVProcessor();
+        teamElementProcessor.alliance = AllianceColor.BLUE;
+//        teamElementProcessor = new YoinkElementCVProccesor();
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
+                .setCameraResolution(new Size(1920, 1080))
+                .addProcessor(teamElementProcessor)
+
+                .build();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         robot = new Robot(hardwareMap, true);
@@ -148,23 +146,23 @@ public class BlueBackdropSidePreload extends LinearOpMode {
          */
 
 //        TeamElementCVProcessor.Location reading = teamElementProcessor.getLocation();
-//        YoinkElementCVProccesor.PropLocation reading = teamElementProcessor.getLocation();
-//        propLocation = teamElementProcessor.getLocation();
-//        telemetry.addData("Camera State", visionPortal.getCameraState());
+        YoinkElementCVProcessor.PropLocation reading = teamElementProcessor.getLocation();
+        propLocation = teamElementProcessor.getLocation();
+        telemetry.addData("Camera State", visionPortal.getCameraState());
 
         while (!isStarted() && !isStopRequested()) {
-//            TeamElementCVProcessor.Location reading = teamElementProcessor.getLocation();
-//            propLocation = teamElementProcessor.getLocation();
-//            telemetry.addData("Camera State", visionPortal.getCameraState());
-//            if (reading == TeamElementCVProcessor.Location.UNFOUND) {
-//                telemetry.addLine("Team Element Location: <b>NOT FOUND</b>");
-//            } else {
-//                telemetry.addData("Team Element Location", reading);
-//            }
-//
-//            telemetry.update();
+            reading = teamElementProcessor.getLocation();
+            propLocation = teamElementProcessor.getLocation();
+            telemetry.addData("Camera State", visionPortal.getCameraState());
+            if (reading == YoinkElementCVProcessor.PropLocation.UNFOUND) {
+                telemetry.addLine("Team Element Location: <b>NOT FOUND</b>");
+            } else {
+                telemetry.addData("Team Element Location", reading);
+            }
+
+            telemetry.update();
         }
-//        visionPortal.close();
+        visionPortal.close();
 
         /*
          * The START command just came in: now work off the latest snapshot acquired
@@ -177,9 +175,9 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
 
 //        // if it is UNFOUND, you can manually set it to any of the other positions to guess
-//        if (propLocation == TeamElementCVProcessor.Location.UNFOUND) {
-            propLocation = TeamElementCVProcessor.Location.CENTER;
-//        }
+        if (propLocation == YoinkElementCVProcessor.PropLocation.UNFOUND) {
+            propLocation = YoinkElementCVProcessor.PropLocation.CENTER;
+        }
 
         robot.slides.launchAsThread(telemetry);
         switch (propLocation) {

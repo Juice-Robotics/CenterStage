@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.auton;
 
+import android.util.Size;
+
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -13,6 +16,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.vision.TeamElementCVProcessor;
+import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkElementCVProcessor;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
 
@@ -21,26 +25,26 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Autonomous(group = "drive")
 
 public class cvtestig extends LinearOpMode {
-    Robot robot;
     VisionPortal visionPortal;
-    TeamElementCVProcessor teamElementProcessor;
-    TeamElementCVProcessor.Location propLocation = TeamElementCVProcessor.Location.UNFOUND;
+    YoinkElementCVProcessor teamElementProcessor;
+    YoinkElementCVProcessor.PropLocation propLocation = YoinkElementCVProcessor.PropLocation.UNFOUND;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
 
-        teamElementProcessor = new TeamElementCVProcessor(
-                () -> 100, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
-                () -> 213, // the left dividing line, in this case the left third of the frame
-                () -> 426, // the left dividing line, in this case the right third of the frame,
-                telemetry,
-                AllianceColor.RED);
+        teamElementProcessor = new YoinkElementCVProcessor();
+        teamElementProcessor.alliance = AllianceColor.RED;
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
+                .setCameraResolution(new Size(1920, 1080))
+                .enableLiveView(true)
+                .setAutoStopLiveView(true)
                 .addProcessor(teamElementProcessor)
 
                 .build();
+
+        FtcDashboard.getInstance().startCameraStream(teamElementProcessor, 30);
 
 
         /*
@@ -48,10 +52,10 @@ public class cvtestig extends LinearOpMode {
          * This REPLACES waitForStart!
          */
         while (!isStarted() && !isStopRequested()) {
-            TeamElementCVProcessor.Location reading = teamElementProcessor.getLocation();
+            YoinkElementCVProcessor.PropLocation reading = teamElementProcessor.getLocation();
             telemetry.addData("Camera State", visionPortal.getCameraState());
 
-            if (reading == TeamElementCVProcessor.Location.UNFOUND) {
+            if (reading == YoinkElementCVProcessor.PropLocation.UNFOUND) {
                 telemetry.addLine("Team Element Location: <b>NOT FOUND</b>");
             } else {
                 telemetry.addData("Team Element Location", reading);
@@ -85,14 +89,6 @@ public class cvtestig extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-
-//        drive.followTrajectorySequence(park);
-
-
-
-        // Transfer the current pose to PoseStorage so we can use it in TeleOp
-
-        robot.slides.destroyThreads(telemetry);
 
         while (!isStopRequested() && opModeIsActive()) ;
     }
