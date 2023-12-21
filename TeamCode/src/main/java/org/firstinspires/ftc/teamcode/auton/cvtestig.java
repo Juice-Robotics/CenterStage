@@ -21,7 +21,6 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Config
-@Disabled
 @Autonomous(group = "drive")
 
 public class cvtestig extends LinearOpMode {
