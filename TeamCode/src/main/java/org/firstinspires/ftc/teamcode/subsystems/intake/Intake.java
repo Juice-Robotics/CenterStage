@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems.intake;
 
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.lib.Motor;
+import org.firstinspires.ftc.teamcode.lib.MotorEx;
 import org.firstinspires.ftc.teamcode.lib.StepperServo;
 
 public class Intake {
@@ -17,9 +17,9 @@ public class Intake {
 
     public float intakeDown = 25;
 
-    public Motor intakeMotor;
+    public MotorEx intakeMotor;
 
-    public Intake(StepperServo intakeServo1, StepperServo intakeServo2, Motor intakeMotor) {
+    public Intake(StepperServo intakeServo1, StepperServo intakeServo2, MotorEx intakeMotor) {
         this.intakeServo1 = intakeServo1;
         this.intakeServo2 = intakeServo2;
 
