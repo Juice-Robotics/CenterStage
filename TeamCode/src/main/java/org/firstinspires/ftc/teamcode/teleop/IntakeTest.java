@@ -14,20 +14,19 @@ import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.lib.StepperServo;
 
 @TeleOp(group = "competition")
-@Disabled
 @Config
 public class IntakeTest extends LinearOpMode {
     DcMotorEx motor;
     public static double MOT_POWER = 0;
-    public static double ARM_POS = -110;
-    public static double WRIST_ROTATION = 112;
+    public static double ARM_POS = 27;
+    public static double ELBOW = 110;
     public static double WRIST_PIVOT = 123;
-    public static double INTAKE_DEPLOY = 200;
-    public static double CLAW = 0;
+    public static double INTAKE_DEPLOY = 197;
+    public static double CLAW = 185;
 
 
 
-    StepperServo wrist1;
+    StepperServo elbow;
     StepperServo wrist2;
 
     StepperServo arm1;
@@ -40,7 +39,7 @@ public class IntakeTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         motor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
-        wrist1 = new StepperServo(0, "elbow", hardwareMap);
+        elbow = new StepperServo(0, "elbow", hardwareMap);
         wrist2 = new StepperServo(0, "wrist", hardwareMap);
         arm1 = new StepperServo(0, "arm1", hardwareMap);
         arm2 = new StepperServo(0, "arm2", hardwareMap);
@@ -54,13 +53,17 @@ public class IntakeTest extends LinearOpMode {
         if (isStopRequested()) return;
         while (opModeIsActive() && !isStopRequested()) {
             motor.setPower(MOT_POWER);
-            wrist1.setAngle((float) WRIST_ROTATION);
+            elbow.setAngle((float) ELBOW);
             wrist2.setAngle((float) WRIST_PIVOT);
             arm1.setAngle((float) ARM_POS);
-            arm2.setAngle((float) -ARM_POS);
+            arm2.setAngle((float) ARM_POS);
             intakeDeploy1.setAngle((float) INTAKE_DEPLOY);
             intakeDeploy2.setAngle((float) INTAKE_DEPLOY);
             claw.setAngle((float) CLAW);
+
+            telemetry.addData("current draw", motor.getCurrent(CurrentUnit.AMPS));
+            telemetry.addData("velocity", motor.getVelocity());
+            telemetry.update();
         }
     }
 }
