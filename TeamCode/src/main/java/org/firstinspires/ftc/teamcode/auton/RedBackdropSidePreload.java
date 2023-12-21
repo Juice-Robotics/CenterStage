@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.auton;
 
+import android.util.Size;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -34,6 +36,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 AllianceColor.RED);
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
+                .setCameraResolution(new Size(1920, 1080))
                 .addProcessor(teamElementProcessor)
                 .build();
 
