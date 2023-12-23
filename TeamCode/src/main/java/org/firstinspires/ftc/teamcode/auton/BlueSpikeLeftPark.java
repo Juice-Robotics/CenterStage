@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.lib.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.vision.TeamElementCVProcessor;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Config
 @Disabled

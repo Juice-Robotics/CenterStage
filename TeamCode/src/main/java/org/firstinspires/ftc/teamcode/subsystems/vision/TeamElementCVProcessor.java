@@ -42,7 +42,7 @@ public class TeamElementCVProcessor implements VisionProcessor {
     private Location previousPropPosition;
     private Location recordedPropPosition = Location.UNFOUND;
 
-    AllianceColor alliance;
+    //AllianceColor alliance;
     Telemetry telemetry;
 
     /**
@@ -58,15 +58,15 @@ public class TeamElementCVProcessor implements VisionProcessor {
 
         Scalar lower;
         Scalar upper;
-        alliance = a;
+        //alliance = a;
         telemetry = t;
 
-        if (alliance == AllianceColor.BLUE) {
+        if (a == AllianceColor.BLUE) {
             lower = new Scalar(100,100,100);
             upper = new Scalar(300,225,220);
         } else {
-            lower = new Scalar(0,120,100);
-            upper = new Scalar(60,225,220);
+            lower = new Scalar(0,20,70);
+            upper = new Scalar(70,255,255);
         }
 
         this.contours = new ArrayList<>();
