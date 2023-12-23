@@ -41,15 +41,13 @@ public class TeamElementCVProcessor implements VisionProcessor {
 
     private Location previousPropPosition;
     private Location recordedPropPosition = Location.UNFOUND;
-
-    //AllianceColor alliance;
     Telemetry telemetry;
 
     /**
      * Uses HSVs for the scalars
      *
-     * //@param lower   the lower masked bound, a three a value scalar in the form of a HSV
-     //* @param upper   the upper masked bound, a three a value scalar in the form of a HSV
+     //     * @param lower   the lower masked bound, a three a value scalar in the form of a HSV
+     //     * @param upper   the upper masked bound, a three a value scalar in the form of a HSV
      * @param minArea the minimum area for a detected blob to be considered the prop
      * @param left    the dividing point for the prop to be on the left
      * @param right   the diving point for the prop to be on the right
@@ -58,15 +56,14 @@ public class TeamElementCVProcessor implements VisionProcessor {
 
         Scalar lower;
         Scalar upper;
-        //alliance = a;
         telemetry = t;
 
         if (a == AllianceColor.BLUE) {
-            lower = new Scalar(100,100,100);
-            upper = new Scalar(300,225,220);
+            lower = new Scalar(100, 150,80);
+            upper = new Scalar(300,254,254);
         } else {
-            lower = new Scalar(0,20,70);
-            upper = new Scalar(70,255,255);
+            lower = new Scalar(0,80,20);
+            upper = new Scalar(60,254,254);
         }
 
         this.contours = new ArrayList<>();

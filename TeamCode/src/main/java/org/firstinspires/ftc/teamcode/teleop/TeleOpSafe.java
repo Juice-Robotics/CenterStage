@@ -260,6 +260,7 @@ public class TeleOpSafe extends LinearOpMode {
 
             //autoClosePreviousState = gamepad1.circle;
             robot.slides.update();
+            robot.antiJam();
             //robot.smartIntakeUpdate();
             //robot.drive.getLocalizer().update();
             telemetry.addData("TIME LEFT: ", ((120-matchTimer.time(TimeUnit.SECONDS))));

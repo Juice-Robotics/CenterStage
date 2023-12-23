@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.Component;
 import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.Motor;
+import org.firstinspires.ftc.teamcode.lib.MotorEx;
 import org.firstinspires.ftc.teamcode.lib.StepperServo;
 import org.firstinspires.ftc.teamcode.subsystems.arm.ArmElbow;
 import org.firstinspires.ftc.teamcode.subsystems.deposit.Claw;
@@ -68,7 +69,7 @@ public class Robot {
                 new StepperServo(1, "elbow", map),                   //10
                 new StepperServo(1, "claw", map),                 //11
                 new StepperServo(1, "wrist", map),                   //12
-                new Motor(1, "intakeMotor", map, false),   //13
+                new MotorEx(1, "intakeMotor", map, false),   //13
                 new StepperServo(1, "intakeServo1", map),            //14
                 new StepperServo(1, "intakeServo2", map),            //15
 
@@ -82,7 +83,7 @@ public class Robot {
 
         this.claw = new Claw((StepperServo) components[11], (StepperServo) components[12]);
         this.arm = new ArmElbow((StepperServo) components[8], (StepperServo) components[9], (StepperServo) components[10]);
-        this.intake = new Intake((StepperServo) components[14], (StepperServo) components[15], (Motor) (Motor) components[13]);
+        this.intake = new Intake((StepperServo) components[14], (StepperServo) components[15], (MotorEx) components[13]);
 //        this.intakeSensor = new IntakeSensor(map.get(NormalizedColorSensor.class, "intakeSensor1"), map.get(NormalizedColorSensor.class, "intakeSensor2"), 2);
         this.slides = new Slides((Motor) components[4], (Motor) components[5], (Motor) components[6], (StepperServo) components[7], voltageSensor);
         this.drone = new DroneLauncher((StepperServo) components[16]);
@@ -106,9 +107,9 @@ public class Robot {
     public void startIntake() {
         intaking = true;
         this.intake.startIntake();
-        this.arm.setAngleArm(26);
-        this.claw.setPositionClaw(200);
-        this.intake.setAngle(196);
+        this.arm.setAngleArm(27);
+        this.claw.setPositionClaw(185);
+        this.intake.setAngle(197);
         this.claw.wrist.setAngle(123);
         this.arm.setAngleElbow(110);
         this.slides.runToPosition(0);
@@ -117,7 +118,7 @@ public class Robot {
     public void stopIntake() {
         intaking = false;
         this.arm.setAngleArm(0);
-        this.arm.setAngleElbow(112);
+        this.arm.setAngleElbow(119);
         try {
             Thread.sleep(250);
         } catch (InterruptedException e) {
@@ -125,9 +126,9 @@ public class Robot {
         }
         this.claw.setPositionClaw(245);
         this.intake.stopIntake();
-        this.intake.setAngle(120);
+        this.intake.setAngle(130);
         try {
-            Thread.sleep(250);
+            Thread.sleep(600);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -145,7 +146,7 @@ public class Robot {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        this.claw.setPositionClaw(245);
+        this.claw.setPositionClaw(250);
         this.intake.stopIntake();
         this.intake.setAngle(120);
         try {
@@ -197,8 +198,8 @@ public class Robot {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        this.arm.setAngleArm(27);
-        this.arm.setAngleElbow(120);
+        this.arm.setAngleArm(30);
+        this.arm.setAngleElbow(110);
         this.claw.wrist.setAngle(123);
         try {
             Thread.sleep(100);
@@ -239,27 +240,34 @@ public class Robot {
 
     public void depositPreset() {
         this.slides.runToPreset(Levels.DEPOSIT);
-        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        double start = timer.time();
-        while (timer.time() - start <= 300) {
-            this.slides.update();
-        }
-        this.arm.runtoPreset(Levels.DEPOSIT);
-        this.claw.wrist.setAngle(123);
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(700);
+                } catch (Exception e) {
+                }
+                arm.runtoPreset(Levels.DEPOSIT);
+                claw.wrist.setAngle(123);
+            }});
+        thread.start();
         this.subsystemState = Levels.DEPOSIT;
     }
 
     public void autoPreloadDepositPreset() {
         this.slides.runToPosition(200);
-        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        double start = timer.time();
-        while (timer.time() - start <= 300) {
-            this.slides.update();
-        }
-        this.arm.runtoPreset(Levels.DEPOSIT);
-        this.claw.wrist.setAngle(123);
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(300);
+                } catch (Exception e) {
+                }
+                arm.runtoPreset(Levels.DEPOSIT);
+                claw.wrist.setAngle(123);
+            }});
+        thread.start();
         this.subsystemState = Levels.DEPOSIT;
     }
+
     public void runToAutoSpikePreset() {
         this.slides.runToPosition(100);
         this.arm.runtoPreset(Levels.DEPOSIT);
@@ -273,7 +281,7 @@ public class Robot {
 
     public void climbExtend() {
         this.slides.runToClimb();
-        this.intake.setAngle(120);
+        this.intake.setAngle(130);
         ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         double start = timer.time();
         while (timer.time() - start <= 250) {
@@ -294,18 +302,22 @@ public class Robot {
         this.slides.setPower(0);
 
     }
-//    public double checkJam(double previousPosition){
-//        if ((this.intake.intakeMotor.g(CurrentUnit.AMPS)> CURRENT_HIGH) && (this.intake.intakeMotor.getCurrentPosition()-previousPosition < ENCODER_MAX_DIFFERENCE)) {
-//            this.intake.reverse();
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            this.intake.startIntake();
-//        }
-//        return this.intake.intakeMotor.getCurrentPosition();
-//    }
+    public void antiJam(){
+        if (intaking) {
+            if (this.intake.intakeMotor.getCurrent() > 5.0) {
+                this.intake.setAngle(100);
+                this.intake.reverse();
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                this.intake.setAngle(197);
+                this.intake.intakeMotor.setSpeed(1);
+            }
+        }
+    }
+
 //    public void depositToIntake(){
 //        this.arm.setAngleElbow(125);
 //        this.arm.setAngleArm(15);

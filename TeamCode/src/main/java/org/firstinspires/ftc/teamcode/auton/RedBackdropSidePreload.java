@@ -1,25 +1,44 @@
 package org.firstinspires.ftc.teamcode.auton;
 
+import android.util.Size;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.vision.TeamElementCVProcessor;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.vision.VisionPortal;
 
 @Config
 @Autonomous(group = "drive")
 
 public class RedBackdropSidePreload extends LinearOpMode {
     Robot robot;
-
+    VisionPortal visionPortal;
+    TeamElementCVProcessor teamElementProcessor;
+    TeamElementCVProcessor.Location propLocation = TeamElementCVProcessor.Location.UNFOUND;
     @Override
     public void runOpMode() throws InterruptedException {
+
+        teamElementProcessor = new TeamElementCVProcessor(
+                () -> 100, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
+                () -> 213, // the left dividing line, in this case the left third of the frame
+                () -> 426, // the left dividing line, in this case the right third of the frame,
+                telemetry,
+                AllianceColor.RED);
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
+                .setCameraResolution(new Size(1920, 1080))
+                .addProcessor(teamElementProcessor)
+                .build();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         robot = new Robot(hardwareMap, true);
@@ -33,12 +52,12 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(30, 10, Math.toRadians(90)), Math.toRadians(0))
                 .forward(15)
-                .turn(Math.toRadians(185))
+                .turn(Math.toRadians(180))
                 .build();
 
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(42, 49.5), Math.toRadians(90))
+                .back(25)
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -49,7 +68,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(3)
-                .strafeRight(30)
+                .strafeRight(20)
                 .back(10)
                 .build();
 
@@ -85,7 +104,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(true)
-                .splineToConstantHeading(new Vector2d(29, 49.5), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(42, 52, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -124,7 +143,16 @@ public class RedBackdropSidePreload extends LinearOpMode {
          * This REPLACES waitForStart!
          */
         while (!isStarted() && !isStopRequested()) {
+            TeamElementCVProcessor.Location reading = teamElementProcessor.getLocation();
+            telemetry.addData("Camera State", visionPortal.getCameraState());
 
+            if (reading == TeamElementCVProcessor.Location.UNFOUND) {
+                telemetry.addLine("Team Element Location: <b>NOT FOUND</b>");
+            } else {
+                telemetry.addData("Team Element Location", reading);
+            }
+
+            telemetry.update();
         }
 
 
@@ -133,14 +161,24 @@ public class RedBackdropSidePreload extends LinearOpMode {
          * during the init loop.
          */
 
-        // shuts down the camera once the match starts, we dont need to look any more
-
-        TeamElementCVProcessor.Location propLocation = TeamElementCVProcessor.Location.LEFT;
 
 
         waitForStart();
 
         if (isStopRequested()) return;
+
+        // shuts down the camera once the match starts, we dont need to look any more
+
+        if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
+            visionPortal.close();
+        }
+
+        propLocation = teamElementProcessor.getLocation();
+
+//        // if it is UNFOUND, you can manually set it to any of the other positions to guess
+        if (propLocation == TeamElementCVProcessor.Location.UNFOUND) {
+            propLocation = TeamElementCVProcessor.Location.CENTER;
+        }
 
         robot.slides.launchAsThread(telemetry);
         switch (propLocation) {
@@ -166,6 +204,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
         PoseStorage.currentPose = drive.getPoseEstimate();
 
         robot.slides.destroyThreads(telemetry);
+        visionPortal.close();
 
         while (!isStopRequested() && opModeIsActive()) ;
     }
