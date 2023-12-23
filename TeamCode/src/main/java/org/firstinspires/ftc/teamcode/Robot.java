@@ -305,12 +305,14 @@ public class Robot {
     public void antiJam(){
         if (intaking) {
             if (this.intake.intakeMotor.getCurrent() > 5.0) {
+                this.intake.setAngle(100);
                 this.intake.reverse();
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                this.intake.setAngle(197);
                 this.intake.intakeMotor.setSpeed(1);
             }
         }
