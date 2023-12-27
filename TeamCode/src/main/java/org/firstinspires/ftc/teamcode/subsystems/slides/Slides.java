@@ -134,13 +134,18 @@ public class Slides {
         timer.reset();
     }
 
-    public void shiftGear() {
-        climbServo.setAngle(ENGAGED_POS);
-        climbMotor.motor.setPower(0);
-        try {
-            TimeUnit.SECONDS.sleep(1); //TEST
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    public void shiftGear(boolean engaged) {
+        if (engaged) {
+            climbServo.setAngle(ENGAGED_POS);
+            climbMotor.motor.setPower(0);
+            try {
+                TimeUnit.SECONDS.sleep(1); //TEST
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            climbServo.setAngle(DISENGAGED_POS);
+            climbMotor.motor.setPower(0);
         }
     }
 

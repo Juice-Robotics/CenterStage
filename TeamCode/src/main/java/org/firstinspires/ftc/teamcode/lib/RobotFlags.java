@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.lib;
 
 public enum RobotFlags {
-    CLIMB_STOP_REQUESTED,
+    CLIMB_RETRACT_REQUESTED,
+    CLIMB_EXTEND_IN_PROGRESS,
+    CLIMB_ENGAGED,
     CLIMB_STALLED,
     INTAKE_JAMMED
 }

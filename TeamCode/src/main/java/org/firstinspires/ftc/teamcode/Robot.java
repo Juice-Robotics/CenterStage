@@ -292,6 +292,8 @@ public class Robot {
     }
 
     public void climbExtend() {
+        this.flags.add(RobotFlags.CLIMB_ENGAGED);
+        this.flags.add(RobotFlags.CLIMB_EXTEND_IN_PROGRESS);
         this.slides.runToClimb();
         this.intake.setAngle(130);
         Thread thread = new Thread(new Runnable() {
@@ -302,20 +304,53 @@ public class Robot {
                 }
                 arm.runtoPreset(Levels.DEPOSIT);
                 claw.wrist.setAngle(123);
-                while (slides.getPos() <= 460) {
+                while (slides.getPos() <= 460 && !flags.contains(RobotFlags.CLIMB_RETRACT_REQUESTED)) {
                     // sleep
                 }
-                slides.setPower((float) 0.6);
-                slides.shiftGear();
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if (!flags.contains(RobotFlags.CLIMB_RETRACT_REQUESTED)) {
+                    slides.setPower((float) 0.6);
+                    slides.shiftGear(true);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    slides.setPower(0);
                 }
-                slides.setPower(0);
+
+                if (flags.contains(RobotFlags.CLIMB_RETRACT_REQUESTED)) {
+                    slides.shiftGear(false);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    smartClawOpen();
+                    flags.remove(RobotFlags.CLIMB_RETRACT_REQUESTED);
+                }
+                flags.remove(RobotFlags.CLIMB_EXTEND_IN_PROGRESS);
             }});
         thread.start();
     }
+
+    /**
+     * <h1>CLIMB DISENGAGE, NOT CLIMB START</h1>
+     */
+    public void climbRetract() {
+        this.flags.remove(RobotFlags.CLIMB_ENGAGED);
+        if (flags.contains(RobotFlags.CLIMB_EXTEND_IN_PROGRESS)) {
+            flags.add(RobotFlags.CLIMB_RETRACT_REQUESTED);
+        } else {
+            slides.shiftGear(false);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            smartClawOpen();
+        }
+    }
+
     public void antiJam(){
         if (intaking) {
             if (this.intake.intakeMotor.getCurrent() > 5.0) {
