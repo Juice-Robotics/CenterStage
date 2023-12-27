@@ -43,7 +43,7 @@ public class Intake {
         intakeServo2.setAngle(angle);
     }
     public void reverse(){
-        intakeMotor.setSpeed(-1);
+        intakeMotor.setSpeed(-0.7F);
     }
 
 }

@@ -313,7 +313,7 @@ public class Robot {
                     e.printStackTrace();
                 }
                 this.intake.setAngle(197);
-                this.intake.intakeMotor.setSpeed(1);
+                this.intake.intakeMotor.setSpeed(0.7F);
             }
         }
     }
