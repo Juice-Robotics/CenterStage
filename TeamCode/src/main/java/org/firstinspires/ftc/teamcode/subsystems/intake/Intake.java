@@ -29,7 +29,7 @@ public class Intake {
     }
 
     public void startIntake(){
-        intakeMotor.setSpeed(0.7F);
+        intakeMotor.setSpeed(0.6F);
         intakeServo1.setAngle(intakeDown);
     }
 
@@ -43,7 +43,7 @@ public class Intake {
         intakeServo2.setAngle(angle);
     }
     public void reverse(){
-        intakeMotor.setSpeed(-0.7F);
+        intakeMotor.setSpeed(-0.6F);
     }
 
 }
