@@ -119,22 +119,26 @@ public class Robot {
         intaking = false;
         this.arm.setAngleArm(0);
         this.arm.setAngleElbow(119);
-        try {
-            Thread.sleep(250);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.claw.setPositionClaw(245);
-        this.intake.stopIntake();
-        this.intake.setAngle(130);
-        try {
-            Thread.sleep(600);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.arm.setAngleArm(30);
-        this.arm.setAngleElbow(115);
-        this.subsystemState = Levels.INTERMEDIATE;
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                claw.setPositionClaw(245);
+                intake.stopIntake();
+                intake.setAngle(130);
+                try {
+                    Thread.sleep(600);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                arm.setAngleArm(30);
+                arm.setAngleElbow(115);
+            }});
+        thread.start();
+        subsystemState = Levels.INTERMEDIATE;
     }
 
     public void autoIntake() {
@@ -193,20 +197,24 @@ public class Robot {
 
     public void smartClawOpen() {
         this.claw.setClawOpen();
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.arm.setAngleArm(30);
-        this.arm.setAngleElbow(110);
-        this.claw.wrist.setAngle(123);
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.slides.runToPosition(0);
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                arm.setAngleArm(30);
+                arm.setAngleElbow(110);
+                claw.wrist.setAngle(123);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                slides.runToPosition(0);
+            }});
+        thread.start();
     }
 
     public void smartIntakeUpdate() {
