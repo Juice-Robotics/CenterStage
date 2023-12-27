@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.lib.Component;
 import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.Motor;
 import org.firstinspires.ftc.teamcode.lib.MotorEx;
+import org.firstinspires.ftc.teamcode.lib.RobotFlags;
 import org.firstinspires.ftc.teamcode.lib.StepperServo;
 import org.firstinspires.ftc.teamcode.subsystems.arm.ArmElbow;
 import org.firstinspires.ftc.teamcode.subsystems.deposit.Claw;
@@ -23,6 +24,8 @@ import org.firstinspires.ftc.teamcode.subsystems.relocalization.Relocalization;
 import org.firstinspires.ftc.teamcode.subsystems.slides.Slides;
 import org.firstinspires.ftc.teamcode.subsystems.launcher.DroneLauncher;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
+
+import java.util.ArrayList;
 
 public class Robot {
 
@@ -44,6 +47,7 @@ public class Robot {
     boolean auton;
     public Levels subsystemState = Levels.INTAKE;
     public boolean intaking = false;
+    public ArrayList<RobotFlags> flags = new ArrayList<>();
 
 
     public Robot(HardwareMap map, boolean auton){
@@ -290,25 +294,27 @@ public class Robot {
     public void climbExtend() {
         this.slides.runToClimb();
         this.intake.setAngle(130);
-        ElapsedTime timer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-        double start = timer.time();
-        while (timer.time() - start <= 250) {
-            this.slides.update();
-        }
-        this.arm.runtoPreset(Levels.DEPOSIT);
-        this.claw.wrist.setAngle(123);
-        while (this.slides.getPos() <= 460) {
-            this.slides.update();
-        }
-        this.slides.setPower((float) 0.6);
-        this.slides.shiftGear();
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        this.slides.setPower(0);
-
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(250);
+                } catch (Exception e) {
+                }
+                arm.runtoPreset(Levels.DEPOSIT);
+                claw.wrist.setAngle(123);
+                while (slides.getPos() <= 460) {
+                    // sleep
+                }
+                slides.setPower((float) 0.6);
+                slides.shiftGear();
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                slides.setPower(0);
+            }});
+        thread.start();
     }
     public void antiJam(){
         if (intaking) {
