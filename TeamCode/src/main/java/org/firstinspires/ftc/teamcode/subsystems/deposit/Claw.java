@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.deposit;
 
+import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.StepperServo;
 
 public class Claw {
@@ -37,6 +38,20 @@ public class Claw {
 
     public void setPositionWrist(float rotation) {
         this.wrist.setAngle(rotation);
+    }
+
+    public void runToWristPreset(Levels level) {
+        switch (level) {
+            case ZERO:
+                setPositionWrist(0);
+                break;
+            case INTAKE:
+                setPositionWrist(123);
+                break;
+            case DEPOSIT:
+                setPositionWrist(123);
+                break;
+        }
     }
 
     public void setClawOpen() {

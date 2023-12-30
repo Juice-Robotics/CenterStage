@@ -11,9 +11,9 @@ public class ArmElbow {
     public double currentAngle;
 
     // TARGETS
-    public double intakeTargetArm = 6;
+    public double intakeTargetArm = 27;
     public double depositTargetArm = 148;
-    public double intakeTargetElbow = 112;
+    public double intakeTargetElbow = 110;
     public double depositTargetElbow = 217;
 
     public ArmElbow(StepperServo arm1, StepperServo arm2, StepperServo elbow) {
@@ -49,9 +49,17 @@ public class ArmElbow {
             this.setAngleArm(depositTargetArm);
             this.setAngleElbow(depositTargetElbow);
         }
+        else if (level == Levels.INTERMEDIATE) {
+            this.setAngleArm(30);
+            this.setAngleElbow(115);
+        }
         else if (level == Levels.CLIMB_EXTEND) {
             this.setAngleArm(160);
             this.setAngleElbow(237);
+        }
+        else if (level == Levels.CAPTURE) {
+            this.setAngleArm(0);
+            this.setAngleElbow(119);
         }
     }
 

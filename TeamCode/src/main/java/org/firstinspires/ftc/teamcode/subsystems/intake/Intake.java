@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.Motor;
 import org.firstinspires.ftc.teamcode.lib.MotorEx;
 import org.firstinspires.ftc.teamcode.lib.StepperServo;
@@ -42,6 +43,23 @@ public class Intake {
         intakeServo1.setAngle(angle);
         intakeServo2.setAngle(angle);
     }
+
+    public void runToPreset(Levels level) {
+        switch (level) {
+            case ZERO:
+                setAngle(0);
+                break;
+            case INTAKE:
+                setAngle(192);
+                break;
+            case INTERMEDIATE:
+                setAngle(130);
+                break;
+            case CLIMB_EXTEND:
+                setAngle(130);
+        }
+    }
+
     public void reverse(){
         intakeMotor.setSpeed(-0.6F);
     }
