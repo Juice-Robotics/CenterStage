@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auton;
+package org.firstinspires.ftc.teamcode.auton.deprecated;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -20,7 +20,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Disabled
 @Autonomous(group = "drive")
 
-public class BlueSpikeLeftPark extends LinearOpMode {
+public class RedSpikeRightPark extends LinearOpMode {
     Robot robot;
     VisionPortal visionPortal;
     TeamElementCVProcessor teamElementProcessor;
@@ -30,7 +30,7 @@ public class BlueSpikeLeftPark extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         robot = new Robot(hardwareMap, true);
-        Pose2d startPose = new Pose2d(in(-92), in(165), rad(90));
+        Pose2d startPose = new Pose2d(59, 12, Math.PI);
         drive.setPoseEstimate(startPose);
 
         teamElementProcessor = new TeamElementCVProcessor(
@@ -49,19 +49,18 @@ public class BlueSpikeLeftPark extends LinearOpMode {
                 .addTemporalMarker(0, () -> {
                     robot.runToAutoSpikePreset();
                 })
-                .splineTo(new Vector2d(-45, 20), Math.toRadians(15))
+                .splineTo(new Vector2d(45, 6), Math.toRadians(195))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
                     robot.claw.setClawOpen();
                     robot.intakePreset();
                     robot.claw.setClawClose();
                 })
-                .setReversed(false)
-                .splineTo(new Vector2d(-60, 60), Math.toRadians(90))
                 .build();
         TrajectorySequence preloadParkLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
                 .setReversed(false)
-                .splineTo(new Vector2d(-60, 60), Math.toRadians(90))
+                .back(0.5)
+                .splineTo(new Vector2d(60, 60), Math.toRadians(90))
                 .build();
 
         TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
@@ -79,14 +78,15 @@ public class BlueSpikeLeftPark extends LinearOpMode {
                 .build();
         TrajectorySequence preloadParkCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(false)
-                .splineTo(new Vector2d(-60, 60), Math.toRadians(90))
+                .back(0.1)
+                .splineTo(new Vector2d(58, 60), Math.toRadians(90))
                 .build();
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
                 .addTemporalMarker(0, () -> {
                     robot.runToAutoSpikePreset();
                 })
-                .splineTo(new Vector2d(-43, 8), Math.toRadians(-15))
+                .splineTo(new Vector2d(43, 20), Math.toRadians(165))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
                     robot.claw.setClawOpen();
@@ -97,7 +97,7 @@ public class BlueSpikeLeftPark extends LinearOpMode {
                 .build();
         TrajectorySequence preloadParkRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(false)
-                .splineTo(new Vector2d(-60, 60), Math.toRadians(90))
+                .splineTo(new Vector2d(60, 60), Math.toRadians(90))
                 .build();
 
 
