@@ -282,7 +282,7 @@ public class Robot {
             if (this.intake.intakeMotor.getCurrent() > 5.0) {
                 this.intake.setAngle(100);
                 this.intake.reverse();
-                sleep(500);
+                sleep(250);
                 this.intake.runToPreset(Levels.INTAKE);
                 this.intake.intakeMotor.setSpeed(1);
             }
