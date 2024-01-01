@@ -30,7 +30,7 @@ public class Intake {
     }
 
     public void startIntake(){
-        intakeMotor.setSpeed(0.6F);
+        intakeMotor.setSpeed(1);
         intakeServo1.setAngle(intakeDown);
     }
 
@@ -48,7 +48,7 @@ public class Intake {
         if (level == Levels.ZERO) {
             setAngle(0);
         } else if (level == Levels.INTAKE) {
-            setAngle(197);
+            setAngle(220);
         } else if (level == Levels.INTERMEDIATE) {
             setAngle(130);
         } else if (level == Levels.CLIMB_EXTEND) {
