@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.Component;
@@ -43,6 +44,7 @@ public class Robot {
     public ArrayList<RobotFlags> flags = new ArrayList<>();
     public double CURRENT_HIGH = 1;
     public double ENCODER_MAX_DIFFERENCE = 1;
+    public ElapsedTime antiJamCooldown = new ElapsedTime();
 
 
     public Robot(HardwareMap map, boolean auton){
@@ -279,12 +281,17 @@ public class Robot {
 
     public void antiJam(){
         if (intaking) {
-            if (this.intake.intakeMotor.getCurrent() > 5.0) {
+            if (this.intake.intakeMotor.getCurrent() > 5.0 && !flags.contains(RobotFlags.ANTI_JAM_IN_PROGRESS) && antiJamCooldown.time() >= 250) {
+                flags.add(RobotFlags.INTAKE_JAMMED);
+                flags.add(RobotFlags.ANTI_JAM_IN_PROGRESS);
                 this.intake.setAngle(100);
                 this.intake.reverse();
                 sleep(250);
                 this.intake.runToPreset(Levels.INTAKE);
                 this.intake.intakeMotor.setSpeed(1);
+                flags.remove(RobotFlags.INTAKE_JAMMED);
+                flags.remove(RobotFlags.ANTI_JAM_IN_PROGRESS);
+                antiJamCooldown.reset();
             }
         }
     }
