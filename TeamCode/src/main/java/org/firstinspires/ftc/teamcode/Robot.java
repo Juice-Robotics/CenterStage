@@ -165,7 +165,8 @@ public class Robot {
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 sleep(300);
-                arm.runtoPreset(Levels.INTERMEDIATE);
+                arm.setAngleArm(30);
+                arm.setAngleElbow(110);
                 claw.runToWristPreset(Levels.INTAKE);
                 sleep(100);
                 slides.runToPosition(0);
@@ -193,7 +194,6 @@ public class Robot {
         this.slides.runToPosition(0);
 
         sleep((int) (time * 1000));
-
         this.stopIntake();
     }
 

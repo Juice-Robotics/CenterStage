@@ -45,18 +45,14 @@ public class Intake {
     }
 
     public void runToPreset(Levels level) {
-        switch (level) {
-            case ZERO:
-                setAngle(0);
-                break;
-            case INTAKE:
-                setAngle(192);
-                break;
-            case INTERMEDIATE:
-                setAngle(130);
-                break;
-            case CLIMB_EXTEND:
-                setAngle(130);
+        if (level == Levels.ZERO) {
+            setAngle(0);
+        } else if (level == Levels.INTAKE) {
+            setAngle(197);
+        } else if (level == Levels.INTERMEDIATE) {
+            setAngle(130);
+        } else if (level == Levels.CLIMB_EXTEND) {
+            setAngle(130);
         }
     }
 

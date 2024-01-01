@@ -41,16 +41,12 @@ public class Claw {
     }
 
     public void runToWristPreset(Levels level) {
-        switch (level) {
-            case ZERO:
-                setPositionWrist(0);
-                break;
-            case INTAKE:
-                setPositionWrist(123);
-                break;
-            case DEPOSIT:
-                setPositionWrist(123);
-                break;
+        if (level == Levels.ZERO) {
+            setPositionWrist(0);
+        } else if (level == Levels.INTAKE) {
+            setPositionWrist(123);
+        } else if (level == Levels.DEPOSIT) {
+            setPositionWrist(123);
         }
     }
 
