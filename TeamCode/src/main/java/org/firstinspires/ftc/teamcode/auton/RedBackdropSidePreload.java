@@ -36,8 +36,11 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 AllianceColor.RED);
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
-                .setCameraResolution(new Size(1920, 1080))
+                .setCameraResolution(new Size(640, 480))
+                .enableLiveView(true)
+                .setAutoStopLiveView(true)
                 .addProcessor(teamElementProcessor)
+
                 .build();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
