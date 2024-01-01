@@ -59,7 +59,7 @@ public class ArmElbow {
         }
         else if (level == Levels.CAPTURE) {
             this.setAngleArm(0);
-            this.setAngleElbow(119);
+            this.setAngleElbow(108);
         }
     }
 
