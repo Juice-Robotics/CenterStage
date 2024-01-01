@@ -284,7 +284,7 @@ public class Robot {
                 this.intake.reverse();
                 sleep(500);
                 this.intake.runToPreset(Levels.INTAKE);
-                this.intake.intakeMotor.setSpeed(0.6F);
+                this.intake.intakeMotor.setSpeed(1);
             }
         }
     }
