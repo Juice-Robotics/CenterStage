@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.subsystems.slides.Slides;
 import org.firstinspires.ftc.teamcode.subsystems.launcher.DroneLauncher;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class Robot {
 
@@ -145,9 +146,9 @@ public class Robot {
     }
 
     /**
-    * <h1>WARNING: BLOCKS THREAD</h1>
+     * <h1>WARNING: BLOCKS THREAD</h1>
      * Blocks thread until intake is complete with specified number of pixels (1-2)
-    */
+     */
     public void startSmartIntake(int pixels) {
         this.startIntake();
         if (pixels == 1) {
@@ -281,7 +282,7 @@ public class Robot {
 
     public void antiJam(){
         if (intaking) {
-            if (this.intake.intakeMotor.getCurrent() > 5 && !flags.contains(RobotFlags.ANTI_JAM_IN_PROGRESS) && antiJamCooldown.time() >= 250) {
+            if (this.intake.intakeMotor.getCurrent() > 5.5 && !flags.contains(RobotFlags.ANTI_JAM_IN_PROGRESS) && antiJamCooldown.time(TimeUnit.MILLISECONDS) >= 250) {
                 flags.add(RobotFlags.INTAKE_JAMMED);
                 flags.add(RobotFlags.ANTI_JAM_IN_PROGRESS);
                 this.intake.setAngle(100);
