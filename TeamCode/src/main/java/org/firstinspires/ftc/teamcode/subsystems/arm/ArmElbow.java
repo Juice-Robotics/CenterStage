@@ -11,7 +11,7 @@ public class ArmElbow {
     public double currentAngle;
 
     // TARGETS
-    public double intakeTargetArm = 27;
+    public double intakeTargetArm = 29;
     public double depositTargetArm = 148;
     public double intakeTargetElbow = 110;
     public double depositTargetElbow = 217;
@@ -59,7 +59,7 @@ public class ArmElbow {
         }
         else if (level == Levels.CAPTURE) {
             this.setAngleArm(0);
-            this.setAngleElbow(108);
+            this.setAngleElbow(116);
         }
     }
 
