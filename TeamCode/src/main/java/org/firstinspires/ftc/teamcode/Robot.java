@@ -241,7 +241,7 @@ public class Robot {
         this.intake.runToPreset(Levels.CLIMB_EXTEND);
         Thread thread = new Thread(new Runnable() {
             public void run() {
-                sleep(250);
+                sleep(600);
                 arm.runtoPreset(Levels.DEPOSIT);
                 claw.runToWristPreset(Levels.DEPOSIT);
                 while (slides.getPos() <= 460 && !flags.contains(RobotFlags.CLIMB_RETRACT_REQUESTED)) {
@@ -249,7 +249,7 @@ public class Robot {
                 }
                 if (!flags.contains(RobotFlags.CLIMB_RETRACT_REQUESTED)) {
                     slides.setPower((float) 0.6);
-                    slides.shiftGear(true);
+                    slides.shiftGear(false);
                     sleep(100);
                     slides.setPower(0);
                 }
