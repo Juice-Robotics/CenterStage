@@ -94,16 +94,16 @@ public class TeleOpSafe extends LinearOpMode {
             //DRIVE
             switch (currentMode) {
                 case NORMAL_CONTROL:
-            if (gamepad1.right_trigger > 0.5) {
-                x = -gamepad1.left_stick_x;
-                y = -gamepad1.left_stick_y;
-                rx = gamepad1.right_stick_x;
+                    if (gamepad1.right_trigger > 0.5) {
+                        x = -gamepad1.left_stick_x * (1 - 0.66 * gamepad1.right_trigger);
+                        y = -gamepad1.left_stick_y * (1 - 0.66 * gamepad1.right_trigger);
+                        rx = gamepad1.right_stick_x * (1 - 0.66 * gamepad1.right_trigger);
 
-            } else {
-                x = -gamepad1.left_stick_x * 0.7;
-                y = -gamepad1.left_stick_y * 0.7;
-                rx = gamepad1.right_stick_x * 0.7;
-            }
+                    } else {
+                        x = -gamepad1.left_stick_x;
+                        y = -gamepad1.left_stick_y;
+                        rx = gamepad1.right_stick_x;
+                    }
             robot.setDrivePower(-x, y, rx);
                     break;
                 case ALIGN_TO_POINT:
