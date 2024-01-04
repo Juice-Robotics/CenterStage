@@ -5,10 +5,10 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.control.PIDFController;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.outoftheboxrobotics.photoncore.PhotonCore;
+import com.outoftheboxrobotics.photoncore.Photon;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-//import com.outoftheboxrobotics.photoncore.PhotonCore;
+import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.exception.RobotCoreException;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -25,6 +25,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 import java.util.concurrent.TimeUnit;
 
+@Photon
 @TeleOp(group = "competition")
 public class TeleOpSafe extends LinearOpMode {
     // Define 2 states, driver control or alignment control
@@ -54,8 +55,6 @@ public class TeleOpSafe extends LinearOpMode {
 //        PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
 //        PhotonCore.EXPANSION_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
 //        PhotonCore.experimental.setMaximumParallelCommands(4);
-//        PhotonCore.enable();
-//        PhotonCore.start(hardwareMap);
 
         ElapsedTime matchTimer;
 
