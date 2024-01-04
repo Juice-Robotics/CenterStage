@@ -259,6 +259,7 @@ public class TeleOpSafe extends LinearOpMode {
 
             //autoClosePreviousState = gamepad1.circle;
             robot.slides.update();
+            robot.arm.update();
             robot.antiJam();
             //robot.smartIntakeUpdate();
             //robot.drive.getLocalizer().update();
