@@ -33,7 +33,6 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
         teamElementProcessor = new YoinkElementCVProcessor();
         teamElementProcessor.alliance = AllianceColor.BLUE;
-//        teamElementProcessor = new YoinkElementCVProccesor();
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
                 .setCameraResolution(new Size(640, 480))
@@ -147,19 +146,18 @@ public class BlueBackdropSidePreload extends LinearOpMode {
          * This REPLACES waitForStart!
          */
 
-//        TeamElementCVProcessor.Location reading = teamElementProcessor.getLocation();
-        YoinkElementCVProcessor.PropLocation reading = teamElementProcessor.getLocation();
+
         propLocation = teamElementProcessor.getLocation();
         telemetry.addData("Camera State", visionPortal.getCameraState());
+        telemetry.update();
 
         while (!isStarted() && !isStopRequested()) {
-            reading = teamElementProcessor.getLocation();
             propLocation = teamElementProcessor.getLocation();
             telemetry.addData("Camera State", visionPortal.getCameraState());
-            if (reading == YoinkElementCVProcessor.PropLocation.UNFOUND) {
+            if (propLocation == YoinkElementCVProcessor.PropLocation.UNFOUND) {
                 telemetry.addLine("Team Element Location: <b>NOT FOUND</b>");
             } else {
-                telemetry.addData("Team Element Location", reading);
+                telemetry.addData("Team Element Location", propLocation);
             }
 
             telemetry.update();
