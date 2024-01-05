@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
+import org.firstinspires.ftc.teamcode.lib.RobotFlags;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 import java.util.concurrent.TimeUnit;
@@ -67,7 +68,7 @@ public class TeleOpSafe extends LinearOpMode {
         boolean previousDroneState = false;
         boolean previousIntakeState = false;
         boolean previousAutoAlignState = false;
-        boolean isPressed = false;
+        boolean previousDpadUp = false;
         double intakePreviousPos;
         float previousLeftTriggerState = 0;
         boolean previousSquare = false;
@@ -238,9 +239,14 @@ public class TeleOpSafe extends LinearOpMode {
 //            previousAutoAlignState = gamepad1.square;
 
             // CLIMB
-            if (gamepad1.dpad_up) {
-                robot.climbExtend();
+            if (gamepad1.dpad_up && !previousDpadUp) {
+                if (!robot.flags.contains(RobotFlags.CLIMB_ENGAGED)) {
+                    robot.climbExtend();
+                } else {
+                    robot.climbRetract();
+                }
             }
+            previousDpadUp = gamepad1.dpad_up;
 
             if (gamepad1.dpad_down) {
                 robot.startClimb();
