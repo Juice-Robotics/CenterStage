@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.Component;
 import org.firstinspires.ftc.teamcode.lib.Levels;
@@ -46,6 +47,7 @@ public class Robot {
     public double CURRENT_HIGH = 1;
     public double ENCODER_MAX_DIFFERENCE = 1;
     public ElapsedTime antiJamCooldown = new ElapsedTime();
+    public boolean threadState = false;
 
 
     public Robot(HardwareMap map, boolean auton){
@@ -301,6 +303,23 @@ public class Robot {
     public void startClimb() {
         this.slides.startClimb();
         this.subsystemState = Levels.CLIMB;
+    }
+
+    public void launchSubsystemThread(Telemetry telemetry) {
+        threadState = true;
+        telemetry.addData("Subsys Threads State:", "STARTING");
+        telemetry.update();
+        Thread t1 = new Thread(() -> {
+            telemetry.addData("Subsys Threads State:", "STARTED");
+            telemetry.update();
+            while (threadState == true) {
+                slides.update();
+                arm.update();
+            }
+            telemetry.addData("Subsys Threads State:", "STOPPED");
+            telemetry.update();
+        });
+        t1.start();
     }
 
 
