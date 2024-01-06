@@ -60,6 +60,7 @@ public class TeleOpSafe extends LinearOpMode {
         ElapsedTime matchTimer;
 
         int buzzers = 0;
+        double loopTime = 0.0;
 
         boolean autoCloseEnabled = true;
         boolean autoClosePreviousState = false;
@@ -269,6 +270,8 @@ public class TeleOpSafe extends LinearOpMode {
             robot.antiJam();
             //robot.smartIntakeUpdate();
             //robot.drive.getLocalizer().update();
+            double loop = System.nanoTime();
+            telemetry.addData("hz ", 1000000000 / (loop - loopTime));
             telemetry.addData("TIME LEFT: ", ((120-matchTimer.time(TimeUnit.SECONDS))));
             telemetry.addData("CLAW POSITION: ", (robot.claw.depositServo.getAngle()));
             //telemetry.addData("ARM TARGET: ", (robot.arm.v4b1.servo.getPosition()*180));
