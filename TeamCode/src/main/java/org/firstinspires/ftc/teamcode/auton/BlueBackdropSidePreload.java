@@ -17,6 +17,11 @@ import org.firstinspires.ftc.teamcode.subsystems.vision.TeamElementCVProcessor;
 import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkElementCVProcessor;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.util.List;
 
 @Config
 @Autonomous(group = "drive")
@@ -27,10 +32,13 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 //    TeamElementCVProcessor teamElementProcessor;
     YoinkElementCVProcessor teamElementProcessor;
     YoinkElementCVProcessor.PropLocation propLocation = YoinkElementCVProcessor.PropLocation.UNFOUND;
+    AprilTagDetection aprilTagDetection;
+    List<AprilTagDetection> aprilTagDetections;
+    AprilTagProcessor processor;
 
     @Override
     public void runOpMode() throws InterruptedException {
-
+        processor = AprilTagProcessor.easyCreateWithDefaults();
         teamElementProcessor = new YoinkElementCVProcessor();
         teamElementProcessor.alliance = AllianceColor.BLUE;
         visionPortal = new VisionPortal.Builder()
@@ -39,7 +47,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
                 .enableLiveView(true)
                 .setAutoStopLiveView(true)
                 .addProcessor(teamElementProcessor)
-
+                .addProcessor(processor)
                 .build();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -64,6 +72,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
                     this.robot.intake.setAngle(120);
                 })
                 .addTemporalMarker(2, () -> {
+                    robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.autoPreloadDepositPreset();
                 })
                 .addTemporalMarker(3.5, () -> {
@@ -87,6 +96,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
                     this.robot.intake.setAngle(120);
                 })
                 .addTemporalMarker(2, () -> {
+                    robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.autoPreloadDepositPreset();
                 })
                 .addTemporalMarker(3.5, () -> {
@@ -112,6 +122,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
                     this.robot.intake.setAngle(120);
                 })
                 .addTemporalMarker(2, () -> {
+                    robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.autoPreloadDepositPreset();
                 })
                 .addTemporalMarker(3.5, () -> {

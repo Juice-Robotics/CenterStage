@@ -8,8 +8,8 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 public class Relocalization {
     public AprilTagsRelocalization aprilTags;
 
-    public Relocalization(HardwareMap map) {
-        aprilTags =  new AprilTagsRelocalization(map.get(WebcamName.class, "Webcam 1"));
+    public Relocalization() {
+        aprilTags =  new AprilTagsRelocalization();
     }
 
     public Pose2d relocalizeUsingBackdrop(Pose2d currentPose) {

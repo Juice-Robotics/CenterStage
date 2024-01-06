@@ -27,16 +27,16 @@ public class AprilTagsRelocalization {
     double rcameraOffsetY= 0.0;
     double rcameraOffsetRotation = 0.0;
 
-    public AprilTagsRelocalization(WebcamName camera) {
-        processor = AprilTagProcessor.easyCreateWithDefaults();
-        visionPortal = new VisionPortal.Builder()
-                .setCamera(camera)
-                .addProcessor(processor)
-                .setCameraResolution(new Size(640, 480))
-                .setStreamFormat(VisionPortal.StreamFormat.YUY2)
-                .enableLiveView(true)
-                .setAutoStopLiveView(true)
-                .build();
+    public AprilTagsRelocalization() {
+//        processor = AprilTagProcessor.easyCreateWithDefaults();
+//        visionPortal = new VisionPortal.Builder()
+//                .setCamera(camera)
+//                .addProcessor(processor)
+//                .setCameraResolution(new Size(640, 480))
+//                .setStreamFormat(VisionPortal.StreamFormat.YUY2)
+//                .enableLiveView(true)
+//                .setAutoStopLiveView(true)
+//                .build();
     }
 
     public void detectBackdrop() {
