@@ -1,5 +1,10 @@
 package org.firstinspires.ftc.teamcode.subsystems.arm;
 
+import com.acmerobotics.roadrunner.profile.MotionProfile;
+import com.acmerobotics.roadrunner.profile.MotionProfileGenerator;
+import com.acmerobotics.roadrunner.profile.MotionState;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.StepperServo;
 
@@ -8,24 +13,36 @@ public class ArmElbow {
     public StepperServo arm2;
     public StepperServo elbow;
 
+    private MotionProfile profile;
+    public MotionState curState;
+    private ElapsedTime timer;
+    double maxvel = 4000;
+    double maxaccel = 4000;
+
     public double currentAngle;
+    public double armTarget;
 
     // TARGETS
-    public double intakeTargetArm = 6;
+    public double intakeTargetArm = 29;
     public double depositTargetArm = 148;
-    public double intakeTargetElbow = 112;
+    public double intakeTargetElbow = 110;
     public double depositTargetElbow = 217;
 
     public ArmElbow(StepperServo arm1, StepperServo arm2, StepperServo elbow) {
         this.arm1 = arm1;
         this.arm2 = arm2;
         this.elbow = elbow;
+
+//        timer = new ElapsedTime();
+//        profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(1, 0), new MotionState(0, 0), maxvel, maxaccel);
     }
 
     public void setAngleArm(double angle) {
-        this.arm1.setAngle((float) angle);
-        this.arm2.setAngle((float) angle);
-        this.currentAngle = angle;
+//        this.armTarget = angle;
+//        profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(currentAngle, 0), new MotionState(armTarget, 0), maxvel, maxaccel);
+//        timer.reset();
+        arm1.setAngle((float) angle);
+        arm2.setAngle((float) angle);
     }
 
     public void setAngleElbow(double angle) {
@@ -49,10 +66,26 @@ public class ArmElbow {
             this.setAngleArm(depositTargetArm);
             this.setAngleElbow(depositTargetElbow);
         }
+        else if (level == Levels.INTERMEDIATE) {
+            this.setAngleArm(30);
+            this.setAngleElbow(115);
+        }
         else if (level == Levels.CLIMB_EXTEND) {
             this.setAngleArm(160);
             this.setAngleElbow(237);
         }
+        else if (level == Levels.CAPTURE) {
+            this.setAngleArm(0);
+            this.setAngleElbow(116);
+        }
     }
+
+//    public void update() {
+//        MotionState state = profile.get(timer.time());
+//        double tTarget = state.getX();
+//
+//        arm1.setAngle((float) tTarget);
+//        arm2.setAngle((float) tTarget);
+//    }
 
 }

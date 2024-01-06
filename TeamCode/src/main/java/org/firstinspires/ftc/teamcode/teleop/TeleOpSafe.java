@@ -5,10 +5,10 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.control.PIDFController;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.outoftheboxrobotics.photoncore.PhotonCore;
+import com.outoftheboxrobotics.photoncore.Photon;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-//import com.outoftheboxrobotics.photoncore.PhotonCore;
+import com.outoftheboxrobotics.photoncore.PhotonCore;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.exception.RobotCoreException;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -21,10 +21,12 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
+import org.firstinspires.ftc.teamcode.lib.RobotFlags;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 import java.util.concurrent.TimeUnit;
 
+@Photon
 @TeleOp(group = "competition")
 public class TeleOpSafe extends LinearOpMode {
     // Define 2 states, driver control or alignment control
@@ -54,8 +56,6 @@ public class TeleOpSafe extends LinearOpMode {
 //        PhotonCore.CONTROL_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
 //        PhotonCore.EXPANSION_HUB.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
 //        PhotonCore.experimental.setMaximumParallelCommands(4);
-//        PhotonCore.enable();
-//        PhotonCore.start(hardwareMap);
 
         ElapsedTime matchTimer;
 
@@ -68,7 +68,7 @@ public class TeleOpSafe extends LinearOpMode {
         boolean previousDroneState = false;
         boolean previousIntakeState = false;
         boolean previousAutoAlignState = false;
-        boolean isPressed = false;
+        boolean previousDpadUp = false;
         double intakePreviousPos;
         float previousLeftTriggerState = 0;
         boolean previousSquare = false;
@@ -94,16 +94,16 @@ public class TeleOpSafe extends LinearOpMode {
             //DRIVE
             switch (currentMode) {
                 case NORMAL_CONTROL:
-            if (gamepad1.left_trigger > 0.5) {
-                x = -gamepad1.left_stick_x * (1 - 0.66 * gamepad1.left_trigger);
-                y = -gamepad1.left_stick_y * (1 - 0.66 * gamepad1.left_trigger);
-                rx = gamepad1.right_stick_x * (1 - 0.66 * gamepad1.left_trigger);
+                    if (gamepad1.right_trigger > 0.5) {
+                        x = -gamepad1.left_stick_x * (1 - 0.66 * gamepad1.right_trigger);
+                        y = -gamepad1.left_stick_y * (1 - 0.66 * gamepad1.right_trigger);
+                        rx = gamepad1.right_stick_x * (1 - 0.66 * gamepad1.right_trigger);
 
-            } else {
-                x = -gamepad1.left_stick_x;
-                y = -gamepad1.left_stick_y;
-                rx = gamepad1.right_stick_x;
-            }
+                    } else {
+                        x = -gamepad1.left_stick_x;
+                        y = -gamepad1.left_stick_y;
+                        rx = gamepad1.right_stick_x;
+                    }
             robot.setDrivePower(-x, y, rx);
                     break;
                 case ALIGN_TO_POINT:
@@ -239,9 +239,14 @@ public class TeleOpSafe extends LinearOpMode {
 //            previousAutoAlignState = gamepad1.square;
 
             // CLIMB
-            if (gamepad1.dpad_up) {
-                robot.climbExtend();
+            if (gamepad1.dpad_up && !previousDpadUp) {
+                if (!robot.flags.contains(RobotFlags.CLIMB_ENGAGED)) {
+                    robot.climbExtend();
+                } else {
+                    robot.climbRetract();
+                }
             }
+            previousDpadUp = gamepad1.dpad_up;
 
             if (gamepad1.dpad_down) {
                 robot.startClimb();
@@ -260,6 +265,7 @@ public class TeleOpSafe extends LinearOpMode {
 
             //autoClosePreviousState = gamepad1.circle;
             robot.slides.update();
+            robot.arm.update();
             robot.antiJam();
             //robot.smartIntakeUpdate();
             //robot.drive.getLocalizer().update();
@@ -270,6 +276,7 @@ public class TeleOpSafe extends LinearOpMode {
             telemetry.addData("SLIDES TARGET: ", robot.slides.target);
             telemetry.addData("SLIDES POSITION: ", robot.slides.slides1.motor.getCurrentPosition());
             telemetry.addData("LEVEL: ", robot.slides.currentLevel);
+            telemetry.addData("DRIVE CURRENT ", robot.drive.getCurrent());
             telemetry.update();
 
 //            PhotonCore.CONTROL_HUB.clearBulkCache();

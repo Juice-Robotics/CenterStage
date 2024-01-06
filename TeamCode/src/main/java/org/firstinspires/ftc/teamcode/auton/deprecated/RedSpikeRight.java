@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auton;
+package org.firstinspires.ftc.teamcode.auton.deprecated;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -15,12 +15,13 @@ import org.firstinspires.ftc.teamcode.lib.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.vision.TeamElementCVProcessor;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Config
 @Disabled
 @Autonomous(group = "drive")
 
-public class RedSpikeRightPark extends LinearOpMode {
+public class RedSpikeRight extends LinearOpMode {
     Robot robot;
     VisionPortal visionPortal;
     TeamElementCVProcessor teamElementProcessor;
@@ -49,18 +50,14 @@ public class RedSpikeRightPark extends LinearOpMode {
                 .addTemporalMarker(0, () -> {
                     robot.runToAutoSpikePreset();
                 })
-                .splineTo(new Vector2d(45, 6), Math.toRadians(195))
+                .splineTo(new Vector2d(45, 3), Math.toRadians(195))
                 .waitSeconds(1)
                 .addTemporalMarker(1, () -> {
                     robot.claw.setClawOpen();
                     robot.intakePreset();
                     robot.claw.setClawClose();
                 })
-                .build();
-        TrajectorySequence preloadParkLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
-                .setReversed(false)
-                .back(0.5)
-                .splineTo(new Vector2d(60, 60), Math.toRadians(90))
+                .back(15)
                 .build();
 
         TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
@@ -74,12 +71,7 @@ public class RedSpikeRightPark extends LinearOpMode {
                     robot.intakePreset();
                     robot.claw.setClawClose();
                 })
-                .back(10)
-                .build();
-        TrajectorySequence preloadParkCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
-                .setReversed(false)
-                .back(0.1)
-                .splineTo(new Vector2d(58, 60), Math.toRadians(90))
+                .back(20)
                 .build();
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
@@ -93,11 +85,7 @@ public class RedSpikeRightPark extends LinearOpMode {
                     robot.intakePreset();
                     robot.claw.setClawClose();
                 })
-                .back(10)
-                .build();
-        TrajectorySequence preloadParkRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
-                .setReversed(false)
-                .splineTo(new Vector2d(60, 60), Math.toRadians(90))
+                .back(15)
                 .build();
 
 
@@ -144,15 +132,12 @@ public class RedSpikeRightPark extends LinearOpMode {
         switch (propLocation) {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
-                drive.followTrajectorySequence(preloadParkCenter);
                 break;
             case LEFT:
                 drive.followTrajectorySequence(preloadSpikeLeft);
-                drive.followTrajectorySequence(preloadParkLeft);
                 break;
             case RIGHT:
                 drive.followTrajectorySequence(preloadSpikeRight);
-                drive.followTrajectorySequence(preloadParkRight);
                 break;
         }
 

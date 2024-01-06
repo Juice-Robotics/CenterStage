@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.teleop.deprecated;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
+import org.firstinspires.ftc.teamcode.lib.RobotFlags;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 import java.util.concurrent.TimeUnit;
@@ -62,7 +63,7 @@ public class TeleOpMain extends LinearOpMode {
 
         int buzzers = 0;
         double intakePreviousPos = 0;
-        boolean autoCloseEnabled = true;
+        boolean previousDpadUp = false;
         boolean autoClosePreviousState = false;
         boolean previousClawState = false;
         boolean previousDroneState = false;
@@ -236,9 +237,14 @@ public class TeleOpMain extends LinearOpMode {
             previousAutoAlignState = gamepad1.square;
 
             // CLIMB
-            if (gamepad1.dpad_up) {
-                robot.climbExtend();
+            if (gamepad1.dpad_up && !previousDpadUp) {
+                if (!robot.flags.contains(RobotFlags.CLIMB_ENGAGED)) {
+                    robot.climbExtend();
+                } else {
+                    robot.climbRetract();
+                }
             }
+            previousDpadUp = gamepad1.dpad_up;
 
             if (gamepad1.dpad_down) {
                 robot.startClimb();

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.deposit;
 
+import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.StepperServo;
 
 public class Claw {
@@ -9,7 +10,7 @@ public class Claw {
     public boolean isOpen = false; // if open, true
 
     // CONSTANTS
-    public float clawOpen = 185;
+    public float clawOpen = 200;
     public float clawClose = 245; //larger = tighter
 
     public Claw(StepperServo depositServo, StepperServo wrist) {
@@ -37,6 +38,16 @@ public class Claw {
 
     public void setPositionWrist(float rotation) {
         this.wrist.setAngle(rotation);
+    }
+
+    public void runToWristPreset(Levels level) {
+        if (level == Levels.ZERO) {
+            setPositionWrist(0);
+        } else if (level == Levels.INTAKE) {
+            setPositionWrist(123);
+        } else if (level == Levels.DEPOSIT) {
+            setPositionWrist(123);
+        }
     }
 
     public void setClawOpen() {
