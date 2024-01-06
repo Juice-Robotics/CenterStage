@@ -35,13 +35,13 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
 
     private Mat finalMat = new Mat();
 
-    public static int blueLeftX = 89;
+    public static int blueLeftX = 10;
     public static int blueLeftY = 240;
 
     public static int blueCenterX = 371;
     public static int blueCenterY = 240;
 
-    public static int redLeftX = 89;
+    public static int redLeftX = 10;
     public static int redLeftY = 240;
 
     public static int redCenterX = 371;
@@ -50,8 +50,8 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
     public static int width = 125;
     public static int height = 125;
 
-    public static double redThreshold = 2.5;
-    public static double blueThreshold = 0.2;
+    public static double redThreshold = 4;
+    public static double blueThreshold = 1;
     public static double threshold = 0;
 
     public double leftColor = 0.0;
@@ -98,7 +98,7 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
         if(alliance == AllianceColor.BLUE){
             if (leftColor < threshold) {
                 // left zone has it
-                location = PropLocation.RIGHT;
+                location = PropLocation.LEFT;
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             } else if (centerColor < threshold) {
                 // center zone has it
@@ -106,13 +106,13 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             } else {
                 // right zone has it
-                location = PropLocation.LEFT;
+                location = PropLocation.RIGHT;
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             }
         }else{
             if (leftColor > threshold) {
                 // left zone has it
-                location = PropLocation.RIGHT;
+                location = PropLocation.LEFT;
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             } else if (centerColor > threshold) {
                 // center zone has it
@@ -120,13 +120,16 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             } else {
                 // right zone has it
-                location = PropLocation.LEFT;
+                location = PropLocation.RIGHT;
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             }
         }
 
-        Imgproc.rectangle(finalMat, leftZoneArea, new Scalar(255, 255, 255));
+        //Imgproc.rectangle(finalMat, leftZoneArea, new Scalar(255, 255, 255));
         Imgproc.rectangle(finalMat, centerZoneArea, new Scalar(255, 255, 255));
+        Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
+        Imgproc.rectangle(frame, centerZoneArea, new Scalar(255, 255, 255));
+
 
         Bitmap b = Bitmap.createBitmap(finalMat.width(), finalMat.height(), Bitmap.Config.RGB_565);
         Utils.matToBitmap(finalMat, b);

@@ -18,6 +18,8 @@ public class Intake {
 
     public float intakeDown = 25;
 
+    public float OFFSET = 25;
+
     public MotorEx intakeMotor;
 
     public Intake(StepperServo intakeServo1, StepperServo intakeServo2, MotorEx intakeMotor) {
@@ -48,11 +50,11 @@ public class Intake {
         if (level == Levels.ZERO) {
             setAngle(0);
         } else if (level == Levels.INTAKE) {
-            setAngle(220);
+            setAngle(220-OFFSET);
         } else if (level == Levels.INTERMEDIATE) {
-            setAngle(130);
+            setAngle(130-OFFSET);
         } else if (level == Levels.CLIMB_EXTEND) {
-            setAngle(130);
+            setAngle(130-OFFSET);
         }
     }
 
