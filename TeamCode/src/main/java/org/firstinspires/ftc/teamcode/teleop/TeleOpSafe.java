@@ -282,6 +282,8 @@ public class TeleOpSafe extends LinearOpMode {
             telemetry.addData("DRIVE CURRENT ", robot.drive.getCurrent());
             telemetry.update();
 
+            loopTime = loop;
+
 //            PhotonCore.CONTROL_HUB.clearBulkCache();
 //            PhotonCore.EXPANSION_HUB.clearBulkCache();
 
