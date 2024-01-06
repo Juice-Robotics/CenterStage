@@ -33,14 +33,16 @@ public class ArmElbow {
         this.arm2 = arm2;
         this.elbow = elbow;
 
-        timer = new ElapsedTime();
-        profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(1, 0), new MotionState(0, 0), maxvel, maxaccel);
+//        timer = new ElapsedTime();
+//        profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(1, 0), new MotionState(0, 0), maxvel, maxaccel);
     }
 
     public void setAngleArm(double angle) {
-        this.armTarget = angle;
-        profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(currentAngle, 0), new MotionState(armTarget, 0), maxvel, maxaccel);
-        timer.reset();
+//        this.armTarget = angle;
+//        profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(currentAngle, 0), new MotionState(armTarget, 0), maxvel, maxaccel);
+//        timer.reset();
+        arm1.setAngle((float) angle);
+        arm2.setAngle((float) angle);
     }
 
     public void setAngleElbow(double angle) {
@@ -78,12 +80,12 @@ public class ArmElbow {
         }
     }
 
-    public void update() {
-        MotionState state = profile.get(timer.time());
-        double tTarget = state.getX();
-
-        arm1.setAngle((float) tTarget);
-        arm2.setAngle((float) tTarget);
-    }
+//    public void update() {
+//        MotionState state = profile.get(timer.time());
+//        double tTarget = state.getX();
+//
+//        arm1.setAngle((float) tTarget);
+//        arm2.setAngle((float) tTarget);
+//    }
 
 }

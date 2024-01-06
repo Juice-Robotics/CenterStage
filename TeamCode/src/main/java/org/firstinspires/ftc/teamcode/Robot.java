@@ -314,7 +314,7 @@ public class Robot {
             telemetry.update();
             while (threadState == true) {
                 slides.update();
-                arm.update();
+//                arm.update();
             }
             telemetry.addData("Subsys Threads State:", "STOPPED");
             telemetry.update();
