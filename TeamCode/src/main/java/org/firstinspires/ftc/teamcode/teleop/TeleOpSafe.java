@@ -26,7 +26,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 import java.util.concurrent.TimeUnit;
 
-@Photon
+//@Photon
 @TeleOp(group = "competition")
 public class TeleOpSafe extends LinearOpMode {
     // Define 2 states, driver control or alignment control
@@ -265,7 +265,7 @@ public class TeleOpSafe extends LinearOpMode {
 
             //autoClosePreviousState = gamepad1.circle;
             robot.slides.update();
-            robot.arm.update();
+//            robot.arm.update();
             robot.antiJam();
             //robot.smartIntakeUpdate();
             //robot.drive.getLocalizer().update();

@@ -23,7 +23,7 @@ public class ArmElbow {
     public double armTarget;
 
     // TARGETS
-    public double intakeTargetArm = 29;
+    public double intakeTargetArm = 27;
     public double depositTargetArm = 148;
     public double intakeTargetElbow = 110;
     public double depositTargetElbow = 217;

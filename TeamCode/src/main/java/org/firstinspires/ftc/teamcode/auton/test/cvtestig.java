@@ -24,6 +24,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Autonomous(group = "drive", name = "cvtest")
 
 public class cvtestig extends LinearOpMode {
+    Robot robot;
     VisionPortal visionPortal;
     YoinkElementCVProcessor teamElementProcessor;
     YoinkElementCVProcessor.PropLocation propLocation = YoinkElementCVProcessor.PropLocation.UNFOUND;
@@ -32,6 +33,7 @@ public class cvtestig extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
 
+        robot = new Robot(hardwareMap, true);
         teamElementProcessor = new YoinkElementCVProcessor();
         teamElementProcessor.alliance = AllianceColor.RED;
         visionPortal = new VisionPortal.Builder()
