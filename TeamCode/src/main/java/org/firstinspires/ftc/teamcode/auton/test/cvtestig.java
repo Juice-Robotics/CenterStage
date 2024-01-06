@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Config
-@Autonomous(group = "drive")
+@Autonomous(group = "drive", name = "cvtest")
 
 public class cvtestig extends LinearOpMode {
     VisionPortal visionPortal;
