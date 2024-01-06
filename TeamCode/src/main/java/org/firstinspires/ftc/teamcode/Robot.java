@@ -126,7 +126,6 @@ public class Robot {
                 claw.setClawClose();
                 intake.stopIntake();
                 intake.runToPreset(Levels.INTERMEDIATE);
-                sleep(600);
                 arm.runtoPreset(Levels.INTERMEDIATE);
             }});
         thread.start();
