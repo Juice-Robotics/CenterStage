@@ -35,16 +35,16 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
 
     private Mat finalMat = new Mat();
 
-    public static int blueLeftX = 248;
-    public static int blueLeftY = 243;
+    public static int blueLeftX = 89;
+    public static int blueLeftY = 240;
 
-    public static int blueCenterX = 415;
-    public static int blueCenterY = 76;
+    public static int blueCenterX = 371;
+    public static int blueCenterY = 240;
 
-    public static int redLeftX = 293;
-    public static int redLeftY = 232;
+    public static int redLeftX = 89;
+    public static int redLeftY = 240;
 
-    public static int redCenterX = 482;
+    public static int redCenterX = 371;
     public static int redCenterY = 42;
 
     public static int width = 125;
@@ -98,7 +98,7 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
         if(alliance == AllianceColor.BLUE){
             if (leftColor < threshold) {
                 // left zone has it
-                location = PropLocation.LEFT;
+                location = PropLocation.RIGHT;
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             } else if (centerColor < threshold) {
                 // center zone has it
@@ -106,17 +106,17 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             } else {
                 // right zone has it
-                location = PropLocation.RIGHT;
+                location = PropLocation.LEFT;
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             }
         }else{
             if (leftColor > threshold) {
                 // left zone has it
-                location = PropLocation.CENTER;
+                location = PropLocation.RIGHT;
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             } else if (centerColor > threshold) {
                 // center zone has it
-                location = PropLocation.RIGHT;
+                location = PropLocation.CENTER;
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             } else {
                 // right zone has it
