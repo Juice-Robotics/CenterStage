@@ -106,32 +106,31 @@ public class MeepMeepTesting {
                 .setConstraints(50, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .setDimensions(14, 17)
                 .followTrajectorySequence(drive ->
-                                drive.trajectorySequenceBuilder(new Pose2d(62, 12, Math.toRadians(0)))
+                                drive.trajectorySequenceBuilder(new Pose2d(-62, -34, Math.toRadians(180)))
                                         .setReversed(true)
-//                                        .splineTo(new Vector2d(30, 25), Math.toRadians(180))
-//                                        .splineTo(new Vector2d(30, 5), Math.toRadians(270))
-                                        .splineToLinearHeading(new Pose2d(32, 9, Math.toRadians(90)), Math.toRadians(0))
-                                        .forward(15)
-                                        .turn(Math.toRadians(180))
-                                        .setReversed(true)
-                                        .splineTo(new Vector2d(42, 49), Math.toRadians(90))
-
-//
-//                                        .setReversed(false)
-//                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
-//                                        .splineToConstantHeading(new Vector2d(-11, -61), Math.toRadians(-90))
-//                                        .setReversed(true)
-//                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
-//                                        .splineToConstantHeading(new Vector2d(-36, 49), Math.toRadians(90))
-//
-//                                        .setReversed(false)
-//                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
-//                                        .splineToConstantHeading(new Vector2d(-11, -61), Math.toRadians(-90))
-//                                        .setReversed(true)
-//                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
-//                                        .splineToConstantHeading(new Vector2d(-36, 49), Math.toRadians(90))
-
+                                        .back(29.5)
+                                        .forward(14)
                                         .build()
+
+
+
+
+
+//
+//                                        .setReversed(false)
+//                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
+//                                        .splineToConstantHeading(new Vector2d(-11, -61), Math.toRadians(-90))
+//                                        .setReversed(true)
+//                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
+//                                        .splineToConstantHeading(new Vector2d(-36, 49), Math.toRadians(90))
+//
+//                                        .setReversed(false)
+//                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
+//                                        .splineToConstantHeading(new Vector2d(-11, -61), Math.toRadians(-90))
+//                                        .setReversed(true)
+//                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
+//                                        .splineToConstantHeading(new Vector2d(-36, 49), Math.toRadians(90))
+
                 );
 
         RoadRunnerBotEntity myBotCyclesSafeRed = new DefaultBotBuilder(meepMeep)
