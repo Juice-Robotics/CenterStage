@@ -29,8 +29,8 @@ public class RedBackdropSidePreload extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        teamElementProcessor = new YoinkElementCVProcessor();
-        teamElementProcessor.alliance = AllianceColor.RED;
+        teamElementProcessor = new YoinkElementCVProcessor(AllianceColor.RED, telemetry);
+//        teamElementProcessor.alliance = AllianceColor.RED;
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
                 .setCameraResolution(new Size(640, 480))
@@ -42,7 +42,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         robot = new Robot(hardwareMap, true);
-        Pose2d startPose = new Pose2d(62, 12, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(62, 13, Math.toRadians(0));
         robot.autoIntake();
 
         drive.setPoseEstimate(startPose);
@@ -143,18 +143,18 @@ public class RedBackdropSidePreload extends LinearOpMode {
          * This REPLACES waitForStart!
          */
         propLocation = teamElementProcessor.getLocation();
-        telemetry.addData("Camera State", visionPortal.getCameraState());
-        telemetry.update();
+//        telemetry.addData("Camera State", visionPortal.getCameraState());
+//        telemetry.update();
 
         while (!isStarted() && !isStopRequested()) {
-            telemetry.addData("Camera State", visionPortal.getCameraState());
+//            telemetry.addData("Camera State", visionPortal.getCameraState());
 
             if (propLocation == YoinkElementCVProcessor.PropLocation.UNFOUND) {
-                telemetry.addLine("Team Element Location: <b>NOT FOUND</b>");
+//                telemetry.addLine("Team Element Location: <b>NOT FOUND</b>");
             } else {
-                telemetry.addData("Team Element Location", propLocation);
+//                telemetry.addData("Team Element Location", propLocation);
             }
-            telemetry.update();
+//            telemetry.update();
         }
 
 

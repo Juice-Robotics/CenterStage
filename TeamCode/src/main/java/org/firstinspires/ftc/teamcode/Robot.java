@@ -172,7 +172,7 @@ public class Robot {
                 arm.setAngleArm(30);
                 arm.setAngleElbow(110);
                 claw.runToWristPreset(Levels.INTAKE);
-                sleep(100);
+                sleep(300);
                 slides.runToPosition(0);
             }});
         thread.start();

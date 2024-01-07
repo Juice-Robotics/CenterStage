@@ -34,7 +34,7 @@ public class cvtestig extends LinearOpMode {
 
 
         robot = new Robot(hardwareMap, true);
-        teamElementProcessor = new YoinkElementCVProcessor();
+        teamElementProcessor = new YoinkElementCVProcessor(AllianceColor.RED, telemetry);
         teamElementProcessor.alliance = AllianceColor.RED;
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default

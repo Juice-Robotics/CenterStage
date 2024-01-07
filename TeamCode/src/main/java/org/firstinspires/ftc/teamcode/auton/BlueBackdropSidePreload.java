@@ -39,8 +39,8 @@ public class BlueBackdropSidePreload extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         processor = AprilTagProcessor.easyCreateWithDefaults();
-        teamElementProcessor = new YoinkElementCVProcessor();
-        teamElementProcessor.alliance = AllianceColor.BLUE;
+        teamElementProcessor = new YoinkElementCVProcessor(AllianceColor.BLUE, telemetry);
+//        teamElementProcessor.alliance = AllianceColor.BLUE;
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
                 .setCameraResolution(new Size(640, 480))
@@ -52,7 +52,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         robot = new Robot(hardwareMap, true);
-        Pose2d startPose = new Pose2d(-62, 12, Math.toRadians(180));
+        Pose2d startPose = new Pose2d(-62, 13, Math.toRadians(180));
         robot.autoIntake();
 
         drive.setPoseEstimate(startPose);
@@ -60,19 +60,19 @@ public class BlueBackdropSidePreload extends LinearOpMode {
         // PRELOAD PATHS
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-30, 10, Math.toRadians(90)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-34, 10, Math.toRadians(90)), Math.toRadians(0))
                 .forward(15)
                 .turn(Math.toRadians(180))
                 .build();
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(true)
-                .back(25)
+                .back(27)
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
                 .addTemporalMarker(2, () -> {
-                    robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
+                    //robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.autoPreloadDepositPreset();
                 })
                 .addTemporalMarker(3.5, () -> {
@@ -96,7 +96,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
                     this.robot.intake.setAngle(120);
                 })
                 .addTemporalMarker(2, () -> {
-                    robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
+                    //robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.autoPreloadDepositPreset();
                 })
                 .addTemporalMarker(3.5, () -> {
@@ -122,7 +122,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
                     this.robot.intake.setAngle(120);
                 })
                 .addTemporalMarker(2, () -> {
-                    robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
+                    //robot.relocalization.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
                     robot.autoPreloadDepositPreset();
                 })
                 .addTemporalMarker(3.5, () -> {
@@ -159,19 +159,19 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
 
         propLocation = teamElementProcessor.getLocation();
-        telemetry.addData("Camera State", visionPortal.getCameraState());
-        telemetry.update();
+//        telemetry.addData("Camera State", visionPortal.getCameraState());
+//        telemetry.update();
 
         while (!isStarted() && !isStopRequested()) {
             propLocation = teamElementProcessor.getLocation();
-            telemetry.addData("Camera State", visionPortal.getCameraState());
+//            telemetry.addData("Camera State", visionPortal.getCameraState());
             if (propLocation == YoinkElementCVProcessor.PropLocation.UNFOUND) {
-                telemetry.addLine("Team Element Location: <b>NOT FOUND</b>");
+//                telemetry.addLine("Team Element Location: <b>NOT FOUND</b>");
             } else {
-                telemetry.addData("Team Element Location", propLocation);
+//                telemetry.addData("Team Element Location", propLocation);
             }
 
-            telemetry.update();
+//            telemetry.update();
         }
         visionPortal.close();
 
