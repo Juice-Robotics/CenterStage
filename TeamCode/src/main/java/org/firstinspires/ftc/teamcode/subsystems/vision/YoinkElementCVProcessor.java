@@ -50,7 +50,7 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
     public static int width = 125;
     public static int height = 125;
 
-    public static double redThreshold = 4;
+    public static double redThreshold = 1.5;
     public static double blueThreshold = 1;
     public static double threshold = 0;
 
@@ -91,7 +91,6 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
 
         left = Core.sumElems(leftZone);
         center = Core.sumElems(centerZone);
-
         leftColor = left.val[0] / 1000000.0;
         centerColor = center.val[0] / 1000000.0;
 
