@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 
 import com.acmerobotics.dashboard.config.Config;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.function.Consumer;
 import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
@@ -28,6 +29,8 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
 
     private PropLocation location = PropLocation.RIGHT;
     public MatOfKeyPoint keyPoints = new MatOfKeyPoint();
+
+    private Telemetry telemetry;
 
     public AllianceColor alliance = AllianceColor.BLUE;
     private Rect leftZoneArea;
@@ -60,8 +63,9 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
     public Scalar left = new Scalar(0,0,0);
     public Scalar center = new Scalar(0,0,0);
 
-    public YoinkElementCVProcessor(AllianceColor color) {
+    public YoinkElementCVProcessor(AllianceColor color, Telemetry telemetry) {
         this.alliance = color;
+        this.telemetry = telemetry;
     }
 
     @Override
@@ -98,6 +102,10 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
 
         leftColor = left.val[0] / 333333.0;
         centerColor = center.val[0] / 333333.0;
+
+        telemetry.addData("leftColor", leftColor);
+        telemetry.addData("centerColor", centerColor);
+        telemetry.update();
 
         if(alliance == AllianceColor.BLUE){
             if (leftColor < threshold) {
