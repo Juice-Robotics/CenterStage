@@ -92,8 +92,8 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
         left = Core.sumElems(leftZone);
         center = Core.sumElems(centerZone);
 
-        leftColor = left.val[0] / 1000000.0;
-        centerColor = center.val[0] / 1000000.0;
+        leftColor = left.val[0] / 333333.0;
+        centerColor = center.val[0] / 333333.0;
 
         if(alliance == AllianceColor.BLUE){
             if (leftColor < threshold) {
