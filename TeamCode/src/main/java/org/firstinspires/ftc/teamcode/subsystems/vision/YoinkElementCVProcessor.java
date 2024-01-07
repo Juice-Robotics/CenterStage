@@ -54,7 +54,7 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
     public static int height = 125;
 
     public static double redThreshold = 4;
-    public static double blueThreshold = 1;
+    public static double blueThreshold = 2;
     public static double threshold = 0;
 
     public double leftColor = 0.0;
@@ -103,36 +103,58 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
         leftColor = left.val[0] / 333333.0;
         centerColor = center.val[0] / 333333.0;
 
-        telemetry.addData("leftColor", leftColor);
-        telemetry.addData("centerColor", centerColor);
-        telemetry.update();
+
 
         if(alliance == AllianceColor.BLUE){
             if (leftColor < threshold) {
-                // left zone has it
-                location = PropLocation.LEFT;
+                // left zone has it (flipped bc upside down)
+                location = PropLocation.RIGHT;
+                telemetry.addData("leftColor", leftColor);
+                telemetry.addData("centerColor", centerColor);
+                telemetry.addData("zone", "LEFT");
+                telemetry.update();
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             } else if (centerColor < threshold) {
                 // center zone has it
                 location = PropLocation.CENTER;
+                telemetry.addData("leftColor", leftColor);
+                telemetry.addData("centerColor", centerColor);
+                telemetry.addData("zone", "CENTER");
+                telemetry.update();
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             } else {
-                // right zone has it
-                location = PropLocation.RIGHT;
+                // right zone has it (flipped bc upside down)
+                location = PropLocation.LEFT;
+                telemetry.addData("leftColor", leftColor);
+                telemetry.addData("centerColor", centerColor);
+                telemetry.addData("zone", "RIGHT");
+                telemetry.update();
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             }
         }else{
-            if (leftColor > threshold) {
+            if (leftColor < threshold) {
                 // left zone has it
-                location = PropLocation.LEFT;
+                location = PropLocation.RIGHT;
+                telemetry.addData("leftColor", leftColor);
+                telemetry.addData("centerColor", centerColor);
+                telemetry.addData("zone", "RIGHT");
+                telemetry.update();
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
-            } else if (centerColor > threshold) {
+            } else if (centerColor < threshold) {
                 // center zone has it
                 location = PropLocation.CENTER;
+                telemetry.addData("leftColor", leftColor);
+                telemetry.addData("centerColor", centerColor);
+                telemetry.addData("zone", "CENTER");
+                telemetry.update();
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             } else {
                 // right zone has it
-                location = PropLocation.RIGHT;
+                location = PropLocation.LEFT;
+                telemetry.addData("leftColor", leftColor);
+                telemetry.addData("centerColor", centerColor);
+                telemetry.addData("zone", "LEFT");
+                telemetry.update();
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             }
         }
