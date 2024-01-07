@@ -60,6 +60,10 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
     public Scalar left = new Scalar(0,0,0);
     public Scalar center = new Scalar(0,0,0);
 
+    public YoinkElementCVProcessor(AllianceColor color) {
+        this.alliance = color;
+    }
+
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
         lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));

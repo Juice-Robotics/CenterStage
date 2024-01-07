@@ -29,8 +29,8 @@ public class RedBackdropSidePreload extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        teamElementProcessor = new YoinkElementCVProcessor();
-        teamElementProcessor.alliance = AllianceColor.RED;
+        teamElementProcessor = new YoinkElementCVProcessor(AllianceColor.RED);
+//        teamElementProcessor.alliance = AllianceColor.RED;
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
                 .setCameraResolution(new Size(640, 480))
