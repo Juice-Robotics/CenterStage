@@ -202,6 +202,33 @@ public class Robot {
         this.stopIntake();
     }
 
+    public void autoIntakeReverse(long time, float intakeAngle) {
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                intake.intakeMotor.setSpeed((float) -0.7);
+                arm.runtoPreset(Levels.INTAKE);
+                claw.setClawOpen();
+                intake.setAngle(intakeAngle);
+                claw.runToWristPreset(Levels.INTAKE);
+                slides.runToPosition(0);
+
+                sleep((int) (1000));
+                intake.intakeMotor.setSpeed(0);
+
+                intake.startIntake();
+                arm.runtoPreset(Levels.INTAKE);
+                claw.setClawOpen();
+                intake.setAngle(intakeAngle);
+                claw.runToWristPreset(Levels.INTAKE);
+                slides.runToPosition(0);
+
+                sleep((int) (time * 1000));
+                stopIntake();
+            }});
+        thread.start();
+        intaking = true;
+    }
+
     public void depositPreset() {
         this.slides.runToPreset(Levels.DEPOSIT);
         Thread thread = new Thread(new Runnable() {

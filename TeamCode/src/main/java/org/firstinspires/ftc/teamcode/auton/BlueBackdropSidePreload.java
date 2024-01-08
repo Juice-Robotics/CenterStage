@@ -137,9 +137,9 @@ public class BlueBackdropSidePreload extends LinearOpMode {
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(-7, 20), Math.toRadians(-90))
                 .splineToConstantHeading(new Vector2d(-12, -55), Math.toRadians(-90))
-//                .addTemporalMarker(2, () -> {
-//                    robot.autoIntake(3, 170);
-//                })
+                .addTemporalMarker(2, () -> {
+                    robot.autoIntakeReverse(3, 170);
+                })
                 .setReversed(true)
                 .waitSeconds(4)
                 .splineToConstantHeading(new Vector2d(-7, 20), Math.toRadians(90))

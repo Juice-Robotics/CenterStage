@@ -80,16 +80,19 @@ public class BlueSpikeFar extends LinearOpMode {
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(-34, 52), Math.toRadians(90))
-                .addTemporalMarker(0, () -> {
-                    this.robot.intake.setAngle(120);
-                })
-                .addTemporalMarker(2, () -> {
-                    robot.autoPreloadDepositPreset();
-                })
-                .addTemporalMarker(3.5, () -> {
-                    robot.smartClawOpen();
-                })
+                .splineTo(new Vector2d(-10, -42.5), Math.toRadians(90))
+                .waitSeconds(3)
+                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-34, 53), Math.toRadians(90))
+//                .addTemporalMarker(0, () -> {
+//                    this.robot.intake.setAngle(120);
+//                })
+//                .addTemporalMarker(2, () -> {
+//                    robot.autoPreloadDepositPreset();
+//                })
+//                .addTemporalMarker(3.5, () -> {
+//                    robot.smartClawOpen();
+//                })
                 .waitSeconds(3)
                 .strafeLeft(22)
                 .back(10)
@@ -180,6 +183,7 @@ public class BlueSpikeFar extends LinearOpMode {
         switch (propLocation) {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
+                drive.followTrajectorySequence(preloadBackdropCenter);
                 break;
             case LEFT:
                 drive.followTrajectorySequence(preloadSpikeLeft);
