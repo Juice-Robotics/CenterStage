@@ -142,7 +142,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 //                })
                 .setReversed(true)
                 .waitSeconds(4)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-7, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(-34, 53), Math.toRadians(90))
                 .build();
 
