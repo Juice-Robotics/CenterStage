@@ -111,7 +111,7 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
                 location = PropLocation.RIGHT;
                 telemetry.addData("leftColor", leftColor);
                 telemetry.addData("centerColor", centerColor);
-                telemetry.addData("zone", "LEFT");
+                telemetry.addData("zone", "RIGHT");
                 telemetry.update();
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             } else if (centerColor < threshold) {
@@ -127,7 +127,7 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
                 location = PropLocation.LEFT;
                 telemetry.addData("leftColor", leftColor);
                 telemetry.addData("centerColor", centerColor);
-                telemetry.addData("zone", "RIGHT");
+                telemetry.addData("zone", "LEFT");
                 telemetry.update();
                 Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
             }

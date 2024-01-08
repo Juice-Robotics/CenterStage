@@ -60,14 +60,14 @@ public class BlueBackdropSidePreload extends LinearOpMode {
         // PRELOAD PATHS
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-34, 10, Math.toRadians(90)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-34, 12, Math.toRadians(90)), Math.toRadians(0))
                 .forward(15)
                 .turn(Math.toRadians(180))
                 .build();
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(true)
-                .back(27)
+                .splineTo(new Vector2d(-30, 53), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
