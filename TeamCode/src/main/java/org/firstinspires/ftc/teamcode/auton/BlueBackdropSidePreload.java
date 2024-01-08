@@ -85,13 +85,13 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .back(29.5)
-                .forward(14)
+                .back(29)
+                .forward(15)
                 .build();
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(-34, 52), Math.toRadians(90))
+                .splineTo(new Vector2d(-34, 53), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -116,7 +116,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-42, 52, Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-42, 53, Math.toRadians(270)), Math.toRadians(90))
 //                .splineToConstantHeading(new Vector2d(-29, 52), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
@@ -135,15 +135,15 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence cycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(11, -58), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(-7, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(-12, -55), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
                 .setReversed(true)
                 .waitSeconds(4)
-                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(34, 49), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-34, 53), Math.toRadians(90))
                 .build();
 
 
