@@ -109,7 +109,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineTo(new Vector2d(-38, 25), Math.toRadians(0))
+                .splineTo(new Vector2d(-38, 21), Math.toRadians(0))
                 .forward(15)
                 .turn(Math.toRadians(90))
                 .build();
