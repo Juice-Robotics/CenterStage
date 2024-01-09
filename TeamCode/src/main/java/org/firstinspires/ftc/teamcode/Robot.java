@@ -323,6 +323,11 @@ public class Robot {
     }
 
 
+    Motor backLeft = (Motor) components[0];
+    Motor backRight = (Motor) components[1];
+    Motor frontLeft = (Motor) components[2];
+    Motor frontRight = (Motor) components[3];
+
     //DRIVE
     public void setDrivePower(double x, double y, double rx) {
         double powerFrontLeft = y + x + rx;
@@ -345,10 +350,7 @@ public class Robot {
             powerFrontRight /= max;
             powerBackRight /= max;
         }
-        Motor backLeft = (Motor) components[0];
-        Motor backRight = (Motor) components[1];
-        Motor frontLeft = (Motor) components[2];
-        Motor frontRight = (Motor) components[3];
+
         frontLeft.setSpeed((float)powerFrontLeft);
         frontRight.setSpeed((float)powerFrontRight);
         backLeft.setSpeed(-(float)powerBackLeft);
