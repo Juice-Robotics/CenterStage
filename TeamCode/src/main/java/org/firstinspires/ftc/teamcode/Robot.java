@@ -100,6 +100,11 @@ public class Robot {
         this.hardwareMap = map;
 
         this.subsystemState = Levels.ZERO;
+
+        backLeft = (Motor) components[0];
+        backRight = (Motor) components[1];
+        frontLeft = (Motor) components[2];
+        frontRight = (Motor) components[3];
     }
 
     // INTAKE
