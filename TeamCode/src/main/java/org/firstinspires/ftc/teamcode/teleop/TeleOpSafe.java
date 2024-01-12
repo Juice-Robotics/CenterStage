@@ -195,13 +195,8 @@ public class TeleOpSafe extends LinearOpMode {
             telemetry.addData("SLIDES POSITION: ", robot.slides.slides1.motor.getCurrentPosition());
             telemetry.addData("LEVEL: ", robot.slides.currentLevel);
             telemetry.addData("DRIVE CURRENT ", robot.drive.getCurrent());
-            telemetry.update();
-
             loopTime = loop;
-
-//            PhotonCore.CONTROL_HUB.clearBulkCache();
-//            PhotonCore.EXPANSION_HUB.clearBulkCache();
-
+            telemetry.update();
         }
     }
 }
