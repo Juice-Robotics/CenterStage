@@ -60,6 +60,8 @@ public class TeleOpSafe extends LinearOpMode {
         boolean previousSquare = false;
         boolean previousCircle = false;
 
+        boolean[] detectedIndex;
+
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
@@ -185,6 +187,16 @@ public class TeleOpSafe extends LinearOpMode {
             robot.slides.update();
             robot.antiJam();
             double loop = System.nanoTime();
+
+            detectedIndex = robot.intakeSensor.hasPixel();
+            if (detectedIndex[0] && detectedIndex[1]){
+                gamepad1.rumble(1, 1, 500);
+            }
+            else if (detectedIndex[1]){
+                gamepad1.rumble(1, 0, 500);
+            } else if (detectedIndex[0]){
+                gamepad1.rumble(0, 1, 500);
+            }
 
             telemetry.addData("hz ", 1000000000 / (loop - loopTime));
             telemetry.addData("TIME LEFT: ", ((120-matchTimer.time(TimeUnit.SECONDS))));
