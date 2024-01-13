@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.subsystems.vision.TeamElementCVProcessor;
 import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkElementCVProcessor;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 @Config
 @Autonomous(group = "drive")
@@ -26,9 +27,11 @@ public class RedBackdropSidePreload extends LinearOpMode {
     VisionPortal visionPortal;
     YoinkElementCVProcessor teamElementProcessor;
     YoinkElementCVProcessor.PropLocation propLocation = YoinkElementCVProcessor.PropLocation.UNFOUND;
+    AprilTagProcessor processor;
+
     @Override
     public void runOpMode() throws InterruptedException {
-
+        processor = AprilTagProcessor.easyCreateWithDefaults();
         teamElementProcessor = new YoinkElementCVProcessor(AllianceColor.RED, telemetry);
 //        teamElementProcessor.alliance = AllianceColor.RED;
         visionPortal = new VisionPortal.Builder()
@@ -37,7 +40,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .enableLiveView(true)
                 .setAutoStopLiveView(true)
                 .addProcessor(teamElementProcessor)
-
+                .addProcessor(processor)
                 .build();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);

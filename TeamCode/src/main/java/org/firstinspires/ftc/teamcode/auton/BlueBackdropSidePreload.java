@@ -32,8 +32,8 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 //    TeamElementCVProcessor teamElementProcessor;
     YoinkElementCVProcessor teamElementProcessor;
     YoinkElementCVProcessor.PropLocation propLocation = YoinkElementCVProcessor.PropLocation.UNFOUND;
-    AprilTagDetection aprilTagDetection;
-    List<AprilTagDetection> aprilTagDetections;
+//    AprilTagDetection aprilTagDetection;
+//    List<AprilTagDetection> aprilTagDetections;
     AprilTagProcessor processor;
 
     @Override

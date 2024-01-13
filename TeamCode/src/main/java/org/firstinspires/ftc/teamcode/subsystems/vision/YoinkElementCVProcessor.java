@@ -41,7 +41,7 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
     public static int blueLeftX = 10;
     public static int blueLeftY = 240;
 
-    public static int blueCenterX = 371;
+    public static int blueCenterX = 350;
     public static int blueCenterY = 240;
 
     public static int redLeftX = 10;
