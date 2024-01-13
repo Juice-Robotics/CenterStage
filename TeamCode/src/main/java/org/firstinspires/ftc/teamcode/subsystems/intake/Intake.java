@@ -20,24 +20,24 @@ public class Intake {
 
     public float intakeUp = intakeDown - 90 - OFFSET;
 
-    public MotorEx intakeMotor;
+    public DcMotorEx intakeMotor;
 
-    public Intake(StepperServo intakeServo1, StepperServo intakeServo2, MotorEx intakeMotor) {
+    public Intake(StepperServo intakeServo1, StepperServo intakeServo2, DcMotorEx intakeMotor) {
         this.intakeServo1 = intakeServo1;
         this.intakeServo2 = intakeServo2;
 
         this.intakeMotor = intakeMotor;
         intakeServo2.servo.setDirection(Servo.Direction.REVERSE);
-        // intakeMotor.motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeMotor.setDirection(DcMotorEx.Direction.REVERSE);
     }
 
     public void startIntake(){
-        intakeMotor.setSpeed(1);
+        intakeMotor.setPower(1);
         intakeServo1.setAngle(intakeDown);
     }
 
     public void stopIntake(){
-        intakeMotor.setSpeed(0);
+        intakeMotor.setPower(0);
         intakeServo1.setAngle(intakeUp);
     }
 
@@ -59,7 +59,7 @@ public class Intake {
     }
 
     public void reverse(){
-        intakeMotor.setSpeed(-0.6F);
+        intakeMotor.setPower(-0.6F);
     }
 
 }

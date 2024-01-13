@@ -26,7 +26,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 import java.util.concurrent.TimeUnit;
 
-//@Photon
+@Photon
 @TeleOp(group = "competition")
 public class TeleOpSafe extends LinearOpMode {
 

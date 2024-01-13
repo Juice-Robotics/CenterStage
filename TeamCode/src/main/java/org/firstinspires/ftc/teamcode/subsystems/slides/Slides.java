@@ -67,7 +67,8 @@ public class Slides {
 
         controller1 = new PIDController(p, i , d);
         controller2 = new PIDController(p, i , d);
-        slides1.motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        slides2.motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        climbMotor.motor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         timer = new ElapsedTime();
         profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(1, 0), new MotionState(0, 0), maxvel, maxaccel);
