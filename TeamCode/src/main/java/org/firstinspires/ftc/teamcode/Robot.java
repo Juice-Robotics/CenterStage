@@ -50,6 +50,11 @@ public class Robot {
     public ElapsedTime antiJamCooldown = new ElapsedTime();
     public boolean threadState = false;
 
+    Motor backLeft;
+    Motor backRight;
+    Motor frontLeft;
+    Motor frontRight;
+
 
     public Robot(HardwareMap map, boolean auton){
         this.auton = auton;
@@ -95,6 +100,11 @@ public class Robot {
         this.hardwareMap = map;
 
         this.subsystemState = Levels.ZERO;
+
+        backLeft = (Motor) components[0];
+        backRight = (Motor) components[1];
+        frontLeft = (Motor) components[2];
+        frontRight = (Motor) components[3];
     }
 
     // INTAKE
@@ -322,7 +332,6 @@ public class Robot {
         t1.start();
     }
 
-
     //DRIVE
     public void setDrivePower(double x, double y, double rx) {
         double powerFrontLeft = y + x + rx;
@@ -345,10 +354,7 @@ public class Robot {
             powerFrontRight /= max;
             powerBackRight /= max;
         }
-        Motor backLeft = (Motor) components[0];
-        Motor backRight = (Motor) components[1];
-        Motor frontLeft = (Motor) components[2];
-        Motor frontRight = (Motor) components[3];
+
         frontLeft.setSpeed((float)powerFrontLeft);
         frontRight.setSpeed((float)powerFrontRight);
         backLeft.setSpeed(-(float)powerBackLeft);
