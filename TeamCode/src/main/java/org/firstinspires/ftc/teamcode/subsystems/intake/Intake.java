@@ -16,7 +16,7 @@ public class Intake {
 
     public float OFFSET = 0;
 
-    public float intakeDown = 182 - OFFSET;
+    public float intakeDown = 186 - OFFSET;
 
     public float intakeUp = intakeDown - 90 - OFFSET;
 

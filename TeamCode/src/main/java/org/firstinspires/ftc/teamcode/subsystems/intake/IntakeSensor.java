@@ -1,85 +1,40 @@
 package org.firstinspires.ftc.teamcode.subsystems.intake;
 
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 
-public class IntakeSensor{
-    NormalizedColorSensor colorSensor;
-    NormalizedColorSensor colorSensor2;
-    DistanceSensor distanceSensor1;
-    DistanceSensor distanceSensor2;
+public class IntakeSensor {
+    ColorSensor sensor1;
+    ColorSensor sensor2;
 
-    NormalizedRGBA colors;
-    NormalizedRGBA colors2;
-    NormalizedRGBA indexColor;
-    NormalizedRGBA[] currentState;
-    float gain = 2;
+    boolean[] detectedIndex = {false, false};
 
-    /**
-    <h2>Unit: MM</h2>
-     */
-    double distance1;
-    /**
-     <h2>Unit: MM</h2>
-     */
-    double distance2;
-    final double distance1Tol = 0.5;
-    final double distance2Tol = 0.5;
+    DistanceUnit unit = DistanceUnit.MM;
 
-    boolean[] detectedIndex;
-
-    public IntakeSensor(NormalizedColorSensor colorSensor, NormalizedColorSensor colorSensor2, float gain) {
-        this.colorSensor = colorSensor;
-        this.colorSensor2 = colorSensor2;
-        this.gain = gain;
-    }
-
-    public IntakeSensor(DistanceSensor ds1, DistanceSensor ds2) {
-        this.distanceSensor1 = ds1;
-        this.distanceSensor2 = ds2;
-    }
-
-    public NormalizedRGBA[] getState() {
-        colors = colorSensor.getNormalizedColors();
-        colors2 = colorSensor2.getNormalizedColors();
-        currentState[0] = colors;
-        currentState[1] = colors2;
-        return currentState;
+    public IntakeSensor(ColorSensor sensor1, ColorSensor sensor2) {
+        this.sensor1 = sensor1;
+        this.sensor2 = sensor2;
     }
 
     public boolean[] hasPixel(){
-        colors = colorSensor.getNormalizedColors();
-        colors2 = colorSensor2.getNormalizedColors();
+        double sensorValue1 = getRangeSensor1();
+        double sensorValue2 = getRangeSensor2();
 
         clearDetectedIndex();
-        if (colors != indexColor) {
+
+        if (sensorValue1 >= 2.0 && sensorValue1 <= 11.0) {
             detectedIndex[0] = true;
         }
-        if (colors2 != indexColor) {
-            detectedIndex[1] = true;
-        }
-        return detectedIndex;
-    }
 
-    public boolean[] hasPixelDist() {
-        distance1 = distanceSensor1.getDistance(DistanceUnit.MM);
-        distance2 = distanceSensor2.getDistance(DistanceUnit.MM);
-
-        if (distance1 <= distance1Tol) {
-            detectedIndex[0] = true;
-        }
-        if (distance2 <= distance2Tol) {
+        if (sensorValue2 >= 2.0 && sensorValue2 <= 11.0) {
             detectedIndex[1] = true;
         }
 
         return detectedIndex;
-    }
 
-    public boolean[] cachedHasPixel() {
-        return detectedIndex;
     }
 
     public void clearDetectedIndex() {
@@ -87,7 +42,13 @@ public class IntakeSensor{
         detectedIndex[1] = false;
     }
 
+    public double getRangeSensor1() {
+        return ((DistanceSensor) sensor1).getDistance(unit);
+    }
 
+    public double getRangeSensor2() {
+        return ((DistanceSensor) sensor2).getDistance(unit);
+    }
 }
 
 

@@ -190,19 +190,18 @@ public class TeleOpSafe extends LinearOpMode {
 
             detectedIndex = robot.intakeSensor.hasPixel();
             if (detectedIndex[0] && detectedIndex[1]){
-                gamepad1.rumble(1, 1, 500);
+                gamepad1.rumble(1, 1, 250);
             }
             else if (detectedIndex[1]){
-                gamepad1.rumble(1, 0, 500);
+                gamepad1.rumble(1, 0, 250);
             } else if (detectedIndex[0]){
-                gamepad1.rumble(0, 1, 500);
+                gamepad1.rumble(0, 1, 250);
             }
 
             telemetry.addData("hz ", 1000000000 / (loop - loopTime));
+            telemetry.addData("SENSOR1 ", robot.intakeSensor.getRangeSensor1());
+            telemetry.addData("SENSOR2 ", robot.intakeSensor.getRangeSensor2());
             telemetry.addData("TIME LEFT: ", ((120-matchTimer.time(TimeUnit.SECONDS))));
-            telemetry.addData("CLAW POSITION: ", (robot.claw.depositServo.getAngle()));
-            //telemetry.addData("ARM TARGET: ", (robot.arm.v4b1.servo.getPosition()*180));
-            telemetry.addData("ARM POSITION: ", robot.arm.arm1.getAngle());
             telemetry.addData("SLIDES TARGET: ", robot.slides.target);
             telemetry.addData("SLIDES POSITION: ", robot.slides.slides1.motor.getCurrentPosition());
             telemetry.addData("LEVEL: ", robot.slides.currentLevel);
