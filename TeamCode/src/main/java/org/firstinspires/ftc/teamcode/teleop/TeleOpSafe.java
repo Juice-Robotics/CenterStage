@@ -86,11 +86,11 @@ public class TeleOpSafe extends LinearOpMode {
                 rx = gamepad1.right_stick_x * (1 - 0.66 * gamepad1.right_trigger);
 
             } else {
-                x = -gamepad1.left_stick_x;
-                y = -gamepad1.left_stick_y;
+                x = gamepad1.left_stick_x;
+                y = gamepad1.left_stick_y;
                 rx = gamepad1.right_stick_x;
             }
-            robot.setDrivePower(-x, y, rx);
+            robot.setDrivePower(-x, y, -rx);
 
 
             //ARM
