@@ -136,8 +136,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .addTemporalMarker(4, () -> {
                     robot.intake.reverseIntake();
                 })
-                .back(2)
-                .addTemporalMarker(4.5, () -> {
+                .addTemporalMarker(4.2, () -> {
                     robot.stopIntake();
                 })
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
@@ -148,7 +147,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .addTemporalMarker(9, ()-> {
                     robot.smartClawOpen();
                 })
-                .waitSeconds(3)
+                .waitSeconds(2)
                 .build();
 
         TrajectorySequence leftCycle1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
