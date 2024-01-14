@@ -34,7 +34,7 @@ public class MeepMeepTesting {
                                         .waitSeconds(3)
                                         .setReversed(false)
                                         .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                                        .splineToConstantHeading(new Vector2d(11, -58), Math.toRadians(-90))
+                                        .splineToConstantHeading(new Vector2d(11, -56), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
