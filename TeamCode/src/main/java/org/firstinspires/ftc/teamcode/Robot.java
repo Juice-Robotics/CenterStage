@@ -235,6 +235,18 @@ public class Robot {
         this.subsystemState = Levels.DEPOSIT;
     }
 
+    public void autoCycleDepositPreset() {
+        this.slides.runToPosition(400);
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                sleep(300);
+                arm.runtoPreset(Levels.DEPOSIT);
+                claw.runToWristPreset(Levels.DEPOSIT);
+            }});
+        thread.start();
+        this.subsystemState = Levels.DEPOSIT;
+    }
+
     public void runToAutoSpikePreset() {
         this.slides.runToPosition(100);
         this.arm.runtoPreset(Levels.DEPOSIT);
