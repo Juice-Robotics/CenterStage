@@ -94,7 +94,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .addTemporalMarker(3.5, () -> {
                     robot.smartClawOpen();
                 })
-                .waitSeconds(3)
+                .waitSeconds(2)
                 .build();
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
@@ -122,35 +122,30 @@ public class RedBackdropSidePreload extends LinearOpMode {
         TrajectorySequence centerCycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(12, -53), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(12, -54), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
                 .setReversed(true)
-                .strafeLeft(2)
+                .strafeLeft(8)
+                .strafeRight(7)
+                .forward(1)
                 .addTemporalMarker(2.5, () -> {
                     robot.startIntake();
                 })
                 .addTemporalMarker(6, () -> {
                     robot.intake.reverseIntake();
                 })
-                .strafeLeft(4)
-                .forward(2)
-                .strafeRight(6)
-                .waitSeconds(4)
-                .addTemporalMarker(7, () -> {
+                .addTemporalMarker(6.5, () -> {
                     robot.stopIntake();
                 })
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(31, 48), Math.toRadians(90))
-                .addTemporalMarker(13, ()-> {
+                .splineToConstantHeading(new Vector2d(29, 48), Math.toRadians(90))
+                .addTemporalMarker(9, ()-> {
                     robot.autoPreloadDepositPreset();
                 })
-                .addTemporalMarker(14.5, ()-> {
-                    robot.claw.setClawOpen();
-                })
-                .addTemporalMarker(15.5, ()->{
-                    robot.intakePreset();
+                .addTemporalMarker(10.5, ()-> {
+                    robot.smartClawOpen();
                 })
                 .waitSeconds(10)
                 .build();
