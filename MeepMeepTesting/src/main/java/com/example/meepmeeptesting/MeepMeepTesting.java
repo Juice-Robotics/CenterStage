@@ -34,14 +34,15 @@ public class MeepMeepTesting {
                                         .waitSeconds(3)
                                         .setReversed(false)
                                         .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                                        .splineToConstantHeading(new Vector2d(11, -56), Math.toRadians(-90))
-//                .addTemporalMarker(2, () -> {
-//                    robot.autoIntake(3, 170);
-//                })
+                                        .splineToConstantHeading(new Vector2d(12, -54), Math.toRadians(-90))
                                         .setReversed(true)
-                                        .waitSeconds(4)
+                                        .strafeLeft(4)
+                                        .strafeRight(5)
+                                        .forward(1)
+                                        .waitSeconds(0.5)
                                         .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                                        .splineToConstantHeading(new Vector2d(34, 49), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(28.5, 48), Math.toRadians(90))
+                                        .waitSeconds(2)
                                         .build()
                 );
 
