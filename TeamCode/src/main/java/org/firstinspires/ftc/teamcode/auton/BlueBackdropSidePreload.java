@@ -15,11 +15,13 @@ import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.vision.TeamElementCVProcessor;
 import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkElementCVProcessor;
+import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkP2Pipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.opencv.core.Scalar;
 
 import java.util.List;
 
@@ -28,10 +30,8 @@ import java.util.List;
 
 public class BlueBackdropSidePreload extends LinearOpMode {
     Robot robot;
-    VisionPortal visionPortal;
-//    TeamElementCVProcessor teamElementProcessor;
-    YoinkElementCVProcessor teamElementProcessor;
-    YoinkElementCVProcessor.PropLocation propLocation = YoinkElementCVProcessor.PropLocation.UNFOUND;
+    private VisionPortal visionPortal;
+    private YoinkP2Pipeline colourMassDetectionProcessor;
 //    AprilTagDetection aprilTagDetection;
 //    List<AprilTagDetection> aprilTagDetections;
     AprilTagProcessor processor;
@@ -39,15 +39,20 @@ public class BlueBackdropSidePreload extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         processor = AprilTagProcessor.easyCreateWithDefaults();
-        teamElementProcessor = new YoinkElementCVProcessor(AllianceColor.BLUE, telemetry);
-//        teamElementProcessor.alliance = AllianceColor.BLUE;
+        Scalar lower = new Scalar(90, 60, 40); // the lower hsv threshold for your detection
+        Scalar upper = new Scalar(130, 255, 255); // the upper hsv threshold for your detection
+        double minArea = 100; // the minimum area for the detection to consider for your prop
+
+        colourMassDetectionProcessor = new YoinkP2Pipeline(
+                lower,
+                upper,
+                () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
+                () -> 213, // the left dividing line, in this case the left third of the frame
+                () -> 426 // the left dividing line, in this case the right third of the frame
+        );
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
-                .setCameraResolution(new Size(640, 480))
-                .enableLiveView(true)
-                .setAutoStopLiveView(true)
-                .addProcessor(teamElementProcessor)
-                .addProcessor(processor)
+                .addProcessor(colourMassDetectionProcessor)
                 .build();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -158,20 +163,16 @@ public class BlueBackdropSidePreload extends LinearOpMode {
          */
 
 
-        propLocation = teamElementProcessor.getLocation();
 //        telemetry.addData("Camera State", visionPortal.getCameraState());
 //        telemetry.update();
 
         while (!isStarted() && !isStopRequested()) {
-            propLocation = teamElementProcessor.getLocation();
-//            telemetry.addData("Camera State", visionPortal.getCameraState());
-            if (propLocation == YoinkElementCVProcessor.PropLocation.UNFOUND) {
-//                telemetry.addLine("Team Element Location: <b>NOT FOUND</b>");
-            } else {
-//                telemetry.addData("Team Element Location", propLocation);
-            }
+            telemetry.addData("Currently Recorded Position", colourMassDetectionProcessor.getRecordedPropPosition());
+            telemetry.addData("Camera State", visionPortal.getCameraState());
+            telemetry.addData("Currently Detected Mass Center", "x: " + colourMassDetectionProcessor.getLargestContourX() + ", y: " + colourMassDetectionProcessor.getLargestContourY());
+            telemetry.addData("Currently Detected Mass Area", colourMassDetectionProcessor.getLargestContourArea());
 
-//            telemetry.update();
+            telemetry.update();
         }
         visionPortal.close();
 
@@ -186,12 +187,19 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
 
 //        // if it is UNFOUND, you can manually set it to any of the other positions to guess
-        if (propLocation == YoinkElementCVProcessor.PropLocation.UNFOUND) {
-            propLocation = YoinkElementCVProcessor.PropLocation.CENTER;
+        colourMassDetectionProcessor.close();
+        visionPortal.close();
+        if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
+            visionPortal.stopLiveView();
+            visionPortal.stopStreaming();
         }
 
+
+        // gets the recorded prop position
+        YoinkP2Pipeline.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
+
         robot.slides.launchAsThread(telemetry);
-        switch (propLocation) {
+        switch (recordedPropPosition) {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
                 drive.followTrajectorySequence(preloadBackdropCenter);
