@@ -29,10 +29,10 @@ public class Slides {
     private MotionProfile profile;
     public MotionState curState;
     private ElapsedTime timer;
-    double maxvel = 4000;
-    double maxaccel = 4000;
+    double maxvel = 6000;
+    double maxaccel = 6000;
 
-    public double p = 0.01, i = 0.00, d = 0.0001;
+    public double p = 0.015, i = 0.00, d = 0.0001;
     public double f = 0.012;
     double voltageCompensation;
 
@@ -67,7 +67,8 @@ public class Slides {
 
         controller1 = new PIDController(p, i , d);
         controller2 = new PIDController(p, i , d);
-        slides1.motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        slides2.motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        climbMotor.motor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         timer = new ElapsedTime();
         profile = MotionProfileGenerator.generateSimpleMotionProfile(new MotionState(1, 0), new MotionState(0, 0), maxvel, maxaccel);

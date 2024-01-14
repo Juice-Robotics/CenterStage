@@ -57,8 +57,8 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(8.5, 0, 0); //check with spline
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0); //check with spline
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
 
     public static double LATERAL_MULTIPLIER = 1.4; //1.4 mess with later imo
 
@@ -126,8 +126,8 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
-        leftRear.setDirection(DcMotorEx.Direction.REVERSE);
-        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
+        rightRear.setDirection(DcMotorEx.Direction.REVERSE);
+        rightFront.setDirection(DcMotorEx.Direction.REVERSE);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();

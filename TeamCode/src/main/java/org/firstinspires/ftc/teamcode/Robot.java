@@ -2,12 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 // IMPORT SUBSYSTEMS
 
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.Component;
 import org.firstinspires.ftc.teamcode.lib.Levels;
@@ -93,7 +95,7 @@ public class Robot {
         this.claw = new Claw((StepperServo) components[11], (StepperServo) components[12]);
         this.arm = new ArmElbow((StepperServo) components[8], (StepperServo) components[9], (StepperServo) components[10]);
         this.intake = new Intake((StepperServo) components[14], (StepperServo) components[15], (MotorEx) components[13]);
-        this.intakeSensor = new IntakeSensor(map.get(NormalizedColorSensor.class, "intakeSensor1"), map.get(NormalizedColorSensor.class, "intakeSensor2"), 2);
+        this.intakeSensor = new IntakeSensor(map.colorSensor.get("intakeSensor1"), map.colorSensor.get("intakeSensor2"));
         this.slides = new Slides((Motor) components[4], (Motor) components[5], (Motor) components[6], (StepperServo) components[7], voltageSensor);
         this.drone = new DroneLauncher((StepperServo) components[16]);
         this.relocalization = new Relocalization();
@@ -133,8 +135,9 @@ public class Robot {
         this.arm.runtoPreset(Levels.CAPTURE);
         Thread thread = new Thread(new Runnable() {
             public void run() {
-                sleep(250);
+                sleep(150);
                 claw.setClawClose();
+                sleep(350);
                 intake.stopIntake();
                 intake.runToPreset(Levels.INTERMEDIATE);
                 arm.runtoPreset(Levels.INTERMEDIATE);
@@ -301,7 +304,7 @@ public class Robot {
                 this.intake.reverse();
                 sleep(250);
                 this.intake.runToPreset(Levels.INTAKE);
-                this.intake.intakeMotor.setSpeed(1);
+                this.intake.intakeMotor.setSpeed(-1);
                 flags.remove(RobotFlags.INTAKE_JAMMED);
                 flags.remove(RobotFlags.ANTI_JAM_IN_PROGRESS);
                 antiJamCooldown.reset();
@@ -356,9 +359,9 @@ public class Robot {
         }
 
         frontLeft.setSpeed((float)powerFrontLeft);
-        frontRight.setSpeed((float)powerFrontRight);
+        frontRight.setSpeed(-(float)powerFrontRight);
         backLeft.setSpeed(-(float)powerBackLeft);
-        backRight.setSpeed(-(float)powerBackRight);
+        backRight.setSpeed((float)powerBackRight);
     }
 
     public void sleep(int millis) {
