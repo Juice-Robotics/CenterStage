@@ -54,8 +54,8 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
     public static int height = 125;
 
 
-    public static double redThreshold = 4;
-    public static double blueThreshold = 2;
+    public static double redThreshold = 150;
+    public static double blueThreshold = 70;
     public static double threshold = 0;
 
     public double leftColor = 0.0;
@@ -82,93 +82,60 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
 
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
+        Rect leftZoneArea;
+        Rect centerZoneArea;
 
         if (alliance == AllianceColor.RED) {
-            threshold = redThreshold;
+            leftZoneArea = new Rect(redLeftX, redLeftY, width, height);
+            centerZoneArea = new Rect(redCenterX, redCenterY, width, height);
+//            leftZoneArea = new Rect(redLeftX, redLeftY, leftWidth, leftHeight);
+//            centerZoneArea = new Rect(redCenterX, redCenterY, centerWidth, centerHeight);
         } else {
-            threshold = blueThreshold;
+            leftZoneArea = new Rect(blueLeftX, blueLeftY, width, height);
+            centerZoneArea = new Rect(blueCenterX, blueCenterY, width, height);
         }
 
-        frame.copyTo(finalMat);
-        Imgproc.GaussianBlur(finalMat, finalMat, new Size(5, 5), 0.0);
-
-        leftZoneArea = new Rect(alliance == AllianceColor.RED? redLeftX : blueLeftX, alliance == AllianceColor.RED? redLeftY : blueLeftY, width, height);
-        centerZoneArea = new Rect(alliance == AllianceColor.RED?redCenterX:blueCenterX, alliance == AllianceColor.RED?redCenterY:blueCenterY, width, height);
-
-        Mat leftZone = finalMat.submat(leftZoneArea);
-        Mat centerZone = finalMat.submat(centerZoneArea);
-
-        left = Core.sumElems(leftZone);
-        center = Core.sumElems(centerZone);
-
-        leftColor = left.val[0] / 333333.0;
-        centerColor = center.val[0] / 333333.0;
+        Mat leftZone = frame.submat(leftZoneArea);
+        Mat centerZone = frame.submat(centerZoneArea);
 
 
+//        if (DEBUG) {
+//            Imgproc.blur(frame, frame, new Size(5, 5));
+//            Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255), 2);
+//            Imgproc.rectangle(frame, centerZoneArea, new Scalar(255, 255, 255), 2);
+//        }
 
-        if(alliance == AllianceColor.BLUE){
-            if (leftColor < threshold) {
-                // left zone has it (flipped bc upside down)
-                location = PropLocation.RIGHT;
-                telemetry.addData("leftColor", leftColor);
-                telemetry.addData("centerColor", centerColor);
-                telemetry.addData("zone", "RIGHT");
-                telemetry.update();
-                Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
-            } else if (centerColor < threshold) {
-                // center zone has it
-                location = PropLocation.CENTER;
-                telemetry.addData("leftColor", leftColor);
-                telemetry.addData("centerColor", centerColor);
-                telemetry.addData("zone", "CENTER");
-                telemetry.update();
-                Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
-            } else {
-                // right zone has it (flipped bc upside down)
-                location = PropLocation.LEFT;
-                telemetry.addData("leftColor", leftColor);
-                telemetry.addData("centerColor", centerColor);
-                telemetry.addData("zone", "LEFT");
-                telemetry.update();
-                Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
-            }
-        }else{
-            if (leftColor < threshold) {
-                // left zone has it
-                location = PropLocation.RIGHT;
-                telemetry.addData("leftColor", leftColor);
-                telemetry.addData("centerColor", centerColor);
-                telemetry.addData("zone", "RIGHT");
-                telemetry.update();
-                Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
-            } else if (centerColor < threshold) {
-                // center zone has it
-                location = PropLocation.CENTER;
-                telemetry.addData("leftColor", leftColor);
-                telemetry.addData("centerColor", centerColor);
-                telemetry.addData("zone", "CENTER");
-                telemetry.update();
-                Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
-            } else {
-                // right zone has it
-                location = PropLocation.LEFT;
-                telemetry.addData("leftColor", leftColor);
-                telemetry.addData("centerColor", centerColor);
-                telemetry.addData("zone", "LEFT");
-                telemetry.update();
-                Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
-            }
+        Imgproc.blur(leftZone, leftZone, new Size(5, 5));
+        Imgproc.blur(centerZone, centerZone, new Size(5, 5));
+
+        left = Core.mean(leftZone);
+        center = Core.mean(centerZone);
+
+        if (telemetry != null) {
+            telemetry.addData("leftColor", left.toString());
+            telemetry.addData("centerColor", center.toString());
+            telemetry.addData("analysis", location.toString());
+            telemetry.update();
         }
 
-        //Imgproc.rectangle(finalMat, leftZoneArea, new Scalar(255, 255, 255));
-        Imgproc.rectangle(finalMat, centerZoneArea, new Scalar(255, 255, 255));
-        Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255));
-        Imgproc.rectangle(frame, centerZoneArea, new Scalar(255, 255, 255));
+        double threshold = alliance == AllianceColor.RED ? redThreshold : blueThreshold;
+        int idx = alliance == AllianceColor.RED ? 0 : 2;
 
+        leftColor = left.val[idx];
+        centerColor = center.val[idx];
 
-        Bitmap b = Bitmap.createBitmap(finalMat.width(), finalMat.height(), Bitmap.Config.RGB_565);
-        Utils.matToBitmap(finalMat, b);
-        lastFrame.set(b);
+        if (leftColor > threshold && (left.val[0] + left.val[1] + left.val[2] - left.val[idx] < left.val[idx])) {
+            // left zone has it
+            location = PropLocation.LEFT;
+            Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255), 10);
+        } else if (centerColor > threshold && (center.val[0] + center.val[1] + center.val[2] - center.val[idx] < center.val[idx])) {
+            // center zone has it
+            location = PropLocation.CENTER;
+            Imgproc.rectangle(frame, centerZoneArea, new Scalar(255, 255, 255), 10);
+        } else {
+            // right zone has it
+            location = PropLocation.RIGHT;
+        }
 
         leftZone.release();
         centerZone.release();
