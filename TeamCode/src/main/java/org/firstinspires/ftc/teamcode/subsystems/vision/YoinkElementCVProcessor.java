@@ -136,6 +136,8 @@ public class YoinkElementCVProcessor implements VisionProcessor, CameraStreamSou
             // right zone has it
             location = PropLocation.RIGHT;
         }
+        Imgproc.rectangle(frame, leftZoneArea, new Scalar(255, 255, 255), 10);
+        Imgproc.rectangle(frame, centerZoneArea, new Scalar(255, 255, 255), 10);
 
         leftZone.release();
         centerZone.release();
