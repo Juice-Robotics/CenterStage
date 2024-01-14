@@ -17,29 +17,33 @@ import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkP2Pipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.opencv.core.Scalar;
 
 @Config
 @Autonomous(group = "drive")
 
 public class RedBackdropSidePreload extends LinearOpMode {
     Robot robot;
-    VisionPortal visionPortal;
-    YoinkP2Pipeline teamElementProcessor;
-    YoinkP2Pipeline.PropLocation propLocation = YoinkP2Pipeline.PropLocation.UNFOUND;
+    private VisionPortal visionPortal;
+    private YoinkP2Pipeline colourMassDetectionProcessor;
     AprilTagProcessor processor;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        processor = AprilTagProcessor.easyCreateWithDefaults();
-        teamElementProcessor = new YoinkP2Pipeline(telemetry);
-        teamElementProcessor.alliance = AllianceColor.RED;
+        Scalar lower = new Scalar(150, 100, 100); // the lower hsv threshold for your detection
+        Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
+        double minArea = 100; // the minimum area for the detection to consider for your prop
+
+        colourMassDetectionProcessor = new YoinkP2Pipeline(
+                lower,
+                upper,
+                () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
+                () -> 213, // the left dividing line, in this case the left third of the frame
+                () -> 426 // the left dividing line, in this case the right third of the frame
+        );
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
-                .setCameraResolution(new Size(640, 480))
-                .enableLiveView(true)
-                .setAutoStopLiveView(true)
-                .addProcessor(teamElementProcessor)
-                .addProcessor(processor)
+                .addProcessor(colourMassDetectionProcessor)
                 .build();
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -162,19 +166,17 @@ public class RedBackdropSidePreload extends LinearOpMode {
          * The INIT-loop:
          * This REPLACES waitForStart!
          */
-        propLocation = teamElementProcessor.getPropPosition();
 //        telemetry.addData("Camera State", visionPortal.getCameraState());
 //        telemetry.update();
 
         while (!isStarted() && !isStopRequested()) {
 //            telemetry.addData("Camera State", visionPortal.getCameraState());
+            telemetry.addData("Currently Recorded Position", colourMassDetectionProcessor.getRecordedPropPosition());
+            telemetry.addData("Camera State", visionPortal.getCameraState());
+            telemetry.addData("Currently Detected Mass Center", "x: " + colourMassDetectionProcessor.getLargestContourX() + ", y: " + colourMassDetectionProcessor.getLargestContourY());
+            telemetry.addData("Currently Detected Mass Area", colourMassDetectionProcessor.getLargestContourArea());
 
-            if (propLocation == YoinkP2Pipeline.PropLocation.UNFOUND) {
-//                telemetry.addLine("Team Element Location: <b>NOT FOUND</b>");
-            } else {
-//                telemetry.addData("Team Element Location", propLocation);
-            }
-//            telemetry.update();
+            telemetry.update();
         }
 
 
@@ -190,20 +192,25 @@ public class RedBackdropSidePreload extends LinearOpMode {
         if (isStopRequested()) return;
 
         // shuts down the camera once the match starts, we dont need to look any more
-
+        colourMassDetectionProcessor.close();
+        visionPortal.close();
         if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
-            visionPortal.close();
+            visionPortal.stopLiveView();
+            visionPortal.stopStreaming();
         }
 
-        propLocation = teamElementProcessor.getPropPosition();
 
-//        // if it is UNFOUND, you can manually set it to any of the other positions to guess
-        if (propLocation == YoinkP2Pipeline.PropLocation.UNFOUND) {
-            propLocation = YoinkP2Pipeline.PropLocation.CENTER;
+        // gets the recorded prop position
+        YoinkP2Pipeline.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
+
+        // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
+        // if it is UNFOUND, you can manually set it to any of the other positions to guess
+        if (recordedPropPosition == YoinkP2Pipeline.PropPositions.UNFOUND) {
+            recordedPropPosition = YoinkP2Pipeline.PropPositions.CENTER;
         }
 
         robot.slides.launchAsThread(telemetry);
-        switch (propLocation) {
+        switch (recordedPropPosition) {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
                 drive.followTrajectorySequence(preloadBackdropCenter);
