@@ -131,17 +131,17 @@ public class RedBackdropSidePreload extends LinearOpMode {
                     robot.startIntake();
                 })
                 .strafeLeft(4)
-                .strafeRight(5)
-                .forward(1)
-                .addTemporalMarker(4, () -> {
+                .strafeRight(6)
+                .forward(2)
+                .addTemporalMarker(4.5, () -> {
                     robot.intake.reverseIntake();
                 })
-                .addTemporalMarker(4.2, () -> {
+                .addTemporalMarker(4.6, () -> {
                     robot.stopIntake();
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(28.5, 47), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(28, 48), Math.toRadians(90))
                 .addTemporalMarker(8, ()-> {
                     robot.autoCycleDepositPreset();
                 })
@@ -163,17 +163,17 @@ public class RedBackdropSidePreload extends LinearOpMode {
                     robot.startIntake();
                 })
                 .strafeLeft(4)
-                .strafeRight(5)
-                .forward(1)
-                .addTemporalMarker(4, () -> {
+                .strafeRight(6)
+                .forward(2)
+                .addTemporalMarker(4.5, () -> {
                     robot.intake.reverseIntake();
                 })
-                .addTemporalMarker(4.2, () -> {
+                .addTemporalMarker(4.6, () -> {
                     robot.stopIntake();
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(28.5, 47), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(28, 47.5), Math.toRadians(90))
                 .addTemporalMarker(8, ()-> {
                     robot.autoCycleDepositPreset();
                 })
