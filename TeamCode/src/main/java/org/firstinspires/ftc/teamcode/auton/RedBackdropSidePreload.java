@@ -128,7 +128,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
 //                })
                 .setReversed(true)
                 .addTemporalMarker(2, () -> {
-                    robot.intake.reverse();
+                    robot.autoIntake(1, 186);
                 })
                 .waitSeconds(4)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
