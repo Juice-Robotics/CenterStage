@@ -30,8 +30,8 @@ public class RedBackdropSidePreload extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Scalar lower = new Scalar(150, 70, 100); // the lower hsv threshold for your detection
-        Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
+        Scalar lower = new Scalar(115, 60, 40); // the lower hsv threshold for your detection
+        Scalar upper = new Scalar(190, 255, 255); // the upper hsv threshold for your detection
         double minArea = 100; // the minimum area for the detection to consider for your prop
 
         colourMassDetectionProcessor = new YoinkP2Pipeline(
@@ -122,17 +122,37 @@ public class RedBackdropSidePreload extends LinearOpMode {
         TrajectorySequence centerCycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(12, -52), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(12, -53), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
                 .setReversed(true)
-                .addTemporalMarker(2, () -> {
-                    robot.autoIntake(1, 186);
+                .strafeLeft(2)
+                .addTemporalMarker(2.5, () -> {
+                    robot.startIntake();
                 })
+                .addTemporalMarker(6, () -> {
+                    robot.intake.reverseIntake();
+                })
+                .strafeLeft(4)
+                .forward(2)
+                .strafeRight(6)
                 .waitSeconds(4)
+                .addTemporalMarker(7, () -> {
+                    robot.stopIntake();
+                })
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(34, 49), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(31, 48), Math.toRadians(90))
+                .addTemporalMarker(13, ()-> {
+                    robot.autoPreloadDepositPreset();
+                })
+                .addTemporalMarker(14.5, ()-> {
+                    robot.claw.setClawOpen();
+                })
+                .addTemporalMarker(15.5, ()->{
+                    robot.intakePreset();
+                })
+                .waitSeconds(10)
                 .build();
 
         TrajectorySequence leftCycle1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
@@ -209,7 +229,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
             recordedPropPosition = YoinkP2Pipeline.PropPositions.CENTER;
         }
 
-        robot.slides.launchAsThread(telemetry);
+        robot.launchSubsystemThread(telemetry);
         switch (recordedPropPosition) {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
@@ -235,7 +255,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
         // Transfer the current pose to PoseStorage so we can use it in TeleOp
         PoseStorage.currentPose = drive.getPoseEstimate();
 
-        robot.slides.destroyThreads(telemetry);
+        robot.destroyThreads(telemetry);
         visionPortal.close();
 
         while (!isStopRequested() && opModeIsActive()) ;

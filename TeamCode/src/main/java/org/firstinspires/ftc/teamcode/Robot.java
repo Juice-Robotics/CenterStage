@@ -147,6 +147,16 @@ public class Robot {
         subsystemState = Levels.INTERMEDIATE;
     }
 
+    public void autoIntake() {
+        intaking = true;
+        this.intake.reverseIntake();
+        this.arm.runtoPreset(Levels.INTAKE);
+        this.claw.setClawOpen();
+        this.intake.runToPreset(Levels.INTAKE);
+        this.claw.runToWristPreset(Levels.INTAKE);
+        this.slides.runToPosition(0);
+    }
+
     public void initPos() {
         intaking = false;
         this.claw.runToWristPreset(Levels.DEPOSIT);
@@ -199,19 +209,6 @@ public class Robot {
                 intaking = false;
             }
         }
-    }
-
-    public void autoIntake(long time, float intakeAngle) {
-        intaking = true;
-        this.intake.startIntake();
-        this.arm.runtoPreset(Levels.INTAKE);
-        this.claw.setClawOpen();
-        this.intake.setAngle(intakeAngle);
-        this.claw.runToWristPreset(Levels.INTAKE);
-        this.slides.runToPosition(0);
-
-        sleep((int) (time * 1000));
-        this.stopIntake();
     }
 
     public void depositPreset() {
@@ -303,7 +300,7 @@ public class Robot {
                 this.intake.reverse();
                 sleep(250);
                 this.intake.runToPreset(Levels.INTAKE);
-                this.intake.intakeMotor.setSpeed(-1);
+                this.intake.intakeMotor.setSpeed(1);
                 flags.remove(RobotFlags.INTAKE_JAMMED);
                 flags.remove(RobotFlags.ANTI_JAM_IN_PROGRESS);
                 antiJamCooldown.reset();
@@ -326,12 +323,18 @@ public class Robot {
             telemetry.update();
             while (threadState == true) {
                 slides.update();
-//                arm.update();
+                antiJam();
             }
             telemetry.addData("Subsys Threads State:", "STOPPED");
             telemetry.update();
         });
         t1.start();
+    }
+
+    public void destroyThreads(Telemetry telemetry) {
+        telemetry.addData("Slides Threads State:", "STOPPING");
+        telemetry.update();
+        threadState = false;
     }
 
     //DRIVE
