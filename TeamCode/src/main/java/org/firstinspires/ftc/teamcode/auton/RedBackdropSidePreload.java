@@ -93,7 +93,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .addTemporalMarker(3.5, () -> {
                     robot.smartClawOpen();
                 })
-                .waitSeconds(1)
+                .waitSeconds(3)
                 .build();
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
