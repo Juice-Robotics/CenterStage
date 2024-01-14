@@ -71,8 +71,6 @@ public class RedBackdropSidePreload extends LinearOpMode {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(3)
-                .strafeRight(20)
-                .back(10)
                 .build();
 
         TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
@@ -94,8 +92,6 @@ public class RedBackdropSidePreload extends LinearOpMode {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(3)
-                .strafeRight(22)
-                .back(10)
                 .build();
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
@@ -118,27 +114,46 @@ public class RedBackdropSidePreload extends LinearOpMode {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(3)
-                .strafeRight(35)
-                .back(10)
                 .build();
 
-//        TrajectorySequence cycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
-//                .setReversed(false)
-//                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-//                .splineToConstantHeading(new Vector2d(11, -58), Math.toRadians(-90))
+        TrajectorySequence centerCycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
+                .setReversed(false)
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(11, -58), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
-//                .setReversed(true)
-//                .waitSeconds(4)
-//                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-//                .splineToConstantHeading(new Vector2d(34, 49), Math.toRadians(90))
-//                .build();
+                .setReversed(true)
+                .waitSeconds(4)
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(34, 49), Math.toRadians(90))
+                .build();
 
+        TrajectorySequence leftCycle1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
+                .setReversed(false)
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(11, -58), Math.toRadians(-90))
+//                .addTemporalMarker(2, () -> {
+//                    robot.autoIntake(3, 170);
+//                })
+                .setReversed(true)
+                .waitSeconds(4)
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(34, 49), Math.toRadians(90))
+                .build();
 
-//        TrajectorySequence park = drive.trajectorySequenceBuilder(prel.end())
-//                .strafeLeft(10)
-//                .build();
+        TrajectorySequence rightCycle1 = drive.trajectorySequenceBuilder(preloadBackdropRight.end())
+                .setReversed(false)
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(11, -58), Math.toRadians(-90))
+//                .addTemporalMarker(2, () -> {
+//                    robot.autoIntake(3, 170);
+//                })
+                .setReversed(true)
+                .waitSeconds(4)
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(34, 49), Math.toRadians(90))
+                .build();
 
 
         /*
@@ -190,14 +205,17 @@ public class RedBackdropSidePreload extends LinearOpMode {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
                 drive.followTrajectorySequence(preloadBackdropCenter);
+                drive.followTrajectorySequence(centerCycle1);
                 break;
             case LEFT:
                 drive.followTrajectorySequence(preloadSpikeLeft);
                 drive.followTrajectorySequence(preloadBackdropLeft);
+                drive.followTrajectorySequence(leftCycle1);
                 break;
             case RIGHT:
                 drive.followTrajectorySequence(preloadSpikeRight);
                 drive.followTrajectorySequence(preloadBackdropRight);
+                drive.followTrajectorySequence(rightCycle1);
                 break;
         }
 
