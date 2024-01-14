@@ -359,9 +359,9 @@ public class Robot {
         }
 
         frontLeft.setSpeed((float)powerFrontLeft);
-        frontRight.setSpeed(-(float)powerFrontRight);
+        frontRight.setSpeed((float)powerFrontRight);
         backLeft.setSpeed(-(float)powerBackLeft);
-        backRight.setSpeed((float)powerBackRight);
+        backRight.setSpeed(-(float)powerBackRight);
     }
 
     public void sleep(int millis) {
