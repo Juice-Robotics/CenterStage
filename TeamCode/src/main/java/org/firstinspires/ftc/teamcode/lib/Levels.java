@@ -8,5 +8,6 @@ public enum Levels {
     DEPOSIT,
     BACKDROP,
     CLIMB_EXTEND,
-    CLIMB
+    CLIMB,
+    INIT
 }

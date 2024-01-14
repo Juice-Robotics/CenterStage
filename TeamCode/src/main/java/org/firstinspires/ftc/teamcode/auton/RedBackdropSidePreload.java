@@ -46,7 +46,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         robot = new Robot(hardwareMap, true);
         Pose2d startPose = new Pose2d(62, 13, Math.toRadians(0));
-        robot.autoIntake();
+        robot.initPos();
 
         drive.setPoseEstimate(startPose);
 

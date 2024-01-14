@@ -44,7 +44,7 @@ public class BlueSpikeFar extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         robot = new Robot(hardwareMap, true);
         Pose2d startPose = new Pose2d(-62, -34, Math.toRadians(180));
-        robot.autoIntake();
+        robot.initPos();
 
         drive.setPoseEstimate(startPose);
 

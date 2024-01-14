@@ -55,6 +55,8 @@ public class Intake {
             setAngle(intakeUp);
         } else if (level == Levels.CLIMB_EXTEND) {
             setAngle(intakeUp);
+        } else if (level == Levels.INIT) {
+            setAngle(0);
         }
     }
 
