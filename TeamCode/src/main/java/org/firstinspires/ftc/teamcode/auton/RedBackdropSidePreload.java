@@ -13,8 +13,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
-import org.firstinspires.ftc.teamcode.subsystems.vision.TeamElementCVProcessor;
-import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkElementCVProcessor;
+import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkP2Pipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -25,15 +24,15 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 public class RedBackdropSidePreload extends LinearOpMode {
     Robot robot;
     VisionPortal visionPortal;
-    YoinkElementCVProcessor teamElementProcessor;
-    YoinkElementCVProcessor.PropLocation propLocation = YoinkElementCVProcessor.PropLocation.UNFOUND;
+    YoinkP2Pipeline teamElementProcessor;
+    YoinkP2Pipeline.PropLocation propLocation = YoinkP2Pipeline.PropLocation.UNFOUND;
     AprilTagProcessor processor;
 
     @Override
     public void runOpMode() throws InterruptedException {
         processor = AprilTagProcessor.easyCreateWithDefaults();
-        teamElementProcessor = new YoinkElementCVProcessor(AllianceColor.RED, telemetry);
-//        teamElementProcessor.alliance = AllianceColor.RED;
+        teamElementProcessor = new YoinkP2Pipeline(telemetry);
+        teamElementProcessor.alliance = AllianceColor.RED;
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
                 .setCameraResolution(new Size(640, 480))
@@ -125,7 +124,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
 //                })
                 .setReversed(true)
                 .addTemporalMarker(2, () -> {
-                    robot.startIntake();
+                    robot.intake.reverse();
                 })
                 .waitSeconds(4)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
@@ -163,14 +162,14 @@ public class RedBackdropSidePreload extends LinearOpMode {
          * The INIT-loop:
          * This REPLACES waitForStart!
          */
-        propLocation = teamElementProcessor.getLocation();
+        propLocation = teamElementProcessor.getPropPosition();
 //        telemetry.addData("Camera State", visionPortal.getCameraState());
 //        telemetry.update();
 
         while (!isStarted() && !isStopRequested()) {
 //            telemetry.addData("Camera State", visionPortal.getCameraState());
 
-            if (propLocation == YoinkElementCVProcessor.PropLocation.UNFOUND) {
+            if (propLocation == YoinkP2Pipeline.PropLocation.UNFOUND) {
 //                telemetry.addLine("Team Element Location: <b>NOT FOUND</b>");
             } else {
 //                telemetry.addData("Team Element Location", propLocation);
@@ -196,14 +195,12 @@ public class RedBackdropSidePreload extends LinearOpMode {
             visionPortal.close();
         }
 
-        propLocation = teamElementProcessor.getLocation();
+        propLocation = teamElementProcessor.getPropPosition();
 
 //        // if it is UNFOUND, you can manually set it to any of the other positions to guess
-        if (propLocation == YoinkElementCVProcessor.PropLocation.UNFOUND) {
-            propLocation = YoinkElementCVProcessor.PropLocation.CENTER;
+        if (propLocation == YoinkP2Pipeline.PropLocation.UNFOUND) {
+            propLocation = YoinkP2Pipeline.PropLocation.CENTER;
         }
-
-        propLocation = YoinkElementCVProcessor.PropLocation.CENTER; //HARDCODED
 
         robot.slides.launchAsThread(telemetry);
         switch (propLocation) {
