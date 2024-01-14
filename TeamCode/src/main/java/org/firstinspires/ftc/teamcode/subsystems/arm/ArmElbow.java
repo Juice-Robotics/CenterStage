@@ -29,6 +29,8 @@ public class ArmElbow {
     public double depositTargetArm = 148;
     public double intakeTargetElbow = 110;
     public double depositTargetElbow = 217;
+    public double initPos = 140;
+
 
     public ArmElbow(StepperServo arm1, StepperServo arm2, StepperServo elbow) {
         this.arm1 = arm1;
@@ -79,6 +81,10 @@ public class ArmElbow {
         else if (level == Levels.CAPTURE) {
             this.setAngleArm(captureTargetArm);
             this.setAngleElbow(116);
+        }
+        else if (level == Levels.INIT) {
+            this.setAngleArm(initPos);
+            this.setAngleElbow(110);
         }
     }
 

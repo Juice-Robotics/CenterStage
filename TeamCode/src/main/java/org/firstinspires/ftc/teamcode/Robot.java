@@ -27,6 +27,7 @@ import org.firstinspires.ftc.teamcode.subsystems.launcher.DroneLauncher;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public class Robot {
 
@@ -146,18 +147,16 @@ public class Robot {
         subsystemState = Levels.INTERMEDIATE;
     }
 
-    public void autoIntake() {
+    public void initPos() {
         intaking = false;
-        this.arm.runtoPreset(Levels.CAPTURE);
-        sleep(250);
+        this.claw.runToWristPreset(Levels.DEPOSIT);
+        this.intake.runToPreset(Levels.INIT);
+        sleep(500);
+        this.arm.runtoPreset(Levels.INIT);
+        sleep(4000);
         this.claw.setClawClose();
-        this.intake.stopIntake();
-        this.intake.runToPreset(Levels.INTERMEDIATE);
-        sleep(250);
-        this.arm.runtoPreset(Levels.INTERMEDIATE);
-        sleep(250);
 //        this.intake.setAngle(50);
-        this.subsystemState = Levels.INTERMEDIATE;
+        this.subsystemState = Levels.INIT;
     }
 
     /**
@@ -359,9 +358,9 @@ public class Robot {
         }
 
         frontLeft.setSpeed((float)powerFrontLeft);
-        frontRight.setSpeed(-(float)powerFrontRight);
+        frontRight.setSpeed((float)powerFrontRight);
         backLeft.setSpeed(-(float)powerBackLeft);
-        backRight.setSpeed((float)powerBackRight);
+        backRight.setSpeed(-(float)powerBackRight);
     }
 
     public void sleep(int millis) {
