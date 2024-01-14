@@ -190,7 +190,7 @@ public class TeleOpColorSensor extends LinearOpMode {
             }
             else if (detectedIndex[1]){
                 gamepad1.rumble(1, 0, 500);
-            } else if (detectedIndex[0]){
+            } else if (detectedIndex[0]) {
                 gamepad1.rumble(0, 1, 500);
             }
 
