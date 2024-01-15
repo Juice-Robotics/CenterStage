@@ -84,7 +84,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(33, 50), Math.toRadians(90))
+                .splineTo(new Vector2d(34, 50), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -144,7 +144,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(28, 48), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(28, 47), Math.toRadians(90))
                 .addTemporalMarker(7.5, ()-> {
                     robot.autoCycleDepositPreset();
                 })
@@ -180,17 +180,19 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(29, 47), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(36, 48), Math.toRadians(90))
                 .addTemporalMarker(7.5, ()-> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(9, ()-> {
+                .addTemporalMarker(9.5, ()-> {
                     robot.smartClawOpen();
                 })
-                .addTemporalMarker(9.5, ()-> {
+                .addTemporalMarker(5, ()-> {
                     robot.slides.runToPosition(0);
                 })
-                .waitSeconds(0.5)
+                .waitSeconds(1)
+                .strafeLeft(11)
+                .back(6)
                 .build();
 
         TrajectorySequence leftCycle1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
