@@ -127,25 +127,27 @@ public class RedBackdropSidePreload extends LinearOpMode {
 //                    robot.autoIntake(3, 170);
 //                })
                 .setReversed(true)
+                .strafeLeft(3)
                 .addTemporalMarker(2.5, () -> {
                     robot.startIntake();
                 })
                 .strafeLeft(4)
-                .forward(2.5)
-                .strafeRight(8)
+                .forward(2)
+                .strafeRight(4)
                 .addTemporalMarker(4.8, () -> {
                     robot.intake.reverseIntake();
                 })
+                .back(2)
                 .addTemporalMarker(4.9, () -> {
                     robot.stopIntake();
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(28, 48), Math.toRadians(90))
-                .addTemporalMarker(8.5, ()-> {
+                .addTemporalMarker(8.3, ()-> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(9.6, ()-> {
+                .addTemporalMarker(9.3, ()-> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(1)
@@ -159,12 +161,13 @@ public class RedBackdropSidePreload extends LinearOpMode {
 //                    robot.autoIntake(3, 170);
 //                })
                 .setReversed(true)
+                .strafeLeft(3)
                 .addTemporalMarker(2.5, () -> {
                     robot.startIntake();
                 })
-                .strafeLeft(5)
+                .strafeLeft(4)
                 .forward(2)
-                .strafeRight(7)
+                .strafeRight(4)
                 .addTemporalMarker(4.8, () -> {
                     robot.intake.reverseIntake();
                 })
@@ -175,10 +178,10 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(29, 47), Math.toRadians(90))
-                .addTemporalMarker(8.5, ()-> {
+                .addTemporalMarker(8.3, ()-> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(9.6, ()-> {
+                .addTemporalMarker(9.3, ()-> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(1)

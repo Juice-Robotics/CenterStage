@@ -258,8 +258,8 @@ public class Robot {
     }
 
     public void climbExtend() {
-        this.flags.add(RobotFlags.CLIMB_ENGAGED);
-        this.flags.add(RobotFlags.CLIMB_EXTEND_IN_PROGRESS);
+//        this.flags.add(RobotFlags.CLIMB_ENGAGED);
+//        this.flags.add(RobotFlags.CLIMB_EXTEND_IN_PROGRESS);
         this.slides.runToClimb();
         this.intake.runToPreset(Levels.CLIMB_EXTEND);
         Thread thread = new Thread(new Runnable() {
@@ -267,23 +267,21 @@ public class Robot {
                 sleep(600);
                 arm.runtoPreset(Levels.DEPOSIT);
                 claw.runToWristPreset(Levels.DEPOSIT);
-                while (slides.getPos() <= 460 && !flags.contains(RobotFlags.CLIMB_RETRACT_REQUESTED)) {
+                while (slides.getPos() <= 460) {
                     // sleep
                 }
-                if (!flags.contains(RobotFlags.CLIMB_RETRACT_REQUESTED)) {
                     slides.setPower((float) 0.6);
-                    slides.shiftGear(false);
+                    slides.shiftGear(true);
                     sleep(100);
                     slides.setPower(0);
-                }
 
-                if (flags.contains(RobotFlags.CLIMB_RETRACT_REQUESTED)) {
-                    slides.shiftGear(false);
-                    sleep(100);
-                    smartClawOpen();
-                    flags.remove(RobotFlags.CLIMB_RETRACT_REQUESTED);
-                }
-                flags.remove(RobotFlags.CLIMB_EXTEND_IN_PROGRESS);
+//                if (flags.contains(RobotFlags.CLIMB_RETRACT_REQUESTED)) {
+//                    slides.shiftGear(false);
+//                    sleep(100);
+//                    smartClawOpen();
+//                    flags.remove(RobotFlags.CLIMB_RETRACT_REQUESTED);
+//                }
+//                flags.remove(RobotFlags.CLIMB_EXTEND_IN_PROGRESS);
             }});
         thread.start();
     }

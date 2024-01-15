@@ -161,11 +161,11 @@ public class TeleOpSafe extends LinearOpMode {
 
             // CLIMB
             if (gamepad1.dpad_up && !previousDpadUp) {
-                if (!robot.flags.contains(RobotFlags.CLIMB_ENGAGED)) {
+//                if (!robot.flags.contains(RobotFlags.CLIMB_ENGAGED)) {
                     robot.climbExtend();
-                } else {
-                    robot.climbRetract();
-                }
+//                } else {
+//                    robot.climbRetract();
+//                }
             }
             previousDpadUp = gamepad1.dpad_up;
 
