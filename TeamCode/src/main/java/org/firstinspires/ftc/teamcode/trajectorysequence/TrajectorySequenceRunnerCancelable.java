@@ -15,15 +15,12 @@ import com.acmerobotics.roadrunner.profile.MotionState;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryMarker;
 import com.acmerobotics.roadrunner.util.NanoClock;
-import com.qualcomm.robotcore.hardware.VoltageSensor;
 
-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.trajectorysequence.sequencesegment.SequenceSegment;
 import org.firstinspires.ftc.teamcode.trajectorysequence.sequencesegment.TrajectorySegment;
 import org.firstinspires.ftc.teamcode.trajectorysequence.sequencesegment.TurnSegment;
 import org.firstinspires.ftc.teamcode.trajectorysequence.sequencesegment.WaitSegment;
 import org.firstinspires.ftc.teamcode.util.DashboardUtil;
-import org.firstinspires.ftc.teamcode.util.LogFiles;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Config
-public class TrajectorySequenceRunner {
+public class TrajectorySequenceRunnerCancelable {
     public static String COLOR_INACTIVE_TRAJECTORY = "#4caf507a";
     public static String COLOR_INACTIVE_TURN = "#7c4dff7a";
     public static String COLOR_INACTIVE_WAIT = "#dd2c007a";
@@ -60,25 +57,11 @@ public class TrajectorySequenceRunner {
     private final FtcDashboard dashboard;
     private final LinkedList<Pose2d> poseHistory = new LinkedList<>();
 
-    private VoltageSensor voltageSensor;
-
-    private List<Integer> lastDriveEncPositions, lastDriveEncVels, lastTrackingEncPositions, lastTrackingEncVels;
-
-    public TrajectorySequenceRunner(
-            TrajectoryFollower follower, PIDCoefficients headingPIDCoefficients, VoltageSensor voltageSensor,
-            List<Integer> lastDriveEncPositions, List<Integer> lastDriveEncVels, List<Integer> lastTrackingEncPositions, List<Integer> lastTrackingEncVels
-    ) {
+    public TrajectorySequenceRunnerCancelable(TrajectoryFollower follower, PIDCoefficients headingPIDCoefficients) {
         this.follower = follower;
 
         turnController = new PIDFController(headingPIDCoefficients);
         turnController.setInputBounds(0, 2 * Math.PI);
-
-        this.voltageSensor = voltageSensor;
-
-        this.lastDriveEncPositions = lastDriveEncPositions;
-        this.lastDriveEncVels = lastDriveEncVels;
-        this.lastTrackingEncPositions = lastTrackingEncPositions;
-        this.lastTrackingEncVels = lastTrackingEncVels;
 
         clock = NanoClock.system();
 
@@ -201,22 +184,6 @@ public class TrajectorySequenceRunner {
             poseHistory.removeFirst();
         }
 
-        final double NOMINAL_VOLTAGE = 12.0;
-        double voltage = voltageSensor.getVoltage();
-        if (driveSignal != null && !DriveConstants.RUN_USING_ENCODER) {
-            driveSignal = new DriveSignal(
-                    driveSignal.getVel().times(NOMINAL_VOLTAGE / voltage),
-                    driveSignal.getAccel().times(NOMINAL_VOLTAGE / voltage)
-            );
-        }
-
-        if (targetPose != null) {
-            LogFiles.record(
-                    targetPose, poseEstimate, voltage,
-                    lastDriveEncPositions, lastDriveEncVels, lastTrackingEncPositions, lastTrackingEncVels
-            );
-        }
-
         packet.put("x", poseEstimate.getX());
         packet.put("y", poseEstimate.getY());
         packet.put("heading (deg)", Math.toDegrees(poseEstimate.getHeading()));
@@ -302,5 +269,10 @@ public class TrajectorySequenceRunner {
 
     public boolean isBusy() {
         return currentTrajectorySequence != null;
+    }
+
+    public void breakFollowing() {
+        currentTrajectorySequence = null;
+        remainingMarkers.clear();
     }
 }

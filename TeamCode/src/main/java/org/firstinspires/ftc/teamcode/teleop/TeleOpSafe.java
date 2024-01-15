@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDriveCancelable;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
@@ -205,7 +205,7 @@ public class TeleOpSafe extends LinearOpMode {
             telemetry.addData("SLIDES TARGET: ", robot.slides.target);
             telemetry.addData("SLIDES POSITION: ", robot.slides.slides1.motor.getCurrentPosition());
             telemetry.addData("LEVEL: ", robot.slides.currentLevel);
-            telemetry.addData("DRIVE CURRENT ", robot.drive.getCurrent());
+            //telemetry.addData("DRIVE CURRENT ", robot.drive.getCurrent());
             loopTime = loop;
             telemetry.update();
         }
