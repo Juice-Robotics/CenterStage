@@ -91,10 +91,10 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .addTemporalMarker(1.2, () -> {
                     robot.autoPreloadDepositPreset();
                 })
-                .addTemporalMarker(2, () -> {
+                .addTemporalMarker(1.9, () -> {
                     robot.smartClawOpen();
                 })
-                .waitSeconds(0.5)
+                .waitSeconds(0.2)
                 .build();
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
@@ -122,18 +122,19 @@ public class RedBackdropSidePreload extends LinearOpMode {
         TrajectorySequence centerCycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(12, -55), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(11, -55), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
                 .setReversed(true)
-                .strafeLeft(3)
+                .strafeLeft(5)
                 .addTemporalMarker(2.5, () -> {
                     robot.startIntake();
                 })
                 .strafeLeft(4)
                 .forward(2)
                 .strafeRight(4)
+                .back(3)
                 .addTemporalMarker(4.8, () -> {
                     robot.intake.reverseIntake();
                 })
@@ -143,11 +144,11 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(28, 48), Math.toRadians(90))
-                .addTemporalMarker(8.3, ()-> {
+                .splineToConstantHeading(new Vector2d(28, 49), Math.toRadians(90))
+                .addTemporalMarker(8.5, ()-> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(9.3, ()-> {
+                .addTemporalMarker(10, ()-> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(1)
@@ -156,32 +157,33 @@ public class RedBackdropSidePreload extends LinearOpMode {
         TrajectorySequence centerCycle2 = drive.trajectorySequenceBuilder(centerCycle1.end())
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(12, -57), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(12, -56), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
                 .setReversed(true)
-                .strafeLeft(3)
+                .strafeLeft(4)
                 .addTemporalMarker(2.5, () -> {
                     robot.startIntake();
                 })
-                .strafeLeft(4)
-                .forward(2)
-                .strafeRight(4)
+                .strafeLeft(1)
+                .forward(2.5)
+                .strafeRight(8)
+                .back(4)
                 .addTemporalMarker(4.8, () -> {
                     robot.intake.reverseIntake();
                 })
-                .back(2)
+                .back(3)
                 .addTemporalMarker(4.9, () -> {
                     robot.stopIntake();
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(29, 47), Math.toRadians(90))
-                .addTemporalMarker(8.3, ()-> {
+                .addTemporalMarker(8.5, ()-> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(9.3, ()-> {
+                .addTemporalMarker(10, ()-> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(1)

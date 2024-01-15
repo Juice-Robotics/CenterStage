@@ -42,8 +42,8 @@ public class Intake {
     }
 
     public void reverseIntake(){
-        intakeMotor.setSpeed(-0.4F);
         intakeServo1.setAngle(intakeUp);
+        intakeMotor.setSpeed(-0.4F);
     }
 
     public void setAngle(float angle) {
