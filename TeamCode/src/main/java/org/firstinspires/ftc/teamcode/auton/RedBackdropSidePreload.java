@@ -144,7 +144,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(28, 47), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(28, 48.5), Math.toRadians(90))
                 .addTemporalMarker(7.5, ()-> {
                     robot.autoCycleDepositPreset();
                 })
@@ -191,8 +191,8 @@ public class RedBackdropSidePreload extends LinearOpMode {
                     robot.slides.runToPosition(0);
                 })
                 .waitSeconds(1)
-                .strafeLeft(11)
-                .back(6)
+                .strafeLeft(19)
+                .back(7)
                 .build();
 
         TrajectorySequence leftCycle1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
