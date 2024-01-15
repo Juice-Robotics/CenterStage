@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDriveCancelable;
 import org.firstinspires.ftc.teamcode.lib.Component;
 import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.Motor;
@@ -33,7 +33,7 @@ public class Robot {
 
     // SUBSYSTEM DECLARATIONS
     public Component[] components;
-    public SampleMecanumDrive drive;
+    public SampleMecanumDriveCancelable drive;
     public Claw claw;
     public ArmElbow arm;
     public Intake intake;
@@ -62,7 +62,7 @@ public class Robot {
     public Robot(HardwareMap map, boolean auton){
         this.auton = auton;
 
-        this.drive = new SampleMecanumDrive(map);
+        this.drive = new SampleMecanumDriveCancelable(map);
 
 //        this.cv = new CVMaster(map);
         this.components = new Component[]{
