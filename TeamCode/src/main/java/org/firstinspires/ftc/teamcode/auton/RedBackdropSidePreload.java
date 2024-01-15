@@ -32,7 +32,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Scalar lower = new Scalar(115, 60, 40); // the lower hsv threshold for your detection
         Scalar upper = new Scalar(190, 255, 255); // the upper hsv threshold for your detection
-        double minArea = 100; // the minimum area for the detection to consider for your prop
+        double minArea = 125; // the minimum area for the detection to consider for your prop
 
         colourMassDetectionProcessor = new YoinkP2Pipeline(
                 lower,
@@ -78,8 +78,8 @@ public class RedBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .back(29)
-                .forward(14)
+                .splineTo(new Vector2d(39, 13), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(48, 13, Math.toRadians(0)), Math.toRadians(0))
                 .build();
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
@@ -156,7 +156,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence centerCycle2 = drive.trajectorySequenceBuilder(centerCycle1.end())
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(7, 20), Math.toRadians(-90))
                 .splineToConstantHeading(new Vector2d(12, -57), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
