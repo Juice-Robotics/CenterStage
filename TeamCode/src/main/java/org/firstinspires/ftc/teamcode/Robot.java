@@ -163,7 +163,7 @@ public class Robot {
         this.intake.runToPreset(Levels.INIT);
         sleep(500);
         this.arm.runtoPreset(Levels.INIT);
-        sleep(4000);
+        sleep(2000);
         this.claw.setClawClose();
 //        this.intake.setAngle(50);
         this.subsystemState = Levels.INIT;
@@ -303,7 +303,7 @@ public class Robot {
 
     public void antiJam(){
         if (intaking) {
-            if (this.intake.intakeMotor.getCurrent() > 5.5 && !flags.contains(RobotFlags.ANTI_JAM_IN_PROGRESS) && antiJamCooldown.time(TimeUnit.MILLISECONDS) >= 250) {
+            if (this.intake.intakeMotor.getCurrent() > 5 && !flags.contains(RobotFlags.ANTI_JAM_IN_PROGRESS) && antiJamCooldown.time(TimeUnit.MILLISECONDS) >= 250) {
                 flags.add(RobotFlags.INTAKE_JAMMED);
                 flags.add(RobotFlags.ANTI_JAM_IN_PROGRESS);
                 this.intake.setAngle(100);
