@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Robot;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDriveCancelable;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkP2Pipeline;
@@ -46,7 +46,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .addProcessor(colourMassDetectionProcessor)
                 .build();
 
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        SampleMecanumDriveCancelable drive = new SampleMecanumDriveCancelable(hardwareMap);
         robot = new Robot(hardwareMap, true);
         Pose2d startPose = new Pose2d(62, 13, Math.toRadians(0));
         robot.initPos();
@@ -57,13 +57,11 @@ public class RedBackdropSidePreload extends LinearOpMode {
         TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(30, 10, Math.toRadians(90)), Math.toRadians(0))
-                .forward(15)
-                .turn(Math.toRadians(180))
                 .build();
 
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
-                .setReversed(true)
-                .back(25)
+                .splineToSplineHeading(new Pose2d(30, 30, Math.toRadians(90)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(30, 50, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -145,10 +143,10 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(28, 48), Math.toRadians(90))
-                .addTemporalMarker(7.5, ()-> {
+                .addTemporalMarker(7.5, () -> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(9, ()-> {
+                .addTemporalMarker(9, () -> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(0.5)
@@ -181,13 +179,13 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(29, 47), Math.toRadians(90))
-                .addTemporalMarker(7.5, ()-> {
+                .addTemporalMarker(7.5, () -> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(9, ()-> {
+                .addTemporalMarker(9, () -> {
                     robot.smartClawOpen();
                 })
-                .addTemporalMarker(9.5, ()-> {
+                .addTemporalMarker(9.5, () -> {
                     robot.slides.runToPosition(0);
                 })
                 .waitSeconds(0.5)
