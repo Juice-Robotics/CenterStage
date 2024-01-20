@@ -35,6 +35,10 @@ public class Intake {
         intakeMotor.setSpeed(1);
         intakeServo1.setAngle(intakeDown);
     }
+    public void autoStartIntake(){
+        intakeMotor.setSpeed(1);
+        //intakeServo1.setAngle(intakeDown);
+    }
 
     public void stopIntake(){
         intakeMotor.setSpeed(0);
