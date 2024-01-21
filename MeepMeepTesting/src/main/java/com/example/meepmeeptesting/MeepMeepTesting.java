@@ -25,23 +25,31 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .setDimensions(14, 17)
                 .followTrajectorySequence(drive ->
-                                drive.trajectorySequenceBuilder(new Pose2d(-33, 52, Math.toRadians(-90)))
-                                        .setReversed(false)
-                                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
-                                        .splineToConstantHeading(new Vector2d(-16, -57), Math.toRadians(-90))
-//                .addTemporalMarker(2, () -> {
-//                    robot.autoIntake(3, 170);
-//                })
+                                drive.trajectorySequenceBuilder(new Pose2d(62, 13, Math.toRadians(0)))
                                         .setReversed(true)
-                                        .splineToConstantHeading(new Vector2d(-26, -57), Math.toRadians(-90))
-                                        .splineToConstantHeading(new Vector2d(-26, -51), Math.toRadians(-90))
-                                        .splineToConstantHeading(new Vector2d(-26, -56), Math.toRadians(-90))
+                                        .splineToLinearHeading(new Pose2d(40, 7, Math.toRadians(55)), Math.toRadians(30))
+//                                        .forward(15)
+//                                        .turn(Math.toRadians(180))
+
+                                        .setReversed(false)
+                                        .splineToLinearHeading(new Pose2d(30, 48, Math.toRadians(270)), Math.toRadians(90))
+                                        .addTemporalMarker(0, () -> {
+//                                            this.robot.intake.setAngle(120);
+                                        })
+                                        .addTemporalMarker(2, () -> {
+//                                            robot.autoPreloadDepositPreset();
+                                        })
+                                        .addTemporalMarker(3.5, () -> {
+//                                            robot.smartClawOpen();
+                                        })
+                                        .waitSeconds(3)
                                         .build()
                 );
 
 
         Image img = null;
-        try { img = ImageIO.read(new File("/Users/huntert/Downloads/Juice-CENTERSTAGE-Dark.png")); }
+//        try { img = ImageIO.read(new File("/Users/huntert/Downloads/Juice-CENTERSTAGE-Dark.png")); }
+        try { img = ImageIO.read(new File("/Users/siddharth/dev/Juice/CenterStage/MeepMeepTesting/src/main/java/com/example/meepmeeptesting/Juice-CENTERSTAGE-Dark.png")); }
         catch (IOException e) {}
 
         meepMeep.setBackground(img)
