@@ -144,20 +144,21 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(28, 46), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(31, 47), Math.toRadians(90))
                 .addTemporalMarker(6, () -> {
+                    robot.intake.setAngle(188);
                     robot.intake.startIntake();
                 })
                 .addTemporalMarker(6.5, () -> {
                     robot.stopIntake();
                 })
-                .addTemporalMarker(7.5, ()-> {
+                .addTemporalMarker(8, ()-> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(9, ()-> {
+                .addTemporalMarker(9.5, ()-> {
                     robot.smartClawOpen();
                 })
-                .waitSeconds(0.5)
+                .waitSeconds(1)
                 .build();
 
         TrajectorySequence centerCycle2 = drive.trajectorySequenceBuilder(centerCycle1.end())
@@ -186,19 +187,27 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(36, 46), Math.toRadians(90))
-                .addTemporalMarker(8, ()-> {
+                .splineToConstantHeading(new Vector2d(31, 46.5), Math.toRadians(90))
+                .addTemporalMarker(6, () -> {
+                    robot.intake.setAngle(188);
+                    robot.intake.startIntake();
+                })
+                .addTemporalMarker(6.5, () -> {
+                    robot.stopIntake();
+                })
+                .addTemporalMarker(8.5, ()-> {
                     robot.autoCycleDepositPreset();
                 })
                 .addTemporalMarker(10, ()-> {
                     robot.smartClawOpen();
                 })
-                .addTemporalMarker(5, ()-> {
+                .addTemporalMarker(12, ()-> {
                     robot.slides.runToPosition(0);
                 })
-                .waitSeconds(1.5)
-                .strafeLeft(19)
+                .waitSeconds(1)
+                .strafeRight(25)
                 .back(7)
+                .waitSeconds(1)
                 .build();
 
         TrajectorySequence leftCycle1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
