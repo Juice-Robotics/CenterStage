@@ -131,6 +131,15 @@ public class Robot {
         this.slides.runToPosition(0);
     }
 
+    public void startAutoIntake() {
+        intaking = true;
+        this.intake.startIntake();
+        this.arm.runtoPreset(Levels.INTAKE);
+        this.intake.runToPreset(Levels.INTAKE);
+        this.claw.runToWristPreset(Levels.INTAKE);
+        this.slides.runToPosition(0);
+    }
+
     public void stopIntake() {
         intaking = false;
         this.arm.runtoPreset(Levels.CAPTURE);

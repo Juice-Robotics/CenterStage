@@ -84,7 +84,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(33, 50), Math.toRadians(90))
+                .splineTo(new Vector2d(34, 50), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -122,7 +122,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
         TrajectorySequence centerCycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(12, -55), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(13, -55.4), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
@@ -144,15 +144,14 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(31, 47), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 47.3), Math.toRadians(90))
                 .addTemporalMarker(6, () -> {
-                    robot.intake.setAngle(188);
-                    robot.intake.startIntake();
+                    robot.startAutoIntake();
                 })
-                .addTemporalMarker(6.5, () -> {
+                .addTemporalMarker(6.8, () -> {
                     robot.stopIntake();
                 })
-                .addTemporalMarker(8, ()-> {
+                .addTemporalMarker(8.2, ()-> {
                     robot.autoCycleDepositPreset();
                 })
                 .addTemporalMarker(9.5, ()-> {
@@ -175,39 +174,38 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .strafeLeft(5)
                 .forward(2)
                 .strafeRight(7)
-                .addTemporalMarker(5, () -> {
+                .addTemporalMarker(4.5, () -> {
                     robot.intake.setAngle(90);
                 })
-                .addTemporalMarker(5.1, () -> {
+                .addTemporalMarker(4.6, () -> {
                     robot.intake.reverseIntake();
                 })
                 .back(2)
-                .addTemporalMarker(5.2, () -> {
+                .addTemporalMarker(4.7, () -> {
                     robot.stopIntake();
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(31, 46.5), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 47.5), Math.toRadians(90))
                 .addTemporalMarker(6, () -> {
-                    robot.intake.setAngle(188);
-                    robot.intake.startIntake();
+                    robot.startAutoIntake();
                 })
-                .addTemporalMarker(6.5, () -> {
+                .addTemporalMarker(6.8, () -> {
                     robot.stopIntake();
                 })
                 .addTemporalMarker(8.5, ()-> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(10, ()-> {
+                .addTemporalMarker(10.5, ()-> {
                     robot.smartClawOpen();
                 })
-                .addTemporalMarker(12, ()-> {
+                .addTemporalMarker(13, ()-> {
                     robot.slides.runToPosition(0);
                 })
-                .waitSeconds(1)
-                .strafeRight(25)
+                .waitSeconds(1.5)
+                .strafeRight(19)
                 .back(7)
-                .waitSeconds(1)
+                .waitSeconds(2)
                 .build();
 
         TrajectorySequence leftCycle1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
