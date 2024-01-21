@@ -84,7 +84,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(34, 50), Math.toRadians(90))
+                .splineTo(new Vector2d(33.3, 50), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -144,7 +144,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(30, 47.3), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 47.44), Math.toRadians(90))
                 .addTemporalMarker(6, () -> {
                     robot.startAutoIntake();
                 })
@@ -186,7 +186,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(30, 47.5), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 47.6), Math.toRadians(90))
                 .addTemporalMarker(6, () -> {
                     robot.startAutoIntake();
                 })
@@ -203,7 +203,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                     robot.slides.runToPosition(0);
                 })
                 .waitSeconds(1.5)
-                .strafeRight(19)
+                .strafeRight(21)
                 .back(7)
                 .waitSeconds(2)
                 .build();
