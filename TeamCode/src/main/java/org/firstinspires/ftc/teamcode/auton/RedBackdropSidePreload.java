@@ -98,8 +98,8 @@ public class RedBackdropSidePreload extends LinearOpMode {
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
                 .splineTo(new Vector2d(38, 25), Math.toRadians(180))
-                .forward(15)
-                .turn(Math.toRadians(-90))
+                .setReversed(false)
+                .splineToConstantHeading(new Vector2d(44, 25), Math.toRadians(180))
                 .build();
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())

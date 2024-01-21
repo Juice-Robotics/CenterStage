@@ -27,12 +27,13 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                                 drive.trajectorySequenceBuilder(new Pose2d(62, 13, Math.toRadians(0)))
                                         .setReversed(true)
-                                        .splineToLinearHeading(new Pose2d(40, 7, Math.toRadians(55)), Math.toRadians(30))
-//                                        .forward(15)
-//                                        .turn(Math.toRadians(180))
-
+                                        .splineTo(new Vector2d(38, 25), Math.toRadians(180))
                                         .setReversed(false)
-                                        .splineToLinearHeading(new Pose2d(30, 48, Math.toRadians(270)), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(44, 25), Math.toRadians(180))
+
+
+//                                        .splineToLinearHeading(new Pose2d(43, 42, Math.toRadians(270)), Math.toRadians(90))
+                                        .splineToLinearHeading(new Pose2d(42, 50, Math.toRadians(270)), Math.toRadians(90))
                                         .addTemporalMarker(0, () -> {
 //                                            this.robot.intake.setAngle(120);
                                         })
