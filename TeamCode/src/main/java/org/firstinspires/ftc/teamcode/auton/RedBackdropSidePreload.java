@@ -209,7 +209,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
         TrajectorySequence leftCycle1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(13, -55.5), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(13, -56.1), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
@@ -232,7 +232,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 })
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(30, 47.8), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 48), Math.toRadians(90))
                 .addTemporalMarker(6, () -> {
                     robot.startAutoIntake();
                 })
