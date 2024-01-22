@@ -65,13 +65,13 @@ public class BlueBackdropSidePreload extends LinearOpMode {
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-42, 50, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
-//                                            this.robot.intake.setAngle(120);
+                                            this.robot.intake.setAngle(120);
                 })
                 .addTemporalMarker(2, () -> {
-//                                            robot.autoPreloadDepositPreset();
+                                            robot.autoPreloadDepositPreset();
                 })
                 .addTemporalMarker(3.5, () -> {
-//                                            robot.smartClawOpen();
+                                            robot.smartClawOpen();
                 })
                 .waitSeconds(3)
                 .build();
@@ -99,22 +99,21 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineTo(new Vector2d(38, 25), Math.toRadians(180))
-                .setReversed(false)
-                .splineToConstantHeading(new Vector2d(44, 25), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-34, 16, Math.toRadians(235)), Math.toRadians(30))
+                .splineToLinearHeading(new Pose2d(-48, 12, Math.toRadians(235)), Math.toRadians(30))
                 .build();
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(42, 50, Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-40, 48, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
-                    this.robot.intake.setAngle(120);
+                                            this.robot.intake.setAngle(120);
                 })
                 .addTemporalMarker(2, () -> {
-                    robot.autoPreloadDepositPreset();
+                                            robot.autoPreloadDepositPreset();
                 })
                 .addTemporalMarker(3.5, () -> {
-                    robot.smartClawOpen();
+                                            robot.smartClawOpen();
                 })
                 .waitSeconds(3)
                 .build();
