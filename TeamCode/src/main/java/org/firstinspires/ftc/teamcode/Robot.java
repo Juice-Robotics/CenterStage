@@ -245,7 +245,7 @@ public class Robot {
     }
 
     public void autoCycleDepositPreset() {
-        this.slides.runToPosition(350);
+        this.slides.runToPosition(300);
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 sleep(300);
