@@ -26,6 +26,7 @@ public class RedSpikeFar extends LinearOpMode {
     VisionPortal visionPortal;
     YoinkElementCVProcessor teamElementProcessor;
     YoinkElementCVProcessor.PropLocation propLocation = YoinkElementCVProcessor.PropLocation.UNFOUND;
+    final long waitTime = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -54,7 +55,9 @@ public class RedSpikeFar extends LinearOpMode {
                 .back(20)
                 .forward(10)
                 .build();
-
+        TrajectorySequence wait = drive.trajectorySequenceBuilder(new Pose2d(0,0,0))
+                .waitSeconds(waitTime)
+                .build();
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(true)
                 .back(25)
@@ -180,13 +183,17 @@ public class RedSpikeFar extends LinearOpMode {
         switch (propLocation) {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
+                drive.followTrajectorySequence(wait);
+                drive.followTrajectorySequence(preloadBackdropCenter);
                 break;
             case LEFT:
                 drive.followTrajectorySequence(preloadSpikeLeft);
+                drive.followTrajectorySequence(wait);
                 drive.followTrajectorySequence(preloadBackdropLeft);
                 break;
             case RIGHT:
                 drive.followTrajectorySequence(preloadSpikeRight);
+                drive.followTrajectorySequence(wait);
                 drive.followTrajectorySequence(preloadBackdropRight);
                 break;
         }
