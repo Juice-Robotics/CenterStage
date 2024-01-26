@@ -142,10 +142,10 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(30, 47.7), Math.toRadians(90))
-                .addTemporalMarker(6, () -> {
+                .addTemporalMarker(6.5, () -> {
                     robot.startAutoIntake();
                 })
-                .addTemporalMarker(6.8, () -> {
+                .addTemporalMarker(7.3, () -> {
                     robot.stopIntake();
                 })
                 .addTemporalMarker(8.2, ()-> {
@@ -185,10 +185,10 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(30, 47.8), Math.toRadians(90))
-                .addTemporalMarker(6, () -> {
+                .addTemporalMarker(6.5, () -> {
                     robot.startAutoIntake();
                 })
-                .addTemporalMarker(6.8, () -> {
+                .addTemporalMarker(7.3, () -> {
                     robot.stopIntake();
                 })
                 .addTemporalMarker(8.5, ()-> {
@@ -233,10 +233,10 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(30, 48), Math.toRadians(90))
-                .addTemporalMarker(6, () -> {
+                .addTemporalMarker(6.5, () -> {
                     robot.startAutoIntake();
                 })
-                .addTemporalMarker(6.8, () -> {
+                .addTemporalMarker(7.3, () -> {
                     robot.stopIntake();
                 })
                 .addTemporalMarker(8.2, ()-> {
@@ -276,10 +276,10 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(30, 47.65), Math.toRadians(90))
-                .addTemporalMarker(6, () -> {
+                .addTemporalMarker(6.5, () -> {
                     robot.startAutoIntake();
                 })
-                .addTemporalMarker(6.8, () -> {
+                .addTemporalMarker(7.3, () -> {
                     robot.stopIntake();
                 })
                 .addTemporalMarker(8.5, ()-> {
@@ -324,10 +324,10 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(30, 48), Math.toRadians(90))
-                .addTemporalMarker(6, () -> {
+                .addTemporalMarker(6.5, () -> {
                     robot.startAutoIntake();
                 })
-                .addTemporalMarker(6.8, () -> {
+                .addTemporalMarker(7.3, () -> {
                     robot.stopIntake();
                 })
                 .addTemporalMarker(8.2, ()-> {
@@ -366,10 +366,10 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .waitSeconds(0.5)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(30, 47.8), Math.toRadians(90))
-                .addTemporalMarker(6, () -> {
+                .addTemporalMarker(6.5, () -> {
                     robot.startAutoIntake();
                 })
-                .addTemporalMarker(6.8, () -> {
+                .addTemporalMarker(7.3, () -> {
                     robot.stopIntake();
                 })
                 .addTemporalMarker(8.5, ()-> {
