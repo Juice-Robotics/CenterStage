@@ -58,6 +58,7 @@ public class TeleOpSafe extends LinearOpMode {
         boolean previousDpadUp = false;
         float previousLeftTriggerState = 0;
         boolean previousSquare = false;
+        boolean previousTriangle = false;
         boolean previousCircle = false;
 
         boolean[] detectedIndex;
@@ -94,11 +95,11 @@ public class TeleOpSafe extends LinearOpMode {
 
 
             //ARM
-            if (gamepad2.left_trigger > 0.1) {
-                robot.arm.setAngleArm((int) (robot.arm.arm1.getAngle() + (0.1*gamepad2.left_trigger)));
-            } else if (gamepad2.right_trigger > 0.1) {
-                robot.arm.setAngleArm((int) (robot.arm.arm1.getAngle() - (0.1*gamepad2.right_trigger)));
-            }
+//            if (gamepad2.left_trigger > 0.1) {
+//                robot.arm.setAngleArm((int) (robot.arm.arm1.getAngle() + (0.1*gamepad2.left_trigger)));
+//            } else if (gamepad2.right_trigger > 0.1) {
+//                robot.arm.setAngleArm((int) (robot.arm.arm1.getAngle() - (0.1*gamepad2.right_trigger)));
+//            }
 
             //CLAW
             if (gamepad1.cross) {
@@ -106,12 +107,16 @@ public class TeleOpSafe extends LinearOpMode {
             }
 
             if (gamepad1.square && !previousSquare) {
-                robot.claw.wrist.setAngle(78);
+                robot.claw.wrist.setAngle(70);
+            }
+            if (gamepad1.triangle && !previousTriangle) {
+                robot.claw.wrist.setAngle(35);
             }
             if (gamepad1.circle && !previousCircle) {
-                robot.claw.wrist.setAngle(168);
+                robot.claw.wrist.setAngle(176);
             }
             previousCircle = gamepad1.circle;
+            previousTriangle = gamepad1.triangle;
             previousSquare = gamepad1.square;
 
 
@@ -147,20 +152,20 @@ public class TeleOpSafe extends LinearOpMode {
             previousDpadRightState = gamepad1.dpad_right;
 
             //WRIST
-            if (gamepad2.right_stick_x > 0.2) {
-                robot.arm.setAngleElbow(robot.arm.elbow.getAngle() + 70);
-            } else if (gamepad2.right_stick_x < -0.2) {
-                robot.arm.setAngleElbow(robot.arm.elbow.getAngle() - 70);
-            }
+//            if (gamepad2.right_stick_x > 0.2) {
+//                robot.arm.setAngleElbow(robot.arm.elbow.getAngle() + 70);
+//            } else if (gamepad2.right_stick_x < -0.2) {
+//                robot.arm.setAngleElbow(robot.arm.elbow.getAngle() - 70);
+//            }
 
             //DRONE
-            if (gamepad1.triangle && !previousDroneState) {
+            if (gamepad2.triangle && !previousDroneState) {
                 robot.drone.launch();
             }
             previousDroneState = gamepad1.triangle;
 
             // CLIMB
-            if (gamepad1.dpad_up && !previousDpadUp) {
+            if (gamepad2.dpad_up && !previousDpadUp) {
 //                if (!robot.flags.contains(RobotFlags.CLIMB_ENGAGED)) {
                     robot.climbExtend();
 //                } else {
@@ -169,18 +174,18 @@ public class TeleOpSafe extends LinearOpMode {
             }
             previousDpadUp = gamepad1.dpad_up;
 
-            if (gamepad1.dpad_down) {
+            if (gamepad2.dpad_down) {
                 robot.startClimb();
             }
 
             //TIME ALERTS
             if (buzzers == 0 && matchTimer.time(TimeUnit.SECONDS) >= 75) {
                 gamepad1.rumble(500);
-                gamepad2.rumble(500);
+//                gamepad2.rumble(500);
                 buzzers = 1;
             } else if (buzzers == 1 && matchTimer.time(TimeUnit.SECONDS) >= 90) {
                 gamepad1.rumble(800);
-                gamepad2.rumble(800);
+//                gamepad2.rumble(800);
                 buzzers = 2;
             }
 
