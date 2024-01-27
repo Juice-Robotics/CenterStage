@@ -178,6 +178,15 @@ public class Robot {
         this.subsystemState = Levels.INIT;
     }
 
+    public void farPos() {
+        intaking = false;
+        this.claw.runToWristPreset(Levels.DEPOSIT);
+        this.intake.runToPreset(Levels.INIT);
+        this.arm.setAngleArm(140);
+        this.arm.setAngleElbow(220);
+        this.subsystemState = Levels.FARPOS;
+    }
+
     /**
      * <h1>WARNING: BLOCKS THREAD</h1>
      * Blocks thread until intake is complete with specified number of pixels (1-2)
