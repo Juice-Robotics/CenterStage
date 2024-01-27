@@ -27,21 +27,19 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                                 drive.trajectorySequenceBuilder(new Pose2d(62, -34, Math.toRadians(0)))
                                         .setReversed(true)
-                                        .splineToLinearHeading(new Pose2d(34, -32, Math.toRadians(305)), Math.toRadians(150))
-                                        .forward(12)
-                                        .turn(Math.toRadians(-35))
-                                        .strafeLeft(6)
-                                        //.splineToLinearHeading(new Pose2d(-48, -40, Math.toRadians(235)), Math.toRadians(30))
-                                        //.splineToLinearHeading(new Pose2d(-57, -40, Math.toRadians(-90)), Math.toRadians(-90))
-                                        //.setReversed(false)
-                                        //.splineToConstantHeading(new Vector2d(-57, -25), Math.toRadians(90))
-                                        .splineToConstantHeading(new Vector2d(57, 10), Math.toRadians(90))
-                                        .splineToConstantHeading(new Vector2d(31, 50), Math.toRadians(90))
                                         .addTemporalMarker(0, () -> {
                                         })
-                                        .addTemporalMarker(2, () -> {
+                                        .back(29)
+                                        .forward(26)
+                                        .turn(Math.toRadians(-90))
+                                        .setReversed(true)
+                                        .splineToConstantHeading(new Vector2d(59, 20), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(35, 50.2), Math.toRadians(90))
+                                        .addTemporalMarker(0, () -> {
                                         })
-                                        .addTemporalMarker(3.5, () -> {
+                                        .addTemporalMarker(3, () -> {
+                                        })
+                                        .addTemporalMarker(4, () -> {
                                         })
                                         .waitSeconds(3)
                                         .build()
