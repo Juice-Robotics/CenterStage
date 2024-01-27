@@ -75,7 +75,7 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
                     robot.slides.runToPosition(0);
                 })
                 .waitSeconds(2)
-                .strafeRight(27)
+                .strafeRight(23)
                 .back(10)
                 .build();
 
@@ -101,7 +101,7 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
                     robot.slides.runToPosition(0);
                 })
                 .waitSeconds(2)
-                .strafeRight(29)
+                .strafeRight(24)
                 .back(10)
                 .build();
 
@@ -126,7 +126,7 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
                     robot.slides.runToPosition(0);
                 })
                 .waitSeconds(2)
-                .strafeRight(23)
+                .strafeRight(26)
                 .back(10)
                 .build();
 
