@@ -89,7 +89,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .addTemporalMarker(1.1, () -> {
                     robot.autoPreloadDepositPreset();
                 })
-                .addTemporalMarker(1.95, () -> {
+                .addTemporalMarker(2, () -> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(0.2)
@@ -102,7 +102,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .build();
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
-                .splineToLinearHeading(new Pose2d(42, 48, Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(42, 49, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })

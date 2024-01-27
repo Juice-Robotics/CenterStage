@@ -30,9 +30,9 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Scalar lower = new Scalar(125, 60, 50); // the lower hsv threshold for your detection
-        Scalar upper = new Scalar(190, 255, 255); // the upper hsv threshold for your detection
-        double minArea = 5000; // the minimum area for the detection to consider for your prop
+        Scalar lower = new Scalar(125, 120, 50); // the lower hsv threshold for your detection
+        Scalar upper = new Scalar(190, 255, 250); // the upper hsv threshold for your detection
+        double minArea = 3000; // the minimum area for the detection to consider for your prop
 
         colourMassDetectionProcessor = new YoinkP2Pipeline(
                 lower,
@@ -71,6 +71,9 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
                 .addTemporalMarker(2.3, () -> {
                     robot.smartClawOpen();
                 })
+                .addTemporalMarker(4, ()-> {
+                    robot.slides.runToPosition(0);
+                })
                 .waitSeconds(2)
                 .strafeLeft(31)
                 .back(10)
@@ -91,8 +94,11 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
                 .addTemporalMarker(1.1, () -> {
                     robot.autoPreloadDepositPreset();
                 })
-                .addTemporalMarker(1.95, () -> {
+                .addTemporalMarker(2, () -> {
                     robot.smartClawOpen();
+                })
+                .addTemporalMarker(4, ()-> {
+                    robot.slides.runToPosition(0);
                 })
                 .waitSeconds(2)
                 .strafeLeft(26)
@@ -106,7 +112,7 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
                 .build();
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
-                .splineToLinearHeading(new Pose2d(42, 48, Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(42, 49, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -115,6 +121,9 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
                 })
                 .addTemporalMarker(1.7, () -> {
                     robot.smartClawOpen();
+                })
+                .addTemporalMarker(4, ()-> {
+                    robot.slides.runToPosition(0);
                 })
                 .waitSeconds(2)
                 .strafeLeft(20)
