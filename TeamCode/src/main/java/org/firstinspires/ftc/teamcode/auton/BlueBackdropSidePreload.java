@@ -30,9 +30,9 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Scalar lower = new Scalar(270, 130, 50); // the lower hsv threshold for your detection
-        Scalar upper = new Scalar(230, 255, 255); // the upper hsv threshold for your detection
-        double minArea = 5000; // the minimum area for the detection to consider for your prop
+        Scalar lower = new Scalar(103, 120, 50); // the lower hsv threshold for your detection
+        Scalar upper = new Scalar(130, 255, 250); // the upper hsv threshold for your detection
+        double minArea = 3000; // the minimum area for the detection to consider for your prop
 
         colourMassDetectionProcessor = new YoinkP2Pipeline(
                 lower,
