@@ -22,24 +22,26 @@ public class MeepMeepTesting {
         RoadRunnerBotEntity myBotCyclesSafeRed = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
 //                .setColorScheme(new ColorSchemeRedDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
-                .setDimensions(14, 17)
+                .setConstraints(55, 55, Math.toRadians(360), Math.toRadians(360), 13.28)
+                .setDimensions(15, 17)
                 .followTrajectorySequence(drive ->
-                                drive.trajectorySequenceBuilder(new Pose2d(-62, 13, Math.toRadians(180)))
+                                drive.trajectorySequenceBuilder(new Pose2d(62, -34, Math.toRadians(0)))
                                         .setReversed(true)
-                                        .splineToLinearHeading(new Pose2d(-34, 16, Math.toRadians(235)), Math.toRadians(30))
-                                        .splineToLinearHeading(new Pose2d(-48, 12, Math.toRadians(235)), Math.toRadians(30))
-
-                                        .setReversed(true)
-                                        .splineToLinearHeading(new Pose2d(-40, 48, Math.toRadians(270)), Math.toRadians(90))
+                                        .splineToLinearHeading(new Pose2d(34, -32, Math.toRadians(305)), Math.toRadians(150))
+                                        .forward(12)
+                                        .turn(Math.toRadians(-35))
+                                        .strafeLeft(6)
+                                        //.splineToLinearHeading(new Pose2d(-48, -40, Math.toRadians(235)), Math.toRadians(30))
+                                        //.splineToLinearHeading(new Pose2d(-57, -40, Math.toRadians(-90)), Math.toRadians(-90))
+                                        //.setReversed(false)
+                                        //.splineToConstantHeading(new Vector2d(-57, -25), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(57, 10), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(31, 50), Math.toRadians(90))
                                         .addTemporalMarker(0, () -> {
-//                                            this.robot.intake.setAngle(120);
                                         })
                                         .addTemporalMarker(2, () -> {
-//                                            robot.autoPreloadDepositPreset();
                                         })
                                         .addTemporalMarker(3.5, () -> {
-//                                            robot.smartClawOpen();
                                         })
                                         .waitSeconds(3)
                                         .build()
@@ -47,8 +49,8 @@ public class MeepMeepTesting {
 
 
         Image img = null;
-//        try { img = ImageIO.read(new File("/Users/huntert/Downloads/Juice-CENTERSTAGE-Dark.png")); }
-        try { img = ImageIO.read(new File("/Users/siddharth/dev/Juice/CenterStage/MeepMeepTesting/src/main/java/com/example/meepmeeptesting/Juice-CENTERSTAGE-Dark.png")); }
+        try { img = ImageIO.read(new File("/Users/huntert/Downloads/Juice-CENTERSTAGE-Dark.png")); }
+//        try { img = ImageIO.read(new File("/Users/siddharth/dev/Juice/CenterStage/MeepMeepTesting/src/main/java/com/example/meepmeeptesting/Juice-CENTERSTAGE-Dark.png")); }
         catch (IOException e) {}
 
         meepMeep.setBackground(img)
