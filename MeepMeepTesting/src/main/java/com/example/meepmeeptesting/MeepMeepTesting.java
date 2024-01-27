@@ -25,26 +25,12 @@ public class MeepMeepTesting {
                 .setConstraints(55, 55, Math.toRadians(360), Math.toRadians(360), 13.28)
                 .setDimensions(15, 17)
                 .followTrajectorySequence(drive ->
-                                drive.trajectorySequenceBuilder(new Pose2d(62, -34, Math.toRadians(0)))
+                                drive.trajectorySequenceBuilder(new Pose2d(-62, 13, Math.toRadians(180)))
                                         .setReversed(true)
-                                        .addTemporalMarker(0, () -> {
-                                        })
-                                        .splineTo(new Vector2d(38, -27), Math.toRadians(135))
-                                        .forward(12)
-                                        .turn(Math.toRadians(-45))
-                                        .strafeLeft(14)
-                                        .back(20)
-                                        .splineToConstantHeading(new Vector2d(59, 20), Math.toRadians(90))
-                                        .splineToConstantHeading(new Vector2d(38, 49), Math.toRadians(90))
-                                        .addTemporalMarker(0, () -> {
-                                        })
-                                        .addTemporalMarker(2.6, () -> {
-                                        })
-                                        .addTemporalMarker(3.6, () -> {
-                                        })
-                                        .waitSeconds(2)
-                                        .strafeLeft(20)
-                                        .back(10)
+                                        .splineToLinearHeading(new Pose2d(-38, 11.7, Math.toRadians(145)), Math.toRadians(-30))
+                                        .setReversed(false)
+                                        .splineToLinearHeading(new Pose2d(-30, 49, Math.toRadians(270)), Math.toRadians(90))
+
                                         .build()
                 );
 
