@@ -59,25 +59,28 @@ public class RedSpikeFar extends LinearOpMode {
                 .addTemporalMarker(0, () -> {
                     this.robot.farPos();
                 })
-                .splineTo(new Vector2d(38, -47), Math.toRadians(180))
-                .forward(17)
+                .splineTo(new Vector2d(38, -42), Math.toRadians(180))
+                .forward(20)
                 .turn(Math.toRadians(-90))
+                .strafeLeft(2)
                 .build();
 
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(58, -8, Math.toRadians(-90)), Math.toRadians(90))
-                .splineToLinearHeading(new Pose2d(30, 52, Math.toRadians(-90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(58, 20, Math.toRadians(-90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(26, 49, Math.toRadians(-90)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
-                .addTemporalMarker(2, () -> {
+                .addTemporalMarker(2.6, () -> {
                     robot.autoPreloadDepositPreset();
                 })
-                .addTemporalMarker(3.5, () -> {
+                .addTemporalMarker(3.6, () -> {
                     robot.smartClawOpen();
                 })
-                .waitSeconds(3)
+                .waitSeconds(2)
+                .strafeLeft(31)
+                .back(10)
                 .build();
 
         TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
@@ -94,7 +97,7 @@ public class RedSpikeFar extends LinearOpMode {
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
                 .splineToConstantHeading(new Vector2d(59, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(32, 50.2), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(32, 49), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -114,25 +117,28 @@ public class RedSpikeFar extends LinearOpMode {
                 .addTemporalMarker(0, () -> {
                     this.robot.farPos();
                 })
-                .splineToLinearHeading(new Pose2d(34, -32, Math.toRadians(305)), Math.toRadians(150))
-                .forward(12)
-                .turn(Math.toRadians(-35))
+                .splineTo(new Vector2d(38, -27), Math.toRadians(135))
+                .forward(17)
+                .turn(Math.toRadians(-45))
                 .build();
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
-                .strafeLeft(6)
-                .splineToConstantHeading(new Vector2d(57, 10), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(31, 50), Math.toRadians(90))
+                .strafeLeft(10)
+                .back(20)
+                .splineToConstantHeading(new Vector2d(59, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(38, 49), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
-                .addTemporalMarker(2, () -> {
+                .addTemporalMarker(3, () -> {
                     robot.autoPreloadDepositPreset();
                 })
-                .addTemporalMarker(3.5, () -> {
+                .addTemporalMarker(4, () -> {
                     robot.smartClawOpen();
                 })
-                .waitSeconds(3)
+                .waitSeconds(2)
+                .strafeLeft(20)
+                .back(10)
                 .build();
 
         /*

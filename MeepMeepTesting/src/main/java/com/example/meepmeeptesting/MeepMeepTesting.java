@@ -29,19 +29,22 @@ public class MeepMeepTesting {
                                         .setReversed(true)
                                         .addTemporalMarker(0, () -> {
                                         })
-                                        .back(29)
-                                        .forward(26)
-                                        .turn(Math.toRadians(-90))
-                                        .setReversed(true)
+                                        .splineTo(new Vector2d(38, -27), Math.toRadians(135))
+                                        .forward(12)
+                                        .turn(Math.toRadians(-45))
+                                        .strafeLeft(14)
+                                        .back(20)
                                         .splineToConstantHeading(new Vector2d(59, 20), Math.toRadians(90))
-                                        .splineToConstantHeading(new Vector2d(35, 50.2), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(38, 49), Math.toRadians(90))
                                         .addTemporalMarker(0, () -> {
                                         })
-                                        .addTemporalMarker(3, () -> {
+                                        .addTemporalMarker(2.6, () -> {
                                         })
-                                        .addTemporalMarker(4, () -> {
+                                        .addTemporalMarker(3.6, () -> {
                                         })
-                                        .waitSeconds(3)
+                                        .waitSeconds(2)
+                                        .strafeLeft(20)
+                                        .back(10)
                                         .build()
                 );
 
