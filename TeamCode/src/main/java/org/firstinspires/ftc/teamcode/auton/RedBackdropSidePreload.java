@@ -82,7 +82,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(32.5, 50.5), Math.toRadians(90))
+                .splineTo(new Vector2d(32.5, 49.5), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
