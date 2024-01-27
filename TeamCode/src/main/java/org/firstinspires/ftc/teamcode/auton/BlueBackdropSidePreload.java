@@ -111,26 +111,26 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-38, 5, Math.toRadians(145)), Math.toRadians(-30))
+                .splineToLinearHeading(new Pose2d(-37.5, 6, Math.toRadians(145)), Math.toRadians(-32))
                 .build();
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(-30, 52, Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-30, 51, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
                 .addTemporalMarker(1.1, () -> {
                     robot.autoPreloadDepositPreset();
                 })
-                .addTemporalMarker(2.1, () -> {
+                .addTemporalMarker(2.35, () -> {
                     robot.smartClawOpen();
                 })
                 .addTemporalMarker(3, () -> {
                     robot.slides.runToPosition(0);
                 })
                 .waitSeconds(1)
-                .strafeRight(24)
+                .strafeRight(28)
                 .back(5)
                 .waitSeconds(3)
                 .build();
