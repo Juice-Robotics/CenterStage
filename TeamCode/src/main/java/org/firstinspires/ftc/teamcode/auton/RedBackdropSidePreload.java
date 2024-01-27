@@ -154,7 +154,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .addTemporalMarker(9.5, ()-> {
                     robot.smartClawOpen();
                 })
-                .waitSeconds(1)
+                .waitSeconds(1.2)
                 .build();
 
         TrajectorySequence centerCycle2 = drive.trajectorySequenceBuilder(centerCycle1.end())
@@ -246,7 +246,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .addTemporalMarker(9.5, ()-> {
                     robot.smartClawOpen();
                 })
-                .waitSeconds(1)
+                .waitSeconds(1.4)
                 .build();
 
         TrajectorySequence leftCycle2 = drive.trajectorySequenceBuilder(leftCycle1.end())
@@ -338,7 +338,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .addTemporalMarker(9.5, ()-> {
                     robot.smartClawOpen();
                 })
-                .waitSeconds(1)
+                .waitSeconds(1.2)
                 .build();
 
         TrajectorySequence rightCycle2 = drive.trajectorySequenceBuilder(rightCycle1.end())                .setReversed(false)

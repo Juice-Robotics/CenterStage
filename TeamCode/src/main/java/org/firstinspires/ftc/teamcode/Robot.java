@@ -183,7 +183,7 @@ public class Robot {
         this.claw.runToWristPreset(Levels.DEPOSIT);
         this.intake.runToPreset(Levels.INIT);
         this.arm.setAngleArm(140);
-        this.arm.setAngleElbow(220);
+        this.arm.setAngleElbow(211);
         this.subsystemState = Levels.FARPOS;
     }
 
@@ -211,7 +211,7 @@ public class Robot {
             public void run() {
                 sleep(300);
                 arm.setAngleArm(30);
-                arm.setAngleElbow(110);
+                arm.setAngleElbow(106);
                 claw.runToWristPreset(Levels.INTAKE);
                 sleep(300);
                 slides.runToPosition(0);
