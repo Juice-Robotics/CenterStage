@@ -127,9 +127,8 @@ public class RedBackdropSidePreload extends LinearOpMode {
                     robot.startIntake();
                 })
                 .strafeLeft(4)
-                .forward(2)
-                .strafeRight(8)
                 .back(2)
+                .strafeRight(8)
                 .addTemporalMarker(4.5, () -> {
                     robot.intake.setAngle(90);
                 })
@@ -220,9 +219,8 @@ public class RedBackdropSidePreload extends LinearOpMode {
                     robot.startIntake();
                 })
                 .strafeLeft(4)
-                .forward(2)
-                .strafeRight(8)
                 .back(2)
+                .strafeRight(8)
                 .addTemporalMarker(4.5, () -> {
                     robot.intake.setAngle(90);
                 })
@@ -313,9 +311,8 @@ public class RedBackdropSidePreload extends LinearOpMode {
                     robot.startIntake();
                 })
                 .strafeLeft(4)
-                .forward(2)
-                .strafeRight(8)
                 .back(2)
+                .strafeRight(8)
                 .addTemporalMarker(4.5, () -> {
                     robot.intake.setAngle(90);
                 })
