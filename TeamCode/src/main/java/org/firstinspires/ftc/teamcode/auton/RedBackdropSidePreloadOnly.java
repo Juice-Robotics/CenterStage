@@ -61,7 +61,7 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
 
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(30, 49, Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(31, 49, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -75,7 +75,7 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
                     robot.slides.runToPosition(0);
                 })
                 .waitSeconds(2)
-                .strafeRight(23)
+                .strafeRight(22)
                 .back(10)
                 .build();
 
@@ -101,7 +101,7 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
                     robot.slides.runToPosition(0);
                 })
                 .waitSeconds(2)
-                .strafeRight(24)
+                .strafeRight(25)
                 .back(10)
                 .build();
 
@@ -112,7 +112,7 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
                 .build();
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
-                .splineToLinearHeading(new Pose2d(42, 49, Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(39.5, 49, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -126,7 +126,7 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
                     robot.slides.runToPosition(0);
                 })
                 .waitSeconds(2)
-                .strafeRight(26)
+                .strafeRight(29)
                 .back(10)
                 .build();
 
