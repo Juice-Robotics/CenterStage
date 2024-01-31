@@ -21,18 +21,62 @@ public class MeepMeepTesting {
         RoadRunnerBotEntity myBotCycleSafeBlue = new DefaultBotBuilder(meepMeep)
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .setDimensions(14, 17)
-                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(new Pose2d(-62, -34, Math.toRadians(180)))
+                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(new Pose2d(62, 13, Math.toRadians(0)))
                         .setReversed(true)
-                        .splineToLinearHeading(new Pose2d(-34, -32, Math.toRadians(235)), Math.toRadians(30))
-                        .forward(12)
-                        .turn(Math.toRadians(35))
-                        .strafeRight(6)
-                        //.splineToLinearHeading(new Pose2d(-48, -40, Math.toRadians(235)), Math.toRadians(30))
-                        //.splineToLinearHeading(new Pose2d(-57, -40, Math.toRadians(-90)), Math.toRadians(-90))
-                        //.setReversed(false)
-                        //.splineToConstantHeading(new Vector2d(-57, -25), Math.toRadians(90))
-                        .splineToConstantHeading(new Vector2d(-57, 10), Math.toRadians(90))
-                        .splineToConstantHeading(new Vector2d(-39, 50), Math.toRadians(90))
+                        .splineToLinearHeading(new Pose2d(38, 11.7, Math.toRadians(55)), Math.toRadians(30))
+
+                        .setReversed(false)
+                        .splineToLinearHeading(new Pose2d(30, 49, Math.toRadians(270)), Math.toRadians(90))
+                        .addTemporalMarker(0, () -> {
+                            //this.robot.intake.setAngle(120);
+                        })
+                        .addTemporalMarker(1.5, () -> {
+                            //robot.autoPreloadDepositPreset();
+                        })
+                        .addTemporalMarker(2.3, () -> {
+                            //robot.smartClawOpen();
+                        })
+                        .waitSeconds(0.8)
+                                .setReversed(false)
+                                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                                .splineToConstantHeading(new Vector2d(13, -56.1), Math.toRadians(-90))
+//                .addTemporalMarker(2, () -> {
+//                    robot.autoIntake(3, 170);
+//                })
+                                .setReversed(true)
+                                .addTemporalMarker(2.5, () -> {
+                                    //startIntake();
+                                })
+                                .strafeLeft(4)
+                                .forward(2)
+                                .strafeRight(8)
+                                .back(2)
+                                .addTemporalMarker(4.5, () -> {
+                                    //intake.setAngle(90);
+                                })
+                                .addTemporalMarker(4.5, () -> {
+                                    //intake.reverseIntake();
+                                })
+                                .addTemporalMarker(4.7, () -> {
+                                    //stopIntake();
+                                })
+                                .waitSeconds(0.2)
+                                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                                .splineToConstantHeading(new Vector2d(30, 48), Math.toRadians(90))
+                                .addTemporalMarker(6.5, () -> {
+                                    //startAutoIntake();
+                                    //claw.setClawOpen();
+                                })
+                                .addTemporalMarker(7, () -> {
+                                    //stopIntake();
+                                })
+                                .addTemporalMarker(8.2, ()-> {
+                                    //autoCycleDepositPreset();
+                                })
+                                .addTemporalMarker(9.5, ()-> {
+                                    //smartClawOpen();
+                                })
+                                .waitSeconds(1)
                         .build()
                 );
 
@@ -43,15 +87,30 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .setDimensions(15, 17)
                 .followTrajectorySequence(drive ->
-                                drive.trajectorySequenceBuilder(new Pose2d(62, -34, Math.toRadians(0)))
+                                drive.trajectorySequenceBuilder(new Pose2d(-62, -34, Math.toRadians(180)))
                                         .setReversed(true)
-                                        .splineTo(new Vector2d(38, -47), Math.toRadians(180))
+                                        .addTemporalMarker(0, () -> {
+                                            //this.robot.farPos();
+                                        })
+                                        .splineTo(new Vector2d(-38, -27), Math.toRadians(45))
                                         .forward(17)
-                                        .turn(Math.toRadians(-90))
-                                        .setReversed(true)
-                                        //.setReversed(true)
-                                        .splineToLinearHeading(new Pose2d(58, -8, Math.toRadians(-90)), Math.toRadians(90))
-                                        .splineToLinearHeading(new Pose2d(30, 52, Math.toRadians(-90)), Math.toRadians(90))
+                                        .turn(Math.toRadians(45))
+                                        .strafeRight(10)
+                                        .back(20)
+                                        .splineToConstantHeading(new Vector2d(-59, 20), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(-38, 49), Math.toRadians(90))
+                                        .addTemporalMarker(0, () -> {
+                                            //this.robot.intake.setAngle(120);
+                                        })
+                                        .addTemporalMarker(3, () -> {
+                                            //robot.autoPreloadDepositPreset();
+                                        })
+                                        .addTemporalMarker(4, () -> {
+                                            //robot.smartClawOpen();
+                                        })
+                                        .waitSeconds(2)
+                                        .strafeRight(20)
+                                        .back(10)
                                         .build()
 
                 );
@@ -67,7 +126,7 @@ public class MeepMeepTesting {
                 .setBackgroundAlpha(0.95f)
 //                .addEntity(myBotCyclesUnsafeSide)
                 .addEntity(myBotCyclesSafeRed)
-                //.addEntity(myBotCycleSafeBlue)
+                .addEntity(myBotCycleSafeBlue)
 //                .addEntity(myBotCyclesSafeOpti)
                 .start();
     }
