@@ -23,12 +23,13 @@ public class ArmElbow {
     public double armTarget;
 
     // TARGETS
+    public double OFFSET = 4;
     public double intakeTargetArm = 26;
 
     public double captureTargetArm = 16;
     public double depositTargetArm = 148;
-    public double intakeTargetElbow = 110;
-    public double depositTargetElbow = 217;
+    public double intakeTargetElbow = 110-OFFSET;
+    public double depositTargetElbow = 217-OFFSET;
     public double initPos = 140;
 
 
@@ -72,19 +73,19 @@ public class ArmElbow {
         }
         else if (level == Levels.INTERMEDIATE) {
             this.setAngleArm(33);
-            this.setAngleElbow(115);
+            this.setAngleElbow(115-OFFSET);
         }
         else if (level == Levels.CLIMB_EXTEND) {
             this.setAngleArm(160);
-            this.setAngleElbow(237);
+            this.setAngleElbow(237-OFFSET);
         }
         else if (level == Levels.CAPTURE) {
             this.setAngleArm(captureTargetArm);
-            this.setAngleElbow(116);
+            this.setAngleElbow(116-OFFSET);
         }
         else if (level == Levels.INIT) {
             this.setAngleArm(initPos);
-            this.setAngleElbow(110);
+            this.setAngleElbow(110-OFFSET);
         }
     }
 

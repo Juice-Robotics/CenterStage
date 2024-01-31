@@ -131,6 +131,15 @@ public class Robot {
         this.slides.runToPosition(0);
     }
 
+    public void startAutoIntake() {
+        intaking = true;
+        this.intake.startIntake();
+        this.arm.runtoPreset(Levels.INTAKE);
+        this.intake.runToPreset(Levels.INTAKE);
+        this.claw.runToWristPreset(Levels.INTAKE);
+        this.slides.runToPosition(0);
+    }
+
     public void stopIntake() {
         intaking = false;
         this.arm.runtoPreset(Levels.CAPTURE);
@@ -169,6 +178,15 @@ public class Robot {
         this.subsystemState = Levels.INIT;
     }
 
+    public void farPos() {
+        intaking = false;
+        this.claw.runToWristPreset(Levels.DEPOSIT);
+        this.intake.runToPreset(Levels.INIT);
+        this.arm.setAngleArm(140);
+        this.arm.setAngleElbow(211);
+        this.subsystemState = Levels.FARPOS;
+    }
+
     /**
      * <h1>WARNING: BLOCKS THREAD</h1>
      * Blocks thread until intake is complete with specified number of pixels (1-2)
@@ -193,7 +211,7 @@ public class Robot {
             public void run() {
                 sleep(300);
                 arm.setAngleArm(30);
-                arm.setAngleElbow(110);
+                arm.setAngleElbow(106);
                 claw.runToWristPreset(Levels.INTAKE);
                 sleep(300);
                 slides.runToPosition(0);
@@ -236,7 +254,7 @@ public class Robot {
     }
 
     public void autoCycleDepositPreset() {
-        this.slides.runToPosition(400);
+        this.slides.runToPosition(300);
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 sleep(300);
