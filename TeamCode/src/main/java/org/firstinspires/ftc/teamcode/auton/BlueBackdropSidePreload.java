@@ -14,17 +14,11 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDriveCancelable;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
-import org.firstinspires.ftc.teamcode.subsystems.vision.TeamElementCVProcessor;
-import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkElementCVProcessor;
 import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkP2Pipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.opencv.core.Scalar;
-
-import java.util.List;
 
 @Config
 @Autonomous(group = "drive")
@@ -37,9 +31,9 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Scalar lower = new Scalar(270, 130, 50); // the lower hsv threshold for your detection
-        Scalar upper = new Scalar(230, 255, 255); // the upper hsv threshold for your detection
-        double minArea = 125; // the minimum area for the detection to consider for your prop
+        Scalar lower = new Scalar(103, 120, 50); // the lower hsv threshold for your detection
+        Scalar upper = new Scalar(130, 255, 250); // the upper hsv threshold for your detection
+        double minArea = 3000; // the minimum area for the detection to consider for your prop
 
         colourMassDetectionProcessor = new YoinkP2Pipeline(
                 lower,
@@ -61,171 +55,86 @@ public class BlueBackdropSidePreload extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         // PRELOAD PATHS
-        TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
+        TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-30, 10, Math.toRadians(90)), Math.toRadians(0))
+                .splineTo(new Vector2d(-38, 21.5), Math.toRadians(0))
+                .forward(15)
                 .build();
 
-        TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
-                .splineToSplineHeading(new Pose2d(-30, 30, Math.toRadians(90)), Math.toRadians(90))
-                .splineToSplineHeading(new Pose2d(-30, 51, Math.toRadians(270)), Math.toRadians(90))
+        TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
+                .setReversed(false)
+                .splineToLinearHeading(new Pose2d(-44, 51, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
-                .addTemporalMarker(2, () -> {
+                .addTemporalMarker(1.1, () -> {
                     robot.autoPreloadDepositPreset();
                 })
-                .addTemporalMarker(3.5, () -> {
+                .addTemporalMarker(2.1, () -> {
                     robot.smartClawOpen();
                 })
+                .addTemporalMarker(3, () -> {
+                    robot.slides.runToPosition(0);
+                })
+                .waitSeconds(1)
+                .strafeRight(18)
+                .back(5)
                 .waitSeconds(3)
                 .build();
 
         TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineTo(new Vector2d(-41, 13), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(-51, 13, Math.toRadians(180)), Math.toRadians(180))
+                .splineTo(new Vector2d(-40, 13), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-48, 13, Math.toRadians(180)), Math.toRadians(0))
+                .strafeRight(4)
                 .build();
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(-33, 52), Math.toRadians(90))
+                .splineTo(new Vector2d(-37, 52.5), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
-                .addTemporalMarker(1.6, () -> {
+                .addTemporalMarker(1.1, () -> {
                     robot.autoPreloadDepositPreset();
                 })
-                .addTemporalMarker(2.4, () -> {
+                .addTemporalMarker(2.1, () -> {
                     robot.smartClawOpen();
                 })
-                .waitSeconds(1.5)
-                .build();
-
-        TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
-                //.setReversed(true)
-                .splineTo(new Vector2d(-38, 25), Math.toRadians(0))
-                .back(15)
-                //.turn(Math.toRadians(-90))
-                //.setReversed(true)
-                .build();
-
-        TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
-                .splineToLinearHeading(new Pose2d(-42, 51, Math.toRadians(90)), Math.toRadians(90))
-                .addTemporalMarker(0, () -> {
-                    this.robot.intake.setAngle(120);
+                .addTemporalMarker(3, () -> {
+                    robot.slides.runToPosition(0);
                 })
-                .addTemporalMarker(2, () -> {
-                    robot.autoPreloadDepositPreset();
-                })
-                .addTemporalMarker(3.5, () -> {
-                    robot.smartClawOpen();
-                })
+                .waitSeconds(1)
+                .strafeRight(24)
+                .back(5)
                 .waitSeconds(3)
                 .build();
 
-        TrajectorySequence centerCycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
-                .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(-16, -57), Math.toRadians(-90))
-//                .addTemporalMarker(2, () -> {
-//                    robot.autoIntake(3, 170);
-//                })
+        TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
+                .splineToLinearHeading(new Pose2d(-36.5, 5, Math.toRadians(145)), Math.toRadians(-32))
+                .forward(5)
+                .build();
+
+        TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
+                .setReversed(false)
+                .splineToLinearHeading(new Pose2d(-32, 51.5, Math.toRadians(270)), Math.toRadians(90))
+                .addTemporalMarker(0, () -> {
+                    this.robot.intake.setAngle(120);
+                })
+                .addTemporalMarker(1.1, () -> {
+                    robot.autoPreloadDepositPreset();
+                })
+                .addTemporalMarker(2.35, () -> {
+                    robot.smartClawOpen();
+                })
                 .addTemporalMarker(3, () -> {
-                    robot.intake.setAngle(188);
+                    robot.slides.runToPosition(0);
                 })
-                .addTemporalMarker(4.7, () ->{
-                    robot.intake.autoStartIntake();
-                })
-                .splineToConstantHeading(new Vector2d(-26, -57), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(-26, -51), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(-26, -56), Math.toRadians(-90))
-                //.strafeRight(8)
-                .addTemporalMarker(6, () -> {
-                    robot.stopIntake();
-                    robot.intake.setAngle(90);
-                })
-//                .addTemporalMarker(5.1, () -> {
-//                    robot.intake.reverseIntake();
-//                })
-
                 .waitSeconds(1)
-                .splineToConstantHeading(new Vector2d(-8, -15), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-8, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-29, 51.5), Math.toRadians(90))
-                .addTemporalMarker(8, () -> {
-                    robot.autoCycleDepositPreset();
-                })
-                .addTemporalMarker(9.5, () -> {
-                    robot.smartClawOpen();
-                })
-                .waitSeconds(1.5)
-                .build();
-
-        TrajectorySequence centerCycle2 = drive.trajectorySequenceBuilder(centerCycle1.end())
-                .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(-22, -57.5), Math.toRadians(-90))
-//                .addTemporalMarker(2, () -> {
-//                    robot.autoIntake(3, 170);
-//                })
-                .setReversed(true)
-                .addTemporalMarker(2, () -> {
-                    robot.intake.setAngle(188);
-                })
-                .addTemporalMarker(3.7, () ->{
-                    robot.intake.autoStartIntake();
-                })
-//                .strafeRight(10)
-//                .back(6)
-//                .forward(5)
-                //.strafeRight(8)
-                .addTemporalMarker(5, () -> {
-                    robot.stopIntake();
-                    robot.intake.setAngle(90);
-                })
-//                .addTemporalMarker(5.1, () -> {
-//                    robot.intake.reverseIntake();
-//                })
-
-                .waitSeconds(1)
-                .splineToConstantHeading(new Vector2d(-8, -15), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-8, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-28, 51.5), Math.toRadians(90))
-                .addTemporalMarker(6.5, () -> {
-                    robot.autoCycleDepositPreset();
-                })
-                .addTemporalMarker(8, () -> {
-                    robot.smartClawOpen();
-                })
-                .waitSeconds(0.9)
-                .build();
-
-        TrajectorySequence rightCycle1 = drive.trajectorySequenceBuilder(preloadBackdropRight.end())
-                .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(-12, -52), Math.toRadians(-90))
-//                .addTemporalMarker(2, () -> {
-//                    robot.autoIntake(3, 170);
-//                })
-                .setReversed(true)
-                .waitSeconds(4)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-34, 51), Math.toRadians(90))
-                .build();
-
-        TrajectorySequence leftCycle1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
-                .setReversed(true)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(270))
-                .splineToConstantHeading(new Vector2d(-12, -52), Math.toRadians(270))
-//                .addTemporalMarker(2, () -> {
-//                    robot.autoIntake(3, 170);
-//                })
-                .setReversed(true)
-                .waitSeconds(4)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-34, 51), Math.toRadians(90))
+                .strafeRight(28)
+                .back(5)
+                .waitSeconds(3)
                 .build();
 
 

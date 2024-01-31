@@ -40,25 +40,34 @@ public class MeepMeepTesting {
         RoadRunnerBotEntity myBotCyclesSafeRed = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
 //                .setColorScheme(new ColorSchemeRedDark())
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .setConstraints(55, 55, Math.toRadians(360), Math.toRadians(360), 13.28)
                 .setDimensions(15, 17)
                 .followTrajectorySequence(drive ->
-                                drive.trajectorySequenceBuilder(new Pose2d(62, -34, Math.toRadians(0)))
+                                drive.trajectorySequenceBuilder(new Pose2d(-62, 13, Math.toRadians(180)))
                                         .setReversed(true)
-                                        .splineTo(new Vector2d(38, -47), Math.toRadians(180))
-                                        .forward(17)
-                                        .turn(Math.toRadians(-90))
-                                        .setReversed(true)
-                                        //.setReversed(true)
-                                        .splineToLinearHeading(new Pose2d(58, -8, Math.toRadians(-90)), Math.toRadians(90))
-                                        .splineToLinearHeading(new Pose2d(30, 52, Math.toRadians(-90)), Math.toRadians(90))
+                                        .splineToLinearHeading(new Pose2d(-37.5, 6, Math.toRadians(145)), Math.toRadians(-32))
+                                        .setReversed(false)
+                                        .splineToLinearHeading(new Pose2d(-30, 51, Math.toRadians(270)), Math.toRadians(90))
+                                        .addTemporalMarker(0, () -> {
+                                        })
+                                        .addTemporalMarker(1.1, () -> {
+                                        })
+                                        .addTemporalMarker(2.35, () -> {
+                                        })
+                                        .addTemporalMarker(3, () -> {
+                                        })
+                                        .waitSeconds(1)
+                                        .strafeRight(28)
+                                        .back(5)
+                                        .waitSeconds(3)
                                         .build()
 
                 );
 
 
         Image img = null;
-        try { img = ImageIO.read(new File("/Users/zhimi/Downloads/field.png")); }
+        try { img = ImageIO.read(new File("/Users/huntert/Downloads/Juice-CENTERSTAGE-Dark.png")); }
+//        try { img = ImageIO.read(new File("/Users/siddharth/dev/Juice/CenterStage/MeepMeepTesting/src/main/java/com/example/meepmeeptesting/Juice-CENTERSTAGE-Dark.png")); }
         catch (IOException e) {}
 
         meepMeep.setBackground(img)
