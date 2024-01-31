@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDriveCancelable;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
+import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkP2Pipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -39,7 +40,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
                 upper,
                 () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
                 () -> 213, // the left dividing line, in this case the left third of the frame
-                () -> 606 // the left dividing line, in this case the right third of the frame
+                () -> 426 // the left dividing line, in this case the right third of the frame
         );
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
@@ -189,14 +190,18 @@ public class BlueBackdropSidePreload extends LinearOpMode {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
                 drive.followTrajectorySequence(preloadBackdropCenter);
+                drive.followTrajectorySequence(centerCycle1);
+                drive.followTrajectorySequence(centerCycle2);
                 break;
             case LEFT:
-                drive.followTrajectorySequence(preloadSpikeLeft);
-                drive.followTrajectorySequence(preloadBackdropLeft);
-                break;
-            case RIGHT:
                 drive.followTrajectorySequence(preloadSpikeRight);
                 drive.followTrajectorySequence(preloadBackdropRight);
+                drive.followTrajectorySequence(rightCycle1);
+                break;
+            case RIGHT:
+                drive.followTrajectorySequence(preloadSpikeLeft);
+                drive.followTrajectorySequence(preloadBackdropLeft);
+                drive.followTrajectorySequence(leftCycle1);
                 break;
         }
 

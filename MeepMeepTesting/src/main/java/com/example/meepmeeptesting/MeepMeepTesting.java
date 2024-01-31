@@ -18,6 +18,24 @@ import javax.imageio.ImageIO;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(750);
+        RoadRunnerBotEntity myBotCycleSafeBlue = new DefaultBotBuilder(meepMeep)
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .setDimensions(14, 17)
+                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(new Pose2d(-62, -34, Math.toRadians(180)))
+                        .setReversed(true)
+                        .splineToLinearHeading(new Pose2d(-34, -32, Math.toRadians(235)), Math.toRadians(30))
+                        .forward(12)
+                        .turn(Math.toRadians(35))
+                        .strafeRight(6)
+                        //.splineToLinearHeading(new Pose2d(-48, -40, Math.toRadians(235)), Math.toRadians(30))
+                        //.splineToLinearHeading(new Pose2d(-57, -40, Math.toRadians(-90)), Math.toRadians(-90))
+                        //.setReversed(false)
+                        //.splineToConstantHeading(new Vector2d(-57, -25), Math.toRadians(90))
+                        .splineToConstantHeading(new Vector2d(-57, 10), Math.toRadians(90))
+                        .splineToConstantHeading(new Vector2d(-39, 50), Math.toRadians(90))
+                        .build()
+                );
+
 
         RoadRunnerBotEntity myBotCyclesSafeRed = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
@@ -43,6 +61,7 @@ public class MeepMeepTesting {
                                         .back(5)
                                         .waitSeconds(3)
                                         .build()
+
                 );
 
 
@@ -57,6 +76,7 @@ public class MeepMeepTesting {
                 .setBackgroundAlpha(0.95f)
 //                .addEntity(myBotCyclesUnsafeSide)
                 .addEntity(myBotCyclesSafeRed)
+                //.addEntity(myBotCycleSafeBlue)
 //                .addEntity(myBotCyclesSafeOpti)
                 .start();
     }
