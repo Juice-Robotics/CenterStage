@@ -23,7 +23,7 @@ import org.opencv.core.Scalar;
 @Config
 @Autonomous(group = "drive")
 
-public class BlueFarCycles extends LinearOpMode {
+public class RedBackdropCycles extends LinearOpMode {
     Robot robot;
     private VisionPortal visionPortal;
     private YoinkP2Pipeline colourMassDetectionProcessor;
@@ -49,71 +49,24 @@ public class BlueFarCycles extends LinearOpMode {
 
         SampleMecanumDriveCancelable drive = new SampleMecanumDriveCancelable(hardwareMap);
         robot = new Robot(hardwareMap, true);
-        Pose2d startPose = new Pose2d(-62, -34, Math.toRadians(180));
+        Pose2d startPose = new Pose2d(62, 13, Math.toRadians(0));
         robot.initPos();
 
         drive.setPoseEstimate(startPose);
 
         // PRELOAD PATHS
-        TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
+        TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-32, -34, Math.toRadians(90)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(36, 17, Math.toRadians(145)), Math.toRadians(145))
                 .addTemporalMarker(1.8, () -> {
                     //release pixel from intake
                 })
                 .waitSeconds(1)
-                //stack
-                .splineToLinearHeading(new Pose2d(-12, -57, Math.toRadians(-90)), Math.toRadians(-90))
-                .waitSeconds(1.5)
-                .addTemporalMarker(0, () -> {
-                    this.robot.intake.setAngle(120);
-                })
-                .addTemporalMarker(0.7, () -> {
-                    //intake
-                })
-                .addTemporalMarker(2.1, () -> {
-                    robot.stopIntake();
-                })
                 .build();
 
-        TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
+        TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(-60, -15, Math.toRadians(-90)), Math.toRadians(90))
-                .splineToSplineHeading(new Pose2d(-42, 51, Math.toRadians(-90)), Math.toRadians(90))
-                .addTemporalMarker(0, () -> {
-                    this.robot.intake.setAngle(120);
-                })
-                .addTemporalMarker(2, () -> {
-                    robot.autoPreloadDepositPreset();
-                })
-                .addTemporalMarker(3, () -> {
-                    robot.smartClawOpen();
-                })
-                .addTemporalMarker(3.4, () -> {
-                    robot.slides.runToPosition(0);
-                })
-                .waitSeconds(1)
-                .build();
-
-        TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
-                .setReversed(true)
-                .back(48)
-                .waitSeconds(1)
-                //.splineToLinearHeading(new Pose2d(-48, 13, Math.toRadians(180)), Math.toRadians(0))
-                .addTemporalMarker(1.8, () -> {
-                    //release pixel from intake
-                })
-                //stack
-                .strafeLeft(8)
-                .splineToSplineHeading(new Pose2d(-12, -57, Math.toRadians(-90)), Math.toRadians(-90))
-                .waitSeconds(1.5)
-                .build();
-
-        TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
-                //break
-                //.setReversed(true)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-35, 47.7), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(44, 51, Math.toRadians(-90)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -129,31 +82,47 @@ public class BlueFarCycles extends LinearOpMode {
                 .waitSeconds(1)
                 .build();
 
-        TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
+        TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-22, -47, Math.toRadians(180)), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(36, 13, Math.toRadians(180)), Math.toRadians(180))
                 .waitSeconds(1)
-
+                //.splineToLinearHeading(new Pose2d(-48, 13, Math.toRadians(180)), Math.toRadians(0))
                 .addTemporalMarker(1.8, () -> {
                     //release pixel from intake
                 })
-                //stack
-                .splineToLinearHeading(new Pose2d(-12, -57, Math.toRadians(-90)), Math.toRadians(-90))
-                .waitSeconds(1.5)
-                .addTemporalMarker(3.5, () -> {
-                    //this.robot.intake.setAngle(120);
+                .build();
+
+        TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
+                //break
+                //.setReversed(true)
+                .splineToLinearHeading(new Pose2d(35, 51, Math.toRadians(-90)), Math.toRadians(90))
+                .addTemporalMarker(0, () -> {
+                    this.robot.intake.setAngle(120);
                 })
-                .addTemporalMarker(3.7, () -> {
-                    //intake
+                .addTemporalMarker(1.1, () -> {
+                    robot.autoPreloadDepositPreset();
                 })
-                .addTemporalMarker(5.2, () -> {
-                    //robot.stopIntake();
+                .addTemporalMarker(2.1, () -> {
+                    robot.smartClawOpen();
+                })
+                .addTemporalMarker(2.5, () -> {
+                    robot.slides.runToPosition(0);
+                })
+                .waitSeconds(1)
+                .build();
+
+        TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
+                .setReversed(true)
+                .splineToSplineHeading(new Pose2d(43, 14, Math.toRadians(280)), Math.toRadians(170))
+                .splineToSplineHeading(new Pose2d(32, 11, Math.toRadians(270)), Math.toRadians(270))
+                .waitSeconds(1)
+                .addTemporalMarker(1.8, () -> {
+                    //release pixel from intake
                 })
                 .build();
 
-        TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
-                .splineToConstantHeading(new Vector2d(-10, 25), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-42, 51), Math.toRadians(90))
+        TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
+                .splineToLinearHeading(new Pose2d(29, 51, Math.toRadians(-90)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -170,8 +139,8 @@ public class BlueFarCycles extends LinearOpMode {
                 .build();
         TrajectorySequence leftCycle1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(-13, -55.8), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(13, -55.8), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
@@ -183,8 +152,8 @@ public class BlueFarCycles extends LinearOpMode {
                     robot.stopIntake();
                 })
                 .waitSeconds(1)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-30, 47.7), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 47.7), Math.toRadians(90))
 
                 .addTemporalMarker(5, () -> {
                     robot.startAutoIntake();
@@ -203,8 +172,8 @@ public class BlueFarCycles extends LinearOpMode {
                 .build();
         TrajectorySequence centerCycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(-13, -55.8), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(13, -55.8), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
@@ -216,8 +185,8 @@ public class BlueFarCycles extends LinearOpMode {
                     robot.stopIntake();
                 })
                 .waitSeconds(1)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-30, 47.7), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 47.7), Math.toRadians(90))
 
                 .addTemporalMarker(5, () -> {
                     robot.startAutoIntake();
@@ -236,8 +205,8 @@ public class BlueFarCycles extends LinearOpMode {
                 .build();
         TrajectorySequence cycle2 = drive.trajectorySequenceBuilder(centerCycle1.end())
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(-13, -55.8), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(13, -55.8), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
@@ -249,8 +218,8 @@ public class BlueFarCycles extends LinearOpMode {
                     robot.stopIntake();
                 })
                 .waitSeconds(1)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-30, 47.7), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 47.7), Math.toRadians(90))
 
                 .addTemporalMarker(5, () -> {
                     robot.startAutoIntake();
@@ -269,8 +238,8 @@ public class BlueFarCycles extends LinearOpMode {
                 .build();
         TrajectorySequence rightCycle1 = drive.trajectorySequenceBuilder(preloadBackdropRight.end())
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(-13, -55.8), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(13, -55.8), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
@@ -282,8 +251,8 @@ public class BlueFarCycles extends LinearOpMode {
                     robot.stopIntake();
                 })
                 .waitSeconds(1)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-30, 47.7), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 47.7), Math.toRadians(90))
 
                 .addTemporalMarker(5, () -> {
                     robot.startAutoIntake();
@@ -301,7 +270,7 @@ public class BlueFarCycles extends LinearOpMode {
                 .waitSeconds(1.2)
                 .build();
         TrajectorySequence park = drive.trajectorySequenceBuilder(cycle2.end())
-                .strafeRight(29)
+                .strafeLeft(29)
                 .back(12)
                 .build();
 

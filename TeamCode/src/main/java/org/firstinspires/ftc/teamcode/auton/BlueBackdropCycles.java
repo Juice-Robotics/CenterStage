@@ -65,7 +65,7 @@ public class BlueBackdropCycles extends LinearOpMode {
                 .build();
 
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
-                .setReversed(false)
+                .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-44, 51, Math.toRadians(-90)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
@@ -113,9 +113,9 @@ public class BlueBackdropCycles extends LinearOpMode {
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-36.5, 5, Math.toRadians(325)), Math.toRadians(-32))
+                .splineToSplineHeading(new Pose2d(-43, 14, Math.toRadians(260)), Math.toRadians(10))
+                .splineToSplineHeading(new Pose2d(-32, 11, Math.toRadians(270)), Math.toRadians(270))
                 .waitSeconds(1)
-
                 .addTemporalMarker(1.8, () -> {
                     //release pixel from intake
                 })
