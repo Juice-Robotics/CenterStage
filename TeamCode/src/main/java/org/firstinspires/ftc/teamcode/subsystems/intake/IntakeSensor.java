@@ -22,7 +22,7 @@ public class IntakeSensor {
     }
 
     public boolean[] hasPixel(){
-        if (lastRead.time() <= 250) {
+        if (lastRead.time() <= 100) {
             return detectedIndex;
         }
 

@@ -41,6 +41,8 @@ public class Slides {
     private final double ticks_in_degrees = 700 / 180.0;
     public double power1;
     public double power2;
+    public int cachedPosition = 0;
+    public ElapsedTime positionTime = new ElapsedTime();
 
     public Motor slides1;
     public Motor slides2;
@@ -202,7 +204,12 @@ public class Slides {
     }
 
     public int getPos() {
-        return slides1.motor.getCurrentPosition();
+        if (positionTime.time() <= 150) {
+            return cachedPosition;
+        }
+        cachedPosition = slides1.motor.getCurrentPosition();
+        positionTime.reset();
+        return cachedPosition;
     }
 
 }

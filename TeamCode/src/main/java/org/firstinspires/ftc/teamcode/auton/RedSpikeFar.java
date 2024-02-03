@@ -196,15 +196,15 @@ public class RedSpikeFar extends LinearOpMode {
                 break;
             case LEFT:
                 drive.followTrajectorySequence(preloadSpikeLeft);
-                drive.followTrajectorySequence(wait);
+//                drive.followTrajectorySequence(wait);
                 drive.followTrajectorySequence(preloadBackdropLeft);
-                drive.followTrajectorySequence(parkLeft);
+//                drive.followTrajectorySequence(parkLeft);
                 break;
             case RIGHT:
                 drive.followTrajectorySequence(preloadSpikeRight);
-                drive.followTrajectorySequence(wait);
+//                drive.followTrajectorySequence(wait);
                 drive.followTrajectorySequence(preloadBackdropRight);
-                drive.followTrajectorySequence(parkRight);
+//                drive.followTrajectorySequence(parkRight);
                 break;
         }
 
