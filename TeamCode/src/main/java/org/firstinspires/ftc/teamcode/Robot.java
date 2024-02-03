@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDriveCancelable;
 import org.firstinspires.ftc.teamcode.lib.Component;
 import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.Motor;
@@ -33,7 +33,7 @@ public class Robot {
 
     // SUBSYSTEM DECLARATIONS
     public Component[] components;
-    public SampleMecanumDrive drive;
+    public SampleMecanumDriveCancelable drive;
     public Claw claw;
     public ArmElbow arm;
     public Intake intake;
@@ -62,7 +62,7 @@ public class Robot {
     public Robot(HardwareMap map, boolean auton){
         this.auton = auton;
 
-        this.drive = new SampleMecanumDrive(map);
+        this.drive = new SampleMecanumDriveCancelable(map);
 
 //        this.cv = new CVMaster(map);
         this.components = new Component[]{
@@ -131,6 +131,15 @@ public class Robot {
         this.slides.runToPosition(0);
     }
 
+    public void startAutoIntake() {
+        intaking = true;
+        this.intake.startIntake();
+        this.arm.runtoPreset(Levels.INTAKE);
+        this.intake.runToPreset(Levels.INTAKE);
+        this.claw.runToWristPreset(Levels.INTAKE);
+        this.slides.runToPosition(0);
+    }
+
     public void stopIntake() {
         intaking = false;
         this.arm.runtoPreset(Levels.CAPTURE);
@@ -147,16 +156,35 @@ public class Robot {
         subsystemState = Levels.INTERMEDIATE;
     }
 
+    public void autoIntake() {
+        intaking = true;
+        this.intake.reverseIntake();
+        this.arm.runtoPreset(Levels.INTAKE);
+        this.claw.setClawOpen();
+        this.intake.runToPreset(Levels.INTAKE);
+        this.claw.runToWristPreset(Levels.INTAKE);
+        this.slides.runToPosition(0);
+    }
+
     public void initPos() {
         intaking = false;
         this.claw.runToWristPreset(Levels.DEPOSIT);
         this.intake.runToPreset(Levels.INIT);
         sleep(500);
         this.arm.runtoPreset(Levels.INIT);
-        sleep(4000);
+        sleep(2000);
         this.claw.setClawClose();
 //        this.intake.setAngle(50);
         this.subsystemState = Levels.INIT;
+    }
+
+    public void farPos() {
+        intaking = false;
+        this.claw.runToWristPreset(Levels.DEPOSIT);
+        this.intake.runToPreset(Levels.INIT);
+        this.arm.setAngleArm(140);
+        this.arm.setAngleElbow(211);
+        this.subsystemState = Levels.FARPOS;
     }
 
     /**
@@ -183,7 +211,7 @@ public class Robot {
             public void run() {
                 sleep(300);
                 arm.setAngleArm(30);
-                arm.setAngleElbow(110);
+                arm.setAngleElbow(106);
                 claw.runToWristPreset(Levels.INTAKE);
                 sleep(300);
                 slides.runToPosition(0);
@@ -199,19 +227,6 @@ public class Robot {
                 intaking = false;
             }
         }
-    }
-
-    public void autoIntake(long time, float intakeAngle) {
-        intaking = true;
-        this.intake.startIntake();
-        this.arm.runtoPreset(Levels.INTAKE);
-        this.claw.setClawOpen();
-        this.intake.setAngle(intakeAngle);
-        this.claw.runToWristPreset(Levels.INTAKE);
-        this.slides.runToPosition(0);
-
-        sleep((int) (time * 1000));
-        this.stopIntake();
     }
 
     public void depositPreset() {
@@ -238,6 +253,18 @@ public class Robot {
         this.subsystemState = Levels.DEPOSIT;
     }
 
+    public void autoCycleDepositPreset() {
+        this.slides.runToPosition(300);
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                sleep(300);
+                arm.runtoPreset(Levels.DEPOSIT);
+                claw.runToWristPreset(Levels.DEPOSIT);
+            }});
+        thread.start();
+        this.subsystemState = Levels.DEPOSIT;
+    }
+
     public void runToAutoSpikePreset() {
         this.slides.runToPosition(100);
         this.arm.runtoPreset(Levels.DEPOSIT);
@@ -249,8 +276,8 @@ public class Robot {
     }
 
     public void climbExtend() {
-        this.flags.add(RobotFlags.CLIMB_ENGAGED);
-        this.flags.add(RobotFlags.CLIMB_EXTEND_IN_PROGRESS);
+//        this.flags.add(RobotFlags.CLIMB_ENGAGED);
+//        this.flags.add(RobotFlags.CLIMB_EXTEND_IN_PROGRESS);
         this.slides.runToClimb();
         this.intake.runToPreset(Levels.CLIMB_EXTEND);
         Thread thread = new Thread(new Runnable() {
@@ -258,23 +285,21 @@ public class Robot {
                 sleep(600);
                 arm.runtoPreset(Levels.DEPOSIT);
                 claw.runToWristPreset(Levels.DEPOSIT);
-                while (slides.getPos() <= 460 && !flags.contains(RobotFlags.CLIMB_RETRACT_REQUESTED)) {
+                while (slides.getPos() <= 460) {
                     // sleep
                 }
-                if (!flags.contains(RobotFlags.CLIMB_RETRACT_REQUESTED)) {
                     slides.setPower((float) 0.6);
-                    slides.shiftGear(false);
+                    slides.shiftGear(true);
                     sleep(100);
                     slides.setPower(0);
-                }
 
-                if (flags.contains(RobotFlags.CLIMB_RETRACT_REQUESTED)) {
-                    slides.shiftGear(false);
-                    sleep(100);
-                    smartClawOpen();
-                    flags.remove(RobotFlags.CLIMB_RETRACT_REQUESTED);
-                }
-                flags.remove(RobotFlags.CLIMB_EXTEND_IN_PROGRESS);
+//                if (flags.contains(RobotFlags.CLIMB_RETRACT_REQUESTED)) {
+//                    slides.shiftGear(false);
+//                    sleep(100);
+//                    smartClawOpen();
+//                    flags.remove(RobotFlags.CLIMB_RETRACT_REQUESTED);
+//                }
+//                flags.remove(RobotFlags.CLIMB_EXTEND_IN_PROGRESS);
             }});
         thread.start();
     }
@@ -296,14 +321,14 @@ public class Robot {
 
     public void antiJam(){
         if (intaking) {
-            if (this.intake.intakeMotor.getCurrent() > 5.5 && !flags.contains(RobotFlags.ANTI_JAM_IN_PROGRESS) && antiJamCooldown.time(TimeUnit.MILLISECONDS) >= 250) {
+            if (this.intake.intakeMotor.getCurrent() > 5 && !flags.contains(RobotFlags.ANTI_JAM_IN_PROGRESS) && antiJamCooldown.time(TimeUnit.MILLISECONDS) >= 250) {
                 flags.add(RobotFlags.INTAKE_JAMMED);
                 flags.add(RobotFlags.ANTI_JAM_IN_PROGRESS);
                 this.intake.setAngle(100);
                 this.intake.reverse();
                 sleep(250);
                 this.intake.runToPreset(Levels.INTAKE);
-                this.intake.intakeMotor.setSpeed(-1);
+                this.intake.intakeMotor.setSpeed(1);
                 flags.remove(RobotFlags.INTAKE_JAMMED);
                 flags.remove(RobotFlags.ANTI_JAM_IN_PROGRESS);
                 antiJamCooldown.reset();
@@ -326,12 +351,18 @@ public class Robot {
             telemetry.update();
             while (threadState == true) {
                 slides.update();
-//                arm.update();
+                antiJam();
             }
             telemetry.addData("Subsys Threads State:", "STOPPED");
             telemetry.update();
         });
         t1.start();
+    }
+
+    public void destroyThreads(Telemetry telemetry) {
+        telemetry.addData("Slides Threads State:", "STOPPING");
+        telemetry.update();
+        threadState = false;
     }
 
     //DRIVE

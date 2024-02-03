@@ -9,5 +9,6 @@ public enum Levels {
     BACKDROP,
     CLIMB_EXTEND,
     CLIMB,
-    INIT
+    INIT,
+    FARPOS
 }

@@ -31,7 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Config
-public class TrajectorySequenceRunner {
+public class TrajectorySequenceRunnerCancelable {
     public static String COLOR_INACTIVE_TRAJECTORY = "#4caf507a";
     public static String COLOR_INACTIVE_TURN = "#7c4dff7a";
     public static String COLOR_INACTIVE_WAIT = "#dd2c007a";
@@ -57,6 +57,7 @@ public class TrajectorySequenceRunner {
 
     List<TrajectoryMarker> remainingMarkers = new ArrayList<>();
 
+
     private final FtcDashboard dashboard;
     private final LinkedList<Pose2d> poseHistory = new LinkedList<>();
 
@@ -64,7 +65,7 @@ public class TrajectorySequenceRunner {
 
     private List<Integer> lastDriveEncPositions, lastDriveEncVels, lastTrackingEncPositions, lastTrackingEncVels;
 
-    public TrajectorySequenceRunner(
+    public TrajectorySequenceRunnerCancelable(
             TrajectoryFollower follower, PIDCoefficients headingPIDCoefficients, VoltageSensor voltageSensor,
             List<Integer> lastDriveEncPositions, List<Integer> lastDriveEncVels, List<Integer> lastTrackingEncPositions, List<Integer> lastTrackingEncVels
     ) {
@@ -302,5 +303,10 @@ public class TrajectorySequenceRunner {
 
     public boolean isBusy() {
         return currentTrajectorySequence != null;
+    }
+
+    public void breakFollowing() {
+        currentTrajectorySequence = null;
+        remainingMarkers.clear();
     }
 }

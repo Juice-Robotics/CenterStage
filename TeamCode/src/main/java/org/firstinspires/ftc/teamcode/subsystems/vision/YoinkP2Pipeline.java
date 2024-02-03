@@ -175,11 +175,11 @@ public class YoinkP2Pipeline implements VisionProcessor, CameraStreamSource {
         // if we didn't find any contours which were large enough, sets it to be unfound
         PropPositions propPosition;
         if (largestContour == null) {
-            propPosition = PropPositions.UNFOUND;
-        } else if (largestContourX < left.getAsDouble()) {
             propPosition = PropPositions.LEFT;
-        } else if (largestContourX > right.getAsDouble()) {
+        } else if (largestContourX < left.getAsDouble()) {
             propPosition = PropPositions.RIGHT;
+        } else if (largestContourX > right.getAsDouble()) {
+            propPosition = PropPositions.LEFT;
         } else {
             propPosition = PropPositions.CENTER;
         }

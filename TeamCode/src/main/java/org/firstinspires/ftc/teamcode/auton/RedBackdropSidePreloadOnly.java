@@ -12,7 +12,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDriveCancelable;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
-import org.firstinspires.ftc.teamcode.lib.Levels;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkP2Pipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
@@ -23,7 +22,7 @@ import org.opencv.core.Scalar;
 @Config
 @Autonomous(group = "drive")
 
-public class BlueBackdropSidePreload extends LinearOpMode {
+public class RedBackdropSidePreloadOnly extends LinearOpMode {
     Robot robot;
     private VisionPortal visionPortal;
     private YoinkP2Pipeline colourMassDetectionProcessor;
@@ -31,8 +30,8 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Scalar lower = new Scalar(103, 120, 50); // the lower hsv threshold for your detection
-        Scalar upper = new Scalar(130, 255, 250); // the upper hsv threshold for your detection
+        Scalar lower = new Scalar(125, 120, 50); // the lower hsv threshold for your detection
+        Scalar upper = new Scalar(190, 255, 250); // the upper hsv threshold for your detection
         double minArea = 3000; // the minimum area for the detection to consider for your prop
 
         colourMassDetectionProcessor = new YoinkP2Pipeline(
@@ -40,7 +39,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
                 upper,
                 () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
                 () -> 213, // the left dividing line, in this case the left third of the frame
-                () -> 426 // the left dividing line, in this case the right third of the frame
+                () -> 606 // the left dividing line, in this case the right third of the frame
         );
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
@@ -49,7 +48,7 @@ public class BlueBackdropSidePreload extends LinearOpMode {
 
         SampleMecanumDriveCancelable drive = new SampleMecanumDriveCancelable(hardwareMap);
         robot = new Robot(hardwareMap, true);
-        Pose2d startPose = new Pose2d(-62, 13, Math.toRadians(180));
+        Pose2d startPose = new Pose2d(62, 13, Math.toRadians(0));
         robot.initPos();
 
         drive.setPoseEstimate(startPose);
@@ -57,86 +56,79 @@ public class BlueBackdropSidePreload extends LinearOpMode {
         // PRELOAD PATHS
         TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineTo(new Vector2d(-38, 21.5), Math.toRadians(0))
-                .forward(15)
+                .splineToLinearHeading(new Pose2d(38, 11.7, Math.toRadians(55)), Math.toRadians(30))
                 .build();
 
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(-44, 51, Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(31, 49, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
-                .addTemporalMarker(1.1, () -> {
+                .addTemporalMarker(1.5, () -> {
                     robot.autoPreloadDepositPreset();
                 })
-                .addTemporalMarker(2.1, () -> {
+                .addTemporalMarker(2.3, () -> {
                     robot.smartClawOpen();
                 })
-                .addTemporalMarker(3, () -> {
+                .addTemporalMarker(4, ()-> {
                     robot.slides.runToPosition(0);
                 })
-                .waitSeconds(1)
-                .strafeRight(18)
-                .back(5)
-                .waitSeconds(3)
+                .waitSeconds(2)
+                .strafeRight(22)
+                .back(10)
                 .build();
 
         TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineTo(new Vector2d(-40, 13), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(-48, 13, Math.toRadians(180)), Math.toRadians(0))
-                .strafeRight(4)
+                .splineTo(new Vector2d(40, 13), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(48, 13, Math.toRadians(0)), Math.toRadians(0))
                 .build();
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(-37, 52.5), Math.toRadians(90))
+                .splineTo(new Vector2d(32.5, 49.5), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
                 .addTemporalMarker(1.1, () -> {
                     robot.autoPreloadDepositPreset();
                 })
-                .addTemporalMarker(2.1, () -> {
+                .addTemporalMarker(2, () -> {
                     robot.smartClawOpen();
                 })
-                .addTemporalMarker(3, () -> {
+                .addTemporalMarker(4, ()-> {
                     robot.slides.runToPosition(0);
                 })
-                .waitSeconds(1)
-                .strafeRight(24)
-                .back(5)
-                .waitSeconds(3)
+                .waitSeconds(2)
+                .strafeRight(25)
+                .back(10)
                 .build();
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(-36.5, 5, Math.toRadians(145)), Math.toRadians(-32))
-                .forward(5)
+                .splineTo(new Vector2d(38, 26), Math.toRadians(180))
+                .forward(15)
                 .build();
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
-                .setReversed(false)
-                .splineToLinearHeading(new Pose2d(-32, 51.5, Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(39.5, 49, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
-                .addTemporalMarker(1.1, () -> {
+                .addTemporalMarker(0.8, () -> {
                     robot.autoPreloadDepositPreset();
                 })
-                .addTemporalMarker(2.35, () -> {
+                .addTemporalMarker(1.7, () -> {
                     robot.smartClawOpen();
                 })
-                .addTemporalMarker(3, () -> {
+                .addTemporalMarker(4, ()-> {
                     robot.slides.runToPosition(0);
                 })
-                .waitSeconds(1)
-                .strafeRight(28)
-                .back(5)
-                .waitSeconds(3)
+                .waitSeconds(2)
+                .strafeRight(29)
+                .back(10)
                 .build();
-
 
         /*
          * The INIT-loop:
@@ -190,18 +182,14 @@ public class BlueBackdropSidePreload extends LinearOpMode {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
                 drive.followTrajectorySequence(preloadBackdropCenter);
-//                drive.followTrajectorySequence(centerCycle1);
-//                drive.followTrajectorySequence(centerCycle2);
                 break;
             case LEFT:
-                drive.followTrajectorySequence(preloadSpikeRight);
-                drive.followTrajectorySequence(preloadBackdropRight);
-                //drive.followTrajectorySequence(rightCycle1);
-                break;
-            case RIGHT:
                 drive.followTrajectorySequence(preloadSpikeLeft);
                 drive.followTrajectorySequence(preloadBackdropLeft);
-                //drive.followTrajectorySequence(leftCycle1);
+                break;
+            case RIGHT:
+                drive.followTrajectorySequence(preloadSpikeRight);
+                drive.followTrajectorySequence(preloadBackdropRight);
                 break;
         }
 
