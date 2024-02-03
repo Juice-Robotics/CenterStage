@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.vision;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -10,8 +11,8 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.opencv.core.Scalar;
 
 public class CVMaster {
-    private VisionPortal visionPortal;
-    private YoinkP2Pipeline colourMassDetectionProcessor;
+    public VisionPortal visionPortal;
+    public YoinkP2Pipeline colourMassDetectionProcessor;
     AprilTagProcessor processor;
     AllianceColor allianceColor;
     HardwareMap hardwareMap;
@@ -45,10 +46,16 @@ public class CVMaster {
 
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
-                .addProcessors(colourMassDetectionProcessor, tagProcessor)
+//                .addProcessors(colourMassDetectionProcessor, tagProcessor)
+                .addProcessor(tagProcessor)
                 .build();
 
-        relocalization = new AprilTagsRelocalization(tagProcessor);
+//        relocalization = new AprilTagsRelocalization(tagProcessor);
+    }
+
+    public Pose2d relocalizeUsingBackdrop(Pose2d currentPose) {
+        relocalization.detectBackdrop();
+        return relocalization.getAbsolutePose2d(currentPose);
     }
 
     public void kill() {

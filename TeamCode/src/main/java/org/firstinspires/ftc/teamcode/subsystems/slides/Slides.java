@@ -204,12 +204,12 @@ public class Slides {
     }
 
     public int getPos() {
-        if (positionTime.time() <= 150) {
-            return cachedPosition;
-        }
-        cachedPosition = slides1.motor.getCurrentPosition();
-        positionTime.reset();
-        return cachedPosition;
+//        if (positionTime.time() <= 150) {
+//            return cachedPosition;
+//        }
+//        cachedPosition = slides1.motor.getCurrentPosition();
+//        positionTime.reset();
+        return slides1.motor.getCurrentPosition();
     }
 
 }

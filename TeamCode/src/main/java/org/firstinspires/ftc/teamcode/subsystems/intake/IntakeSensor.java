@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 
+import java.util.concurrent.TimeUnit;
+
 public class IntakeSensor {
     ColorSensor sensor1;
     ColorSensor sensor2;
@@ -22,7 +24,7 @@ public class IntakeSensor {
     }
 
     public boolean[] hasPixel(){
-        if (lastRead.time() <= 100) {
+        if (lastRead.time(TimeUnit.MILLISECONDS) <= 100) {
             return detectedIndex;
         }
 
