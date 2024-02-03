@@ -195,8 +195,9 @@ public class TeleOpSafe extends LinearOpMode {
             double loop = System.nanoTime();
 
             detectedIndex = robot.intakeSensor.hasPixel();
-            if (detectedIndex[0] && detectedIndex[1]){
+            if (detectedIndex[0] && detectedIndex[1] && robot.intaking){
                 gamepad1.rumble(1, 1, 250);
+                robot.stopIntake();
             }
             else if (detectedIndex[1]){
                 gamepad1.rumble(1, 0, 250);

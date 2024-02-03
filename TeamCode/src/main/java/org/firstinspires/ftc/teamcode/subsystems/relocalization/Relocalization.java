@@ -9,7 +9,7 @@ public class Relocalization {
     public AprilTagsRelocalization aprilTags;
 
     public Relocalization() {
-        aprilTags =  new AprilTagsRelocalization();
+//        aprilTags =  new AprilTagsRelocalization();
     }
 
     public Pose2d relocalizeUsingBackdrop(Pose2d currentPose) {
