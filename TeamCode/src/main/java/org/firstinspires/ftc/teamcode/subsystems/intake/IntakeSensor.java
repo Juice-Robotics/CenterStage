@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems.intake;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
@@ -9,6 +10,7 @@ import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 public class IntakeSensor {
     ColorSensor sensor1;
     ColorSensor sensor2;
+    ElapsedTime lastRead = new ElapsedTime();
 
     boolean[] detectedIndex = {false, false};
 
@@ -20,8 +22,13 @@ public class IntakeSensor {
     }
 
     public boolean[] hasPixel(){
+        if (lastRead.time() <= 250) {
+            return detectedIndex;
+        }
+
         double sensorValue1 = getRangeSensor1();
         double sensorValue2 = getRangeSensor2();
+        lastRead.reset();
 
         clearDetectedIndex();
 
@@ -50,6 +57,3 @@ public class IntakeSensor {
         return ((DistanceSensor) sensor2).getDistance(unit);
     }
 }
-
-
-
