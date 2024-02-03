@@ -360,8 +360,8 @@ public class Robot {
     }
 
     public void destroyThreads(Telemetry telemetry) {
-        telemetry.addData("Slides Threads State:", "STOPPING");
-        telemetry.update();
+//        telemetry.addData("Slides Threads State:", "STOPPING");
+//        telemetry.update();
         threadState = false;
     }
 

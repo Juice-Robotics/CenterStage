@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.Robot;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDriveCancelable;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
+import org.firstinspires.ftc.teamcode.subsystems.vision.CVMaster;
 import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkP2Pipeline;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -24,27 +25,12 @@ import org.opencv.core.Scalar;
 
 public class RedBackdropSidePreloadOnly extends LinearOpMode {
     Robot robot;
-    private VisionPortal visionPortal;
-    private YoinkP2Pipeline colourMassDetectionProcessor;
-    AprilTagProcessor processor;
+    CVMaster cv;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Scalar lower = new Scalar(125, 120, 50); // the lower hsv threshold for your detection
-        Scalar upper = new Scalar(190, 255, 250); // the upper hsv threshold for your detection
-        double minArea = 3000; // the minimum area for the detection to consider for your prop
-
-        colourMassDetectionProcessor = new YoinkP2Pipeline(
-                lower,
-                upper,
-                () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
-                () -> 213, // the left dividing line, in this case the left third of the frame
-                () -> 606 // the left dividing line, in this case the right third of the frame
-        );
-        visionPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
-                .addProcessor(colourMassDetectionProcessor)
-                .build();
+        cv = new CVMaster(hardwareMap, AllianceColor.RED);
+        cv.init();
 
         SampleMecanumDriveCancelable drive = new SampleMecanumDriveCancelable(hardwareMap);
         robot = new Robot(hardwareMap, true);
@@ -71,12 +57,12 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
                 .addTemporalMarker(2.3, () -> {
                     robot.smartClawOpen();
                 })
-                .addTemporalMarker(4, ()-> {
-                    robot.slides.runToPosition(0);
-                })
+//                .addTemporalMarker(4, ()-> {
+//                    robot.slides.runToPosition(0);
+//                })
                 .waitSeconds(2)
-                .strafeRight(22)
-                .back(10)
+//                .strafeRight(22)
+                .forward(10)
                 .build();
 
         TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
@@ -97,12 +83,13 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
                 .addTemporalMarker(2, () -> {
                     robot.smartClawOpen();
                 })
-                .addTemporalMarker(4, ()-> {
-                    robot.slides.runToPosition(0);
-                })
+//                .addTemporalMarker(4, ()-> {
+//                    robot.slides.runToPosition(0);
+//                })
                 .waitSeconds(2)
-                .strafeRight(25)
-                .back(10)
+//                .strafeRight(25)
+                .forward(19)
+                .waitSeconds(2)
                 .build();
 
         TrajectorySequence preloadSpikeRight = drive.trajectorySequenceBuilder(startPose)
@@ -122,12 +109,12 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
                 .addTemporalMarker(1.7, () -> {
                     robot.smartClawOpen();
                 })
-                .addTemporalMarker(4, ()-> {
-                    robot.slides.runToPosition(0);
-                })
+//                .addTemporalMarker(4, ()-> {
+//                    robot.slides.runToPosition(0);
+//                })
                 .waitSeconds(2)
-                .strafeRight(29)
-                .back(10)
+//                .strafeRight(29)
+                .forward(10)
                 .build();
 
         /*
@@ -139,10 +126,10 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
 
         while (!isStarted() && !isStopRequested()) {
 //            telemetry.addData("Camera State", visionPortal.getCameraState());
-            telemetry.addData("Currently Recorded Position", colourMassDetectionProcessor.getRecordedPropPosition());
-            telemetry.addData("Camera State", visionPortal.getCameraState());
-            telemetry.addData("Currently Detected Mass Center", "x: " + colourMassDetectionProcessor.getLargestContourX() + ", y: " + colourMassDetectionProcessor.getLargestContourY());
-            telemetry.addData("Currently Detected Mass Area", colourMassDetectionProcessor.getLargestContourArea());
+            telemetry.addData("Currently Recorded Position", cv.colourMassDetectionProcessor.getRecordedPropPosition());
+            telemetry.addData("Camera State", cv.visionPortal.getCameraState());
+            telemetry.addData("Currently Detected Mass Center", "x: " + cv.colourMassDetectionProcessor.getLargestContourX() + ", y: " + cv.colourMassDetectionProcessor.getLargestContourY());
+            telemetry.addData("Currently Detected Mass Area", cv.colourMassDetectionProcessor.getLargestContourArea());
 
             telemetry.update();
         }
@@ -159,17 +146,9 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        // shuts down the camera once the match starts, we dont need to look any more
-        colourMassDetectionProcessor.close();
-        visionPortal.close();
-        if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
-            visionPortal.stopLiveView();
-            visionPortal.stopStreaming();
-        }
-
 
         // gets the recorded prop position
-        YoinkP2Pipeline.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
+        YoinkP2Pipeline.PropPositions recordedPropPosition = cv.colourMassDetectionProcessor.getRecordedPropPosition();
 
         // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
         // if it is UNFOUND, you can manually set it to any of the other positions to guess
@@ -177,11 +156,18 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
             recordedPropPosition = YoinkP2Pipeline.PropPositions.CENTER;
         }
 
+        // shuts down the camera once the match starts, we dont need to look any more
+        cv.switchToAprilTags();
+
         robot.launchSubsystemThread(telemetry);
+        Pose2d newPose = new Pose2d(0,0,0);
         switch (recordedPropPosition) {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
                 drive.followTrajectorySequence(preloadBackdropCenter);
+                newPose = cv.relocalizeUsingBackdrop(drive.getPoseEstimate());
+                telemetry.addData("old pose", drive.getPoseEstimate());
+                telemetry.addData("new pose", newPose);
                 break;
             case LEFT:
                 drive.followTrajectorySequence(preloadSpikeLeft);
@@ -201,9 +187,17 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
         PoseStorage.currentPose = drive.getPoseEstimate();
 
         robot.destroyThreads(telemetry);
-        visionPortal.close();
+        cv.kill();
 
-        while (!isStopRequested() && opModeIsActive()) ;
+        telemetry.addData("old pose", drive.getPoseEstimate());
+        telemetry.addData("new pose", newPose);
+        telemetry.update();
+
+        while (!isStopRequested() && opModeIsActive()) {
+            telemetry.addData("old pose", drive.getPoseEstimate());
+            telemetry.addData("new pose", newPose);
+            telemetry.update();
+        };
     }
 
     public static double rad(double degrees) {

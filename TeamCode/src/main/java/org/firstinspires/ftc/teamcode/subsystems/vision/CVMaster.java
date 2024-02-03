@@ -31,6 +31,9 @@ public class CVMaster {
         if (allianceColor == AllianceColor.BLUE) {
             lower = new Scalar(103, 120, 50); // the lower hsv threshold for your detection
             upper = new Scalar(130, 255, 250); // the upper hsv threshold for your detection
+        } else if (allianceColor == AllianceColor.RED) {
+            lower = new Scalar(125, 120, 50); // the lower hsv threshold for your detection
+            upper = new Scalar(190, 255, 250); // the upper hsv threshold for your detection
         }
         double minArea = 3000; // the minimum area for the detection to consider for your prop
 
@@ -42,15 +45,25 @@ public class CVMaster {
                 () -> 426 // the left dividing line, in this case the right third of the frame
         );
 
-        tagProcessor = AprilTagProcessor.easyCreateWithDefaults();
-
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
-//                .addProcessors(colourMassDetectionProcessor, tagProcessor)
-                .addProcessor(tagProcessor)
+                .addProcessor(colourMassDetectionProcessor)
+//                .addProcessor(tagProcessor)
                 .build();
 
-//        relocalization = new AprilTagsRelocalization(tagProcessor);
+        visionPortal.setProcessorEnabled(colourMassDetectionProcessor, true);
+    }
+
+    public void switchToAprilTags() {
+        kill();
+        tagProcessor = AprilTagProcessor.easyCreateWithDefaults();
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
+                .addProcessors(tagProcessor)
+//                .addProcessor(tagProcessor)
+                .build();
+        visionPortal.setProcessorEnabled(tagProcessor, true);
+        relocalization = new AprilTagsRelocalization(tagProcessor);
     }
 
     public Pose2d relocalizeUsingBackdrop(Pose2d currentPose) {
