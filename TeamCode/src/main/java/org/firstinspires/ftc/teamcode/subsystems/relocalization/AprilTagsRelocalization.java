@@ -51,7 +51,7 @@ public class AprilTagsRelocalization {
     public Pose2d getAbsolutePose2d(Pose2d robotPose) {
         AprilTagPoseFtc tagRPose = getRelativePose();
         AprilTagPoseRaw fieldPosition = aprilTagDetection.rawPose;
-        Pose2d tagPose = new Pose2d(32 - tagRPose.x, 51 - tagRPose.y, robotPose.getHeading());
+        Pose2d tagPose = new Pose2d(32 - tagRPose.x, 51 - tagRPose.y, Math.toRadians(tagRPose.yaw-90));
 
         return tagPose;
     }

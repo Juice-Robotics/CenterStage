@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems.vision;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.subsystems.relocalization.AprilTagsRelocalization;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -66,6 +68,19 @@ public class CVMaster {
         relocalization = new AprilTagsRelocalization(tagProcessor);
     }
 
+    public void initTags() {
+        tagProcessor = AprilTagProcessor.easyCreateWithDefaults();
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
+                .enableLiveView(true)
+                .setAutoStopLiveView(true)
+                .addProcessors(tagProcessor)
+//                .addProcessor(tagProcessor)
+                .build();
+        visionPortal.setProcessorEnabled(tagProcessor, true);
+        relocalization = new AprilTagsRelocalization(tagProcessor);
+    }
+
     public Pose2d relocalizeUsingBackdrop(Pose2d currentPose) {
         relocalization.detectBackdrop();
         return relocalization.getAbsolutePose2d(currentPose);
@@ -78,5 +93,9 @@ public class CVMaster {
             visionPortal.stopLiveView();
             visionPortal.stopStreaming();
         }
+    }
+
+    public void startStreamingDashboard() {
+        FtcDashboard.getInstance().startCameraStream((CameraStreamSource) tagProcessor, 0);
     }
 }
