@@ -80,7 +80,7 @@ public class TeleOpMain extends LinearOpMode {
         if (isStopRequested()) return;
         matchTimer = new ElapsedTime();
         robot.drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.drive.setPoseEstimate(new Pose2d(0,0,0));
+        robot.drive.setPoseEstimate(PoseStorage.currentPose);
         //intakePreviousPos = robot.intake.intakeMotor.getCurrentPosition();
 
         while (opModeIsActive() && !isStopRequested()) {
@@ -107,7 +107,7 @@ public class TeleOpMain extends LinearOpMode {
                 case ALIGN_TO_POINT:
                     Pose2d poseEstimate = robot.drive.getLocalizer().getPoseEstimate();
                     // If x is pressed, we break out of the automatic following
-                    if (gamepad2.x) {
+                    if (gamepad2.cross) {
                         robot.drive.breakFollowing();
                         currentMode = Mode.NORMAL_CONTROL;
                     }
@@ -192,7 +192,7 @@ public class TeleOpMain extends LinearOpMode {
             if (gamepad2.square && !previousAutoAlignState && currentMode != Mode.ALIGN_TO_POINT) {
                 currentMode = Mode.ALIGN_TO_POINT;
                 Trajectory traj1 = robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate())
-                        .forward(29)
+                        .lineTo(new Vector2d(12,12))
                         .build();
 
                 robot.drive.followTrajectoryAsync(traj1);

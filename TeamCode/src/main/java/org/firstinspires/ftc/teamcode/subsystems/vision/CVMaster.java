@@ -24,7 +24,7 @@ public class CVMaster {
         hardwareMap = map;
     }
 
-    public void init() {
+    public void initProp() {
         Scalar lower = new Scalar(103, 120, 50);
         Scalar upper = new Scalar(130, 255, 250);
 
