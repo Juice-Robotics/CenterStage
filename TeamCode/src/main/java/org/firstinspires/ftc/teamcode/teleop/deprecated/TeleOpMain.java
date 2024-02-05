@@ -23,6 +23,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDriveCancelable;
 import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.PoseStorage;
 import org.firstinspires.ftc.teamcode.lib.RobotFlags;
+import org.firstinspires.ftc.teamcode.subsystems.vision.CVMaster;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 
 import java.util.concurrent.TimeUnit;
@@ -35,6 +36,7 @@ public class TeleOpMain extends LinearOpMode {
         ALIGN_TO_POINT
     }
     private Mode currentMode = Mode.NORMAL_CONTROL;
+    private CVMaster cv;
 
     // Declare a PIDF Controller to regulate heading
     // Use the same gains as SampleMecanumDrive's heading controller
@@ -69,7 +71,7 @@ public class TeleOpMain extends LinearOpMode {
         boolean previousDroneState = false;
         boolean previousIntakeState = false;
         boolean previousAutoAlignState = false;
-        float previousRightTriggerState = 0;
+        boolean previousRelocalizeState = false;
         float previousLeftTriggerState = 0;
         int dronePressed = 0;
 
@@ -81,6 +83,11 @@ public class TeleOpMain extends LinearOpMode {
         matchTimer = new ElapsedTime();
         robot.drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.drive.setPoseEstimate(PoseStorage.currentPose);
+        cv = new CVMaster(hardwareMap, AllianceColor.BOTH);
+        cv.initTags();
+        Pose2d relocalizePoseEstimate = new Pose2d(0,0,0);
+//        cv.startStreamingDashboard();
+
         //intakePreviousPos = robot.intake.intakeMotor.getCurrentPosition();
 
         while (opModeIsActive() && !isStopRequested()) {
@@ -192,12 +199,18 @@ public class TeleOpMain extends LinearOpMode {
             if (gamepad2.square && !previousAutoAlignState && currentMode != Mode.ALIGN_TO_POINT) {
                 currentMode = Mode.ALIGN_TO_POINT;
                 Trajectory traj1 = robot.drive.trajectoryBuilder(robot.drive.getPoseEstimate())
-                        .lineTo(new Vector2d(12,12))
+                        .lineToLinearHeading(new Pose2d(0,30, Math.toRadians(270)))
                         .build();
 
                 robot.drive.followTrajectoryAsync(traj1);
             }
             previousAutoAlignState = gamepad2.square;
+
+            if (gamepad2.circle && !previousRelocalizeState) {
+                relocalizePoseEstimate = cv.relocalizeUsingBackdrop(robot.drive.getPoseEstimate());
+                robot.drive.setPoseEstimate(relocalizePoseEstimate);
+            }
+            previousRelocalizeState = gamepad2.circle;
 
             // CLIMB
             if (gamepad1.dpad_up && !previousDpadUp) {
@@ -228,16 +241,18 @@ public class TeleOpMain extends LinearOpMode {
             robot.slides.update();
             robot.smartIntakeUpdate();
             robot.drive.getLocalizer().update();
-            telemetry.addData("TIME LEFT: ", ((120-matchTimer.time(TimeUnit.SECONDS))));
-            telemetry.addData("CLAW POSITION: ", (robot.claw.depositServo.getAngle()));
-            //telemetry.addData("ARM TARGET: ", (robot.arm.v4b1.servo.getPosition()*180));
-            telemetry.addData("ARM POSITION: ", robot.arm.arm1.getAngle());
-            telemetry.addData("SLIDES TARGET: ", robot.slides.target);
-            telemetry.addData("SLIDES POSITION: ", robot.slides.slides1.motor.getCurrentPosition());
-            telemetry.addData("LEVEL: ", robot.slides.currentLevel);
+//            telemetry.addData("TIME LEFT: ", ((120-matchTimer.time(TimeUnit.SECONDS))));
+//            telemetry.addData("CLAW POSITION: ", (robot.claw.depositServo.getAngle()));
+//            //telemetry.addData("ARM TARGET: ", (robot.arm.v4b1.servo.getPosition()*180));
+//            telemetry.addData("ARM POSITION: ", robot.arm.arm1.getAngle());
+//            telemetry.addData("SLIDES TARGET: ", robot.slides.target);
+//            telemetry.addData("SLIDES POSITION: ", robot.slides.slides1.motor.getCurrentPosition());
+//            telemetry.addData("LEVEL: ", robot.slides.currentLevel);
             Pose2d poseEstimate = robot.drive.getPoseEstimate();
 
             // Print pose to telemetry
+            telemetry.addData("old pose", poseEstimate);
+            telemetry.addData("new pose", relocalizePoseEstimate);
             telemetry.addData("mode", currentMode);
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());

@@ -24,6 +24,7 @@ import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeSensor;
 import org.firstinspires.ftc.teamcode.subsystems.relocalization.Relocalization;
 import org.firstinspires.ftc.teamcode.subsystems.slides.Slides;
 import org.firstinspires.ftc.teamcode.subsystems.launcher.DroneLauncher;
+import org.firstinspires.ftc.teamcode.subsystems.vision.CVMaster;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +42,7 @@ public class Robot {
     public Slides slides;
     public DroneLauncher drone;
     public Relocalization relocalization;
+    public CVMaster cv;
     public HardwareMap hardwareMap;
 
     // STATE VARS
