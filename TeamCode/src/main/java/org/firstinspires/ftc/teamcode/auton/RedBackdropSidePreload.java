@@ -82,7 +82,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(32.5, 49.5), Math.toRadians(90))
+                .splineTo(new Vector2d(32.7, 49.5), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -105,7 +105,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .splineToLinearHeading(new Pose2d(42, 49, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
-                    this.robot.intake.setAngle(120);
+                    robot.intake.setAngle(120);
                 })
                 .addTemporalMarker(2, () -> {
                     robot.autoPreloadDepositPreset();
@@ -119,276 +119,248 @@ public class RedBackdropSidePreload extends LinearOpMode {
         TrajectorySequence centerCycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(13, -55.8), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(14, -56), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
                 .setReversed(true)
-                .addTemporalMarker(2.3, () -> {
+                .addTemporalMarker(2.9, () -> {
+                    robot.intake.setAngle(182);
+                    robot.intake.intakeMotor.setSpeed((float)0.3);
+                })
+                .back(9)
+                .forward(9)
+                .addTemporalMarker(4.5, () -> {
                     robot.startIntake();
                 })
-                .strafeLeft(4)
-                .back(2)
-                .strafeRight(8)
-                .addTemporalMarker(4.5, () -> {
-                    robot.intake.setAngle(90);
-                })
-                .addTemporalMarker(4.5, () -> {
-                    robot.intake.reverseIntake();
-                })
-                .addTemporalMarker(4.7, () -> {
+//                .addTemporalMarker(4.5, () -> {
+//                    robot.intake.reverseIntake();
+//                })
+                .addTemporalMarker(5.5, () -> {
                     robot.stopIntake();
                 })
-                .waitSeconds(0.2)
+                .waitSeconds(2)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(30, 47.7), Math.toRadians(90))
-                .addTemporalMarker(6.5, () -> {
-                    robot.startAutoIntake();
+                .splineToConstantHeading(new Vector2d(30, 47.5), Math.toRadians(90))
+                .addTemporalMarker(7, () -> {
+                    robot.startIntake();
                     robot.claw.setClawOpen();
                 })
-                .addTemporalMarker(7, () -> {
+                .addTemporalMarker(8, () -> {
                     robot.stopIntake();
                 })
-                .addTemporalMarker(8.2, ()-> {
+                .addTemporalMarker(9, ()-> {
+                    robot.slides.runToPosition(50);
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(9.5, ()-> {
+                .addTemporalMarker(10.7, ()-> {
                     robot.smartClawOpen();
                 })
-                .waitSeconds(1.2)
+                .waitSeconds(2)
                 .build();
 
         TrajectorySequence centerCycle2 = drive.trajectorySequenceBuilder(centerCycle1.end())
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(7, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(12, -57.2), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(16, -57.6), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
                 .setReversed(true)
-                .addTemporalMarker(2.3, () -> {
+//                .addTemporalMarker(2.3, () -> {
+//                    robot.intake.setAngle(160);
+//                })
+                .addTemporalMarker(3, () -> {
                     robot.startIntake();
                 })
-                .strafeLeft(5)
-                .back(2.5)
-                .strafeRight(8)
-                .forward(0.7)
+//                .addTemporalMarker(4.5, () -> {
+//                    robot.intake.reverseIntake();
+//                })
                 .addTemporalMarker(4.5, () -> {
-                    robot.intake.setAngle(90);
-                })
-                .addTemporalMarker(4.5, () -> {
-                    robot.intake.reverseIntake();
-                })
-                .back(2)
-                .addTemporalMarker(4.7, () -> {
                     robot.stopIntake();
                 })
-                .waitSeconds(0.2)
+                .waitSeconds(1)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(30, 47.8), Math.toRadians(90))
-                .addTemporalMarker(6.5, () -> {
+                .splineToConstantHeading(new Vector2d(30, 47.4), Math.toRadians(90))
+                .addTemporalMarker(5.5, () -> {
                     robot.startAutoIntake();
                     robot.claw.setClawOpen();
                 })
-                .addTemporalMarker(7, () -> {
+                .addTemporalMarker(6, () -> {
                     robot.stopIntake();
                 })
-                .addTemporalMarker(8.5, ()-> {
+                .addTemporalMarker(6.8, ()-> {
+                    robot.slides.runToPosition(50);
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(9.5, ()-> {
+                .addTemporalMarker(8.5, ()-> {
                     robot.smartClawOpen();
                 })
-                .addTemporalMarker(13, ()-> {
-                    robot.slides.runToPosition(0);
-                })
-                .waitSeconds(1)
-                .strafeRight(21)
-                .back(7)
                 .waitSeconds(2)
                 .build();
 
         TrajectorySequence leftCycle1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(13, -56.1), Math.toRadians(-90))
-//                .addTemporalMarker(2, () -> {
-//                    robot.autoIntake(3, 170);
-//                })
-                .setReversed(true)
-                .addTemporalMarker(2.5, () -> {
-                    robot.startIntake();
-                })
-                .strafeLeft(4)
-                .back(2)
-                .strafeRight(8)
-                .addTemporalMarker(4.5, () -> {
-                    robot.intake.setAngle(90);
-                })
-                .addTemporalMarker(4.5, () -> {
-                    robot.intake.reverseIntake();
-                })
-                .addTemporalMarker(4.7, () -> {
-                    robot.stopIntake();
-                })
-                .waitSeconds(0.2)
-                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(30, 48), Math.toRadians(90))
-                .addTemporalMarker(6.5, () -> {
-                    robot.startAutoIntake();
-                    robot.claw.setClawOpen();
-                })
-                .addTemporalMarker(7, () -> {
-                    robot.stopIntake();
-                })
-                .addTemporalMarker(8.2, ()-> {
-                    robot.autoCycleDepositPreset();
-                })
-                .addTemporalMarker(9.5, ()-> {
-                    robot.smartClawOpen();
-                })
-                .waitSeconds(1.4)
-                .build();
-
-        TrajectorySequence leftCycle2 = drive.trajectorySequenceBuilder(leftCycle1.end())
-                .setReversed(false)
-                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(12, -52), Math.toRadians(-90))
-//                .addTemporalMarker(2, () -> {
-//                    robot.autoIntake(3, 170);
-//                })
-                .setReversed(true)
-                .addTemporalMarker(2.5, () -> {
-                    robot.startIntake();
-                })
-                .strafeLeft(5)
-                .back(2.5)
-                .strafeRight(8)
-                .forward(0.7)
-                .addTemporalMarker(4.5, () -> {
-                    robot.intake.setAngle(90);
-                })
-                .addTemporalMarker(4.5, () -> {
-                    robot.intake.reverseIntake();
-                })
-                .back(2)
-                .addTemporalMarker(4.7, () -> {
-                    robot.stopIntake();
-                })
-                .waitSeconds(0.2)
-                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(30, 47.65), Math.toRadians(90))
-                .addTemporalMarker(6.5, () -> {
-                    robot.startAutoIntake();
-                    robot.claw.setClawOpen();
-                })
-                .addTemporalMarker(7, () -> {
-                    robot.stopIntake();
-                })
-                .addTemporalMarker(8.5, ()-> {
-                    robot.autoCycleDepositPreset();
-                })
-                .addTemporalMarker(9.7, ()-> {
-                    robot.smartClawOpen();
-                })
-                .addTemporalMarker(13, ()-> {
-                    robot.slides.runToPosition(0);
-                })
-                .waitSeconds(1)
-                .strafeRight(21)
-                .back(7)
-                .waitSeconds(2)
-                .build();
-
-        TrajectorySequence rightCycle1 = drive.trajectorySequenceBuilder(preloadBackdropRight.end())
-                .setReversed(false)
-                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(13, -54), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(16, -55.8), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
                 .setReversed(true)
                 .addTemporalMarker(2.3, () -> {
+                    robot.intake.setAngle(160);
+                })
+                .back(8)
+                .forward(8)
+                .addTemporalMarker(4.5, () -> {
                     robot.startIntake();
                 })
-                .strafeLeft(4)
-                .back(2)
-                .strafeRight(8)
-                .addTemporalMarker(4.5, () -> {
-                    robot.intake.setAngle(90);
-                })
-                .addTemporalMarker(4.5, () -> {
-                    robot.intake.reverseIntake();
-                })
-                .addTemporalMarker(4.7, () -> {
+//                .addTemporalMarker(4.5, () -> {
+//                    robot.intake.reverseIntake();
+//                })
+                .addTemporalMarker(5.5, () -> {
                     robot.stopIntake();
                 })
                 .waitSeconds(0.2)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(30, 48), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 47.7), Math.toRadians(90))
+//                .addTemporalMarker(6, () -> {
+//                    robot.startAutoIntake();
+//                    robot.claw.setClawOpen();
+//                })
                 .addTemporalMarker(6.5, () -> {
-                    robot.startAutoIntake();
-                    robot.claw.setClawOpen();
-                })
-                .addTemporalMarker(7, () -> {
                     robot.stopIntake();
                 })
-                .addTemporalMarker(8.2, ()-> {
+                .addTemporalMarker(7.2, ()-> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(9.5, ()-> {
+                .addTemporalMarker(8, ()-> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(1.2)
                 .build();
 
-        TrajectorySequence rightCycle2 = drive.trajectorySequenceBuilder(rightCycle1.end())                .setReversed(false)
-                .splineToConstantHeading(new Vector2d(7, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(12, -57.2), Math.toRadians(-90))
+        TrajectorySequence leftCycle2 = drive.trajectorySequenceBuilder(leftCycle1.end())
+                .setReversed(false)
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(16, -55.8), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
                 .setReversed(true)
                 .addTemporalMarker(2.3, () -> {
+                    robot.intake.setAngle(160);
+                })
+                .back(8)
+                .forward(8)
+                .addTemporalMarker(4.5, () -> {
                     robot.startIntake();
                 })
-                .strafeLeft(5)
-                .back(2.5)
-                .strafeRight(8)
-                .forward(0.7)
-                .addTemporalMarker(4.5, () -> {
-                    robot.intake.setAngle(90);
-                })
-                .addTemporalMarker(4.5, () -> {
-                    robot.intake.reverseIntake();
-                })
-                .back(2)
-                .addTemporalMarker(4.7, () -> {
+//                .addTemporalMarker(4.5, () -> {
+//                    robot.intake.reverseIntake();
+//                })
+                .addTemporalMarker(5.5, () -> {
                     robot.stopIntake();
                 })
                 .waitSeconds(0.2)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(30, 47.8), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 47.7), Math.toRadians(90))
+//                .addTemporalMarker(6, () -> {
+//                    robot.startAutoIntake();
+//                    robot.claw.setClawOpen();
+//                })
                 .addTemporalMarker(6.5, () -> {
-                    robot.startAutoIntake();
-                    robot.claw.setClawOpen();
-                })
-                .addTemporalMarker(7, () -> {
                     robot.stopIntake();
                 })
-                .addTemporalMarker(8.5, ()-> {
+                .addTemporalMarker(7.2, ()-> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(9.5, ()-> {
+                .addTemporalMarker(8, ()-> {
                     robot.smartClawOpen();
                 })
-                .addTemporalMarker(13, ()-> {
-                    robot.slides.runToPosition(0);
+                .waitSeconds(1.2)
+                .build();
+
+        TrajectorySequence rightCycle1 = drive.trajectorySequenceBuilder(preloadBackdropRight.end())
+                .setReversed(false)
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(16, -55.8), Math.toRadians(-90))
+//                .addTemporalMarker(2, () -> {
+//                    robot.autoIntake(3, 170);
+//                })
+                .setReversed(true)
+                .addTemporalMarker(2.3, () -> {
+                    robot.intake.setAngle(160);
                 })
-                .waitSeconds(1)
-                .strafeRight(21)
-                .back(7)
-                .waitSeconds(2)
+                .back(8)
+                .forward(8)
+                .addTemporalMarker(4.5, () -> {
+                    robot.startIntake();
+                })
+//                .addTemporalMarker(4.5, () -> {
+//                    robot.intake.reverseIntake();
+//                })
+                .addTemporalMarker(5.5, () -> {
+                    robot.stopIntake();
+                })
+                .waitSeconds(0.2)
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 47.7), Math.toRadians(90))
+//                .addTemporalMarker(6, () -> {
+//                    robot.startAutoIntake();
+//                    robot.claw.setClawOpen();
+//                })
+                .addTemporalMarker(6.5, () -> {
+                    robot.stopIntake();
+                })
+                .addTemporalMarker(7.2, ()-> {
+                    robot.autoCycleDepositPreset();
+                })
+                .addTemporalMarker(8, ()-> {
+                    robot.smartClawOpen();
+                })
+                .waitSeconds(1.2)
+                .build();
+
+        TrajectorySequence rightCycle2 = drive.trajectorySequenceBuilder(rightCycle1.end())
+                .setReversed(false)
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(16, -55.8), Math.toRadians(-90))
+//                .addTemporalMarker(2, () -> {
+//                    robot.autoIntake(3, 170);
+//                })
+                .setReversed(true)
+                .addTemporalMarker(2.3, () -> {
+                    robot.intake.setAngle(160);
+                })
+                .back(8)
+                .forward(8)
+                .addTemporalMarker(4.5, () -> {
+                    robot.startIntake();
+                })
+//                .addTemporalMarker(4.5, () -> {
+//                    robot.intake.reverseIntake();
+//                })
+                .addTemporalMarker(5.5, () -> {
+                    robot.stopIntake();
+                })
+                .waitSeconds(0.2)
+                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 47.7), Math.toRadians(90))
+//                .addTemporalMarker(6, () -> {
+//                    robot.startAutoIntake();
+//                    robot.claw.setClawOpen();
+//                })
+                .addTemporalMarker(6.5, () -> {
+                    robot.stopIntake();
+                })
+                .addTemporalMarker(7.2, ()-> {
+                    robot.autoCycleDepositPreset();
+                })
+                .addTemporalMarker(8, ()-> {
+                    robot.smartClawOpen();
+                })
+                .waitSeconds(1.2)
                 .build();
 
         /*
