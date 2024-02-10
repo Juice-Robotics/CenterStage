@@ -24,30 +24,12 @@ import org.opencv.core.Scalar;
 
 public class RedBackdropSidePreload extends LinearOpMode {
     Robot robot;
-    private VisionPortal visionPortal;
-    private YoinkP2Pipeline colourMassDetectionProcessor;
-    AprilTagProcessor processor;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Scalar lower = new Scalar(125, 120, 50); // the lower hsv threshold for your detection
-        Scalar upper = new Scalar(190, 255, 250); // the upper hsv threshold for your detection
-        double minArea = 3000; // the minimum area for the detection to consider for your prop
-
-        colourMassDetectionProcessor = new YoinkP2Pipeline(
-                lower,
-                upper,
-                () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
-                () -> 213, // the left dividing line, in this case the left third of the frame
-                () -> 426 // the left dividing line, in this case the right third of the frame
-        );
-        visionPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
-                .addProcessor(colourMassDetectionProcessor)
-                .build();
-
         SampleMecanumDriveCancelable drive = new SampleMecanumDriveCancelable(hardwareMap);
         robot = new Robot(hardwareMap, true);
+        robot.cv.initProp(AllianceColor.RED);
         Pose2d startPose = new Pose2d(62, 13, Math.toRadians(0));
         robot.initPos();
 
@@ -141,6 +123,8 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 })
                 .waitSeconds(2)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 37.7), Math.toRadians(90))
+                .waitSeconds(1)
                 .splineToConstantHeading(new Vector2d(30, 47.5), Math.toRadians(90))
                 .addTemporalMarker(7, () -> {
                     robot.startIntake();
@@ -149,11 +133,15 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .addTemporalMarker(8, () -> {
                     robot.stopIntake();
                 })
-                .addTemporalMarker(9, ()-> {
+                .addTemporalMarker(9.5, () -> {
+                    Pose2d newPose = robot.cv.relocalizeUsingBackdrop(drive.getPoseEstimate());
+                    drive.setPoseEstimate(newPose);
+                })
+                .addTemporalMarker(10, ()-> {
                     robot.slides.runToPosition(50);
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(10.7, ()-> {
+                .addTemporalMarker(11.7, ()-> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(2)
@@ -372,10 +360,10 @@ public class RedBackdropSidePreload extends LinearOpMode {
 
         while (!isStarted() && !isStopRequested()) {
 //            telemetry.addData("Camera State", visionPortal.getCameraState());
-            telemetry.addData("Currently Recorded Position", colourMassDetectionProcessor.getRecordedPropPosition());
-            telemetry.addData("Camera State", visionPortal.getCameraState());
-            telemetry.addData("Currently Detected Mass Center", "x: " + colourMassDetectionProcessor.getLargestContourX() + ", y: " + colourMassDetectionProcessor.getLargestContourY());
-            telemetry.addData("Currently Detected Mass Area", colourMassDetectionProcessor.getLargestContourArea());
+            telemetry.addData("Currently Recorded Position", robot.cv.colourMassDetectionProcessor.getRecordedPropPosition());
+            telemetry.addData("Camera State", robot.cv.visionPortal.getCameraState());
+            telemetry.addData("Currently Detected Mass Center", "x: " + robot.cv.colourMassDetectionProcessor.getLargestContourX() + ", y: " + robot.cv.colourMassDetectionProcessor.getLargestContourY());
+            telemetry.addData("Currently Detected Mass Area", robot.cv.colourMassDetectionProcessor.getLargestContourArea());
 
             telemetry.update();
         }
@@ -392,23 +380,17 @@ public class RedBackdropSidePreload extends LinearOpMode {
 
         if (isStopRequested()) return;
 
-        // shuts down the camera once the match starts, we dont need to look any more
-        colourMassDetectionProcessor.close();
-        visionPortal.close();
-        if (visionPortal.getCameraState() == VisionPortal.CameraState.STREAMING) {
-            visionPortal.stopLiveView();
-            visionPortal.stopStreaming();
-        }
-
-
         // gets the recorded prop position
-        YoinkP2Pipeline.PropPositions recordedPropPosition = colourMassDetectionProcessor.getRecordedPropPosition();
+        YoinkP2Pipeline.PropPositions recordedPropPosition = robot.cv.colourMassDetectionProcessor.getRecordedPropPosition();
 
         // now we can use recordedPropPosition to determine where the prop is! if we never saw a prop, your recorded position will be UNFOUND.
         // if it is UNFOUND, you can manually set it to any of the other positions to guess
         if (recordedPropPosition == YoinkP2Pipeline.PropPositions.UNFOUND) {
             recordedPropPosition = YoinkP2Pipeline.PropPositions.CENTER;
         }
+
+        // shuts down the camera once the match starts, we dont need to look any more
+        robot.cv.switchToAprilTags();
 
         robot.launchSubsystemThread(telemetry);
         switch (recordedPropPosition) {
@@ -439,7 +421,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
         PoseStorage.currentPose = drive.getPoseEstimate();
 
         robot.destroyThreads(telemetry);
-        visionPortal.close();
+        robot.cv.kill();
 
         while (!isStopRequested() && opModeIsActive()) ;
     }

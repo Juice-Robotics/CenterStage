@@ -101,7 +101,7 @@ public class Robot {
         this.intakeSensor = new IntakeSensor(map.colorSensor.get("intakeSensor1"), map.colorSensor.get("intakeSensor2"));
         this.slides = new Slides((Motor) components[4], (Motor) components[5], (Motor) components[6], (StepperServo) components[7], voltageSensor);
         this.drone = new DroneLauncher((StepperServo) components[16]);
-        this.relocalization = new Relocalization();
+        this.cv = new CVMaster(map);
         this.hardwareMap = map;
 
         this.subsystemState = Levels.ZERO;

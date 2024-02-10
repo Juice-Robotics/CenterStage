@@ -23,8 +23,8 @@ public class RedBackdropSidePreloadOnly extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        cv = new CVMaster(hardwareMap, AllianceColor.RED);
-        cv.initProp();
+        cv = new CVMaster(hardwareMap);
+        cv.initProp(AllianceColor.RED);
 
         SampleMecanumDriveCancelable drive = new SampleMecanumDriveCancelable(hardwareMap);
         robot = new Robot(hardwareMap, true);
