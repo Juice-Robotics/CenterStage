@@ -110,8 +110,8 @@ public class RedBackdropSidePreload extends LinearOpMode {
                     robot.intake.setAngle(182);
                     robot.intake.intakeMotor.setSpeed((float)0.3);
                 })
-                .back(9)
-                .forward(9)
+                .back(7)
+                .forward(7)
                 .addTemporalMarker(4.5, () -> {
                     robot.startIntake();
                 })
@@ -133,7 +133,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .addTemporalMarker(8, () -> {
                     robot.stopIntake();
                 })
-                .addTemporalMarker(9.5, () -> {
+                .addTemporalMarker(10, () -> {
                     Pose2d newPose = robot.cv.relocalizeUsingBackdrop(drive.getPoseEstimate());
                     drive.setPoseEstimate(newPose);
                 })
@@ -141,7 +141,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                     robot.slides.runToPosition(50);
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(11.7, ()-> {
+                .addTemporalMarker(12.7, ()-> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(2)
