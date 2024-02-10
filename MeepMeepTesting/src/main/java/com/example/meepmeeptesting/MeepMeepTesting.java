@@ -115,9 +115,62 @@ public class MeepMeepTesting {
 
                 );
 
+        RoadRunnerBotEntity myBotRelocal = new DefaultBotBuilder(meepMeep)
+                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
+//                .setColorScheme(new ColorSchemeRedDark())
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .setDimensions(15, 17)
+                .followTrajectorySequence(drive ->
+                        drive.trajectorySequenceBuilder(new Pose2d(32.5, 49.5, Math.toRadians(90)))
+                                .setReversed(false)
+                                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                                .splineToConstantHeading(new Vector2d(13, -55.8), Math.toRadians(-90))
+//                .addTemporalMarker(2, () -> {
+//                    robot.autoIntake(3, 170);
+//                })
+                                .setReversed(true)
+                                .addTemporalMarker(2.3, () -> {
+//                                    robot.startIntake();
+                                })
+                                .strafeLeft(4)
+                                .back(2)
+                                .strafeRight(8)
+                                .addTemporalMarker(4.5, () -> {
+//                                    robot.intake.setAngle(90);
+                                })
+                                .addTemporalMarker(4.5, () -> {
+//                                    robot.intake.reverseIntake();
+                                })
+                                .addTemporalMarker(4.7, () -> {
+//                                    robot.stopIntake();
+                                })
+                                .waitSeconds(0.2)
+                                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                                .splineToConstantHeading(new Vector2d(30, 37.7), Math.toRadians(90))
+                                .waitSeconds(1)
+                                .splineToConstantHeading(new Vector2d(30, 47.7), Math.toRadians(90))
+                                .addTemporalMarker(6.5, () -> {
+//                                    robot.startAutoIntake();
+//                                    robot.claw.setClawOpen();
+                                })
+                                .addTemporalMarker(7, () -> {
+//                                    robot.stopIntake();
+                                })
+                                .addTemporalMarker(9.2, ()-> {
+//                                    robot.autoCycleDepositPreset();
+                                })
+                                .addTemporalMarker(10.5, ()-> {
+//                                    robot.smartClawOpen();
+                                })
+                                .waitSeconds(1.2)
+                                .build()
+
+                );
+
 
         Image img = null;
-        try { img = ImageIO.read(new File("/Users/zhimi/Downloads/field.png")); }
+//        try { img = ImageIO.read(new File("/Users/zhimi/Downloads/field.png")); }
+        try { img = ImageIO.read(new File("/Users/siddharth/dev/Juice/CenterStage/MeepMeepTesting/src/main/java/com/example/meepmeeptesting/Juice-CENTERSTAGE-Dark.png")); }
         catch (IOException e) {}
 
         meepMeep.setBackground(img)
@@ -125,9 +178,10 @@ public class MeepMeepTesting {
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
 //                .addEntity(myBotCyclesUnsafeSide)
-                .addEntity(myBotCyclesSafeRed)
-                .addEntity(myBotCycleSafeBlue)
+//                .addEntity(myBotCyclesSafeRed)
+//                .addEntity(myBotCycleSafeBlue)
 //                .addEntity(myBotCyclesSafeOpti)
+                .addEntity(myBotRelocal)
                 .start();
     }
 }
