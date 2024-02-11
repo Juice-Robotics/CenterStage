@@ -21,12 +21,12 @@ public class CVMaster {
     AprilTagProcessor tagProcessor;
     AprilTagsRelocalization relocalization;
 
-    public CVMaster(HardwareMap map, AllianceColor allianceColor) {
-        this.allianceColor = allianceColor;
+    public CVMaster(HardwareMap map) {
         hardwareMap = map;
     }
 
-    public void initProp() {
+    public void initProp(AllianceColor allianceColor) {
+        this.allianceColor = allianceColor;
         Scalar lower = new Scalar(103, 120, 50);
         Scalar upper = new Scalar(130, 255, 250);
 

@@ -24,8 +24,8 @@ public class BlueSpikeFar extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        cv = new CVMaster(hardwareMap, AllianceColor.BLUE);
-        cv.initProp();
+        cv = new CVMaster(hardwareMap);
+        cv.initProp(AllianceColor.BLUE);
 
         SampleMecanumDriveCancelable drive = new SampleMecanumDriveCancelable(hardwareMap);
         robot = new Robot(hardwareMap, true);

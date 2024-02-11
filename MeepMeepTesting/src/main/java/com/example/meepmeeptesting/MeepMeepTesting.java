@@ -18,62 +18,65 @@ import javax.imageio.ImageIO;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(750);
-        double spikeTimel = 5.91;
-        double spikeTimell = 5.12;
-        double cycletime = 8.96;
-        double spikeTimec = 0;
-        double spikeTimer = 0;
         RoadRunnerBotEntity myBotCycleSafeBlue = new DefaultBotBuilder(meepMeep)
-                .setConstraints(55, 55, Math.toRadians(360), Math.toRadians(360), 13.28)
-                .setDimensions(15, 17)
-                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(new Pose2d(-62, -34, Math.toRadians(180)))
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .setDimensions(14, 17)
+                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(new Pose2d(62, 13, Math.toRadians(0)))
                         .setReversed(true)
-                        .splineToLinearHeading(new Pose2d(-22, -47, Math.toRadians(180)), Math.toRadians(180))
-                        .waitSeconds(1)
+                        .splineToLinearHeading(new Pose2d(38, 11.7, Math.toRadians(55)), Math.toRadians(30))
 
-                        .addTemporalMarker(1.8, () -> {
-                            //release pixel from intake
-                        })
-                        //stack
-                        .splineToLinearHeading(new Pose2d(-12, -57, Math.toRadians(-90)), Math.toRadians(-90))
-                        .waitSeconds(1.5)
-                        //break
-                        .splineToConstantHeading(new Vector2d(-10, 25), Math.toRadians(90))
-                        .splineToConstantHeading(new Vector2d(-42, 51), Math.toRadians(90))
-
-                                .waitSeconds(1)
-                        //cycles
                         .setReversed(false)
-                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
-                        .splineToConstantHeading(new Vector2d(-13, -55.8), Math.toRadians(-90))
+                        .splineToLinearHeading(new Pose2d(30, 49, Math.toRadians(270)), Math.toRadians(90))
+                        .addTemporalMarker(0, () -> {
+                            //this.robot.intake.setAngle(120);
+                        })
+                        .addTemporalMarker(1.5, () -> {
+                            //robot.autoPreloadDepositPreset();
+                        })
+                        .addTemporalMarker(2.3, () -> {
+                            //robot.smartClawOpen();
+                        })
+                        .waitSeconds(0.8)
+                                .setReversed(false)
+                                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                                .splineToConstantHeading(new Vector2d(13, -56.1), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
-                        .setReversed(true)
-                        .addTemporalMarker(3.2, () -> {
-                            //startIntake();
-                        })
-                        .addTemporalMarker(4.7, () -> {
-                            //stopIntake();
-                        })
-                        .waitSeconds(1)
-                        .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
-                        .splineToConstantHeading(new Vector2d(-30, 47.7), Math.toRadians(90))
-
-                        .addTemporalMarker(5, () -> {
-                            //startAutoIntake();
-                            //claw.setClawOpen();
-                        })
-                        .addTemporalMarker(6, () -> {
-                            //stopIntake();
-                        })
-                        .addTemporalMarker(7.3, ()-> {
-                            //autoCycleDepositPreset();
-                        })
-                        .addTemporalMarker(8, ()-> {
-                            //smartClawOpen();
-                        })
-                        .waitSeconds(1.2)
+                                .setReversed(true)
+                                .addTemporalMarker(2.5, () -> {
+                                    //startIntake();
+                                })
+                                .strafeLeft(4)
+                                .forward(2)
+                                .strafeRight(8)
+                                .back(2)
+                                .addTemporalMarker(4.5, () -> {
+                                    //intake.setAngle(90);
+                                })
+                                .addTemporalMarker(4.5, () -> {
+                                    //intake.reverseIntake();
+                                })
+                                .addTemporalMarker(4.7, () -> {
+                                    //stopIntake();
+                                })
+                                .waitSeconds(0.2)
+                                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                                .splineToConstantHeading(new Vector2d(30, 48), Math.toRadians(90))
+                                .addTemporalMarker(6.5, () -> {
+                                    //startAutoIntake();
+                                    //claw.setClawOpen();
+                                })
+                                .addTemporalMarker(7, () -> {
+                                    //stopIntake();
+                                })
+                                .addTemporalMarker(8.2, ()-> {
+                                    //autoCycleDepositPreset();
+                                })
+                                .addTemporalMarker(9.5, ()-> {
+                                    //smartClawOpen();
+                                })
+                                .waitSeconds(1)
                         .build()
                 );
 
@@ -81,65 +84,98 @@ public class MeepMeepTesting {
         RoadRunnerBotEntity myBotCyclesSafeRed = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
 //                .setColorScheme(new ColorSchemeRedDark())
-                .setConstraints(55, 55, Math.toRadians(360), Math.toRadians(360), 13.28)
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .setDimensions(15, 17)
                 .followTrajectorySequence(drive ->
-                                drive.trajectorySequenceBuilder(new Pose2d(62, -34, Math.toRadians(0)))
+                                drive.trajectorySequenceBuilder(new Pose2d(-62, -34, Math.toRadians(180)))
                                         .setReversed(true)
-                                        .splineToLinearHeading(new Pose2d(22, -47, Math.toRadians(0)), Math.toRadians(0))
-                                        .waitSeconds(1)
-
-                                        .addTemporalMarker(1.8, () -> {
-                                            //release pixel from intake
+                                        .addTemporalMarker(0, () -> {
+                                            //this.robot.farPos();
                                         })
-                                        .splineToLinearHeading(new Pose2d(12, -57, Math.toRadians(-90)), Math.toRadians(-90))
-                                        .waitSeconds(1.5)
-                                        //backdrop
-                                        .splineToConstantHeading(new Vector2d(10, 25), Math.toRadians(90))
-                                        .splineToConstantHeading(new Vector2d(35, 47.7), Math.toRadians(90))
+                                        .splineTo(new Vector2d(-38, -27), Math.toRadians(45))
+                                        .forward(17)
+                                        .turn(Math.toRadians(45))
+                                        .strafeRight(10)
+                                        .back(20)
+                                        .splineToConstantHeading(new Vector2d(-59, 20), Math.toRadians(90))
+                                        .splineToConstantHeading(new Vector2d(-38, 49), Math.toRadians(90))
+                                        .addTemporalMarker(0, () -> {
+                                            //this.robot.intake.setAngle(120);
+                                        })
+                                        .addTemporalMarker(3, () -> {
+                                            //robot.autoPreloadDepositPreset();
+                                        })
+                                        .addTemporalMarker(4, () -> {
+                                            //robot.smartClawOpen();
+                                        })
+                                        .waitSeconds(2)
+                                        .strafeRight(20)
+                                        .back(10)
+                                        .build()
 
-                                        //cycles
-                                        .setReversed(false)
-                                        .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                                        .splineToConstantHeading(new Vector2d(12, -55.8), Math.toRadians(-90))
+                );
+
+        RoadRunnerBotEntity myBotRelocal = new DefaultBotBuilder(meepMeep)
+                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
+//                .setColorScheme(new ColorSchemeRedDark())
+                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .setDimensions(15, 17)
+                .followTrajectorySequence(drive ->
+                        drive.trajectorySequenceBuilder(new Pose2d(32.5, 49.5, Math.toRadians(90)))
+                                .setReversed(false)
+                                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
+                                .splineToConstantHeading(new Vector2d(14, -56), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
-                                        .setReversed(true)
-                                        .addTemporalMarker(3.2, () -> {
-                                 //           robot.startIntake();
-                                        })
-                                        .addTemporalMarker(4.7, () -> {
-                                 //           robot.stopIntake();
-                                        })
-                                        .waitSeconds(1)
-                                        .splineToConstantHeading(new Vector2d(10, 25), Math.toRadians(90))
-                                        .splineToConstantHeading(new Vector2d(30, 47.7), Math.toRadians(90))
-
-                                        .addTemporalMarker(5, () -> {
-                                   //         robot.startAutoIntake();
-                                   //         robot.claw.setClawOpen();
-                                        })
-                                        .addTemporalMarker(6, () -> {
-                                    //        robot.stopIntake();
-                                        })
-                                        .addTemporalMarker(7.3, ()-> {
-                                      //      robot.autoCycleDepositPreset();
-                                        })
-                                        .addTemporalMarker(8, ()-> {
-                                         //   robot.smartClawOpen();
-                                        })
-                                        .waitSeconds(1.2)
-                                        .strafeLeft(29)
-                                        .back(12)
-                                        .build()
-
+                                .setReversed(true)
+                                .addTemporalMarker(2.9, () -> {
+//                                    robot.intake.setAngle(182);
+//                                    robot.intake.intakeMotor.setSpeed((float)0.3);
+                                })
+                                .back(9)
+                                .forward(9)
+                                .addTemporalMarker(4.5, () -> {
+//                                    robot.startIntake();
+                                })
+//                .addTemporalMarker(4.5, () -> {
+//                    robot.intake.reverseIntake();
+//                })
+                                .addTemporalMarker(5.5, () -> {
+//                                    robot.stopIntake();
+                                })
+                                .waitSeconds(2)
+                                .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
+                                .splineToConstantHeading(new Vector2d(30, 37.7), Math.toRadians(90))
+                                .waitSeconds(1)
+                                .splineToConstantHeading(new Vector2d(30, 47.5), Math.toRadians(90))
+                                .addTemporalMarker(7, () -> {
+//                                    robot.startIntake();
+//                                    robot.claw.setClawOpen();
+                                })
+                                .addTemporalMarker(8, () -> {
+//                                    robot.stopIntake();
+                                })
+                                .addTemporalMarker(10, () -> {
+//                                    Pose2d newPose = robot.cv.relocalizeUsingBackdrop(drive.getPoseEstimate());
+//                                    drive.setPoseEstimate(newPose);
+                                })
+                                .addTemporalMarker(10, ()-> {
+//                                    robot.slides.runToPosition(50);
+//                                    robot.autoCycleDepositPreset();
+                                })
+                                .addTemporalMarker(12.7, ()-> {
+//                                    robot.smartClawOpen();
+                                })
+                                .waitSeconds(2)
+                                .build()
 
                 );
 
 
         Image img = null;
-        try { img = ImageIO.read(new File("/Users/zhimi/Downloads/field.png")); }
+//        try { img = ImageIO.read(new File("/Users/zhimi/Downloads/field.png")); }
+        try { img = ImageIO.read(new File("/Users/siddharth/dev/Juice/CenterStage/MeepMeepTesting/src/main/java/com/example/meepmeeptesting/Juice-CENTERSTAGE-Dark.png")); }
         catch (IOException e) {}
 
         meepMeep.setBackground(img)
@@ -147,9 +183,10 @@ public class MeepMeepTesting {
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
 //                .addEntity(myBotCyclesUnsafeSide)
-               // .addEntity(myBotCyclesSafeRed)
-                .addEntity(myBotCycleSafeBlue)
+//                .addEntity(myBotCyclesSafeRed)
+//                .addEntity(myBotCycleSafeBlue)
 //                .addEntity(myBotCyclesSafeOpti)
+                .addEntity(myBotRelocal)
                 .start();
     }
 }
