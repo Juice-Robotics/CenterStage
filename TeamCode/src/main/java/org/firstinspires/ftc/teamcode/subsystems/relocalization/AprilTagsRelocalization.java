@@ -55,7 +55,7 @@ public class AprilTagsRelocalization {
 //            return robotPose;
 //        }
         AprilTagPoseRaw fieldPosition = aprilTagDetection.rawPose;
-        Pose2d tagPose = new Pose2d(32 - tagRPose.x, 51 - tagRPose.y, Math.toRadians(tagRPose.yaw-90));
+        Pose2d tagPose = new Pose2d(29 - tagRPose.x, 48 - tagRPose.y, Math.toRadians(tagRPose.yaw-90));
 
         return tagPose;
     }
