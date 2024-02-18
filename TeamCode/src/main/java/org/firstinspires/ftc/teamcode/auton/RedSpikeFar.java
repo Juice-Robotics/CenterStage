@@ -27,6 +27,7 @@ public class RedSpikeFar extends LinearOpMode {
     private VisionPortal visionPortal;
     private YoinkP2Pipeline colourMassDetectionProcessor;
     AprilTagProcessor processor;
+    double waitt = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -54,15 +55,18 @@ public class RedSpikeFar extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         // PRELOAD PATHS
+        TrajectorySequence wait = drive.trajectorySequenceBuilder(startPose)
+                .waitSeconds(waitt)
+                .build();
         TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
                 .addTemporalMarker(0, () -> {
                     this.robot.farPos();
                 })
-                .splineTo(new Vector2d(38, -42), Math.toRadians(180))
+                .splineTo(new Vector2d(38, -43), Math.toRadians(180))
                 .forward(20)
                 .turn(Math.toRadians(-90))
-                .strafeLeft(2)
+               // .strafeLeft(2)
                 .build();
 
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeLeft.end())
@@ -91,7 +95,7 @@ public class RedSpikeFar extends LinearOpMode {
                 .back(29)
                 .forward(25.5)
                 .turn(Math.toRadians(-90))
-                .strafeLeft(2)
+               // .strafeLeft(2)
                 .build();
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
@@ -117,14 +121,14 @@ public class RedSpikeFar extends LinearOpMode {
                 .addTemporalMarker(0, () -> {
                     this.robot.farPos();
                 })
-                .splineTo(new Vector2d(38, -27), Math.toRadians(135))
-                .forward(17)
-                .turn(Math.toRadians(-45))
+                .splineTo(new Vector2d(38, -29), Math.toRadians(125))
+                .forward(12)
+                .turn(Math.toRadians(-35))
                 .build();
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
-                .strafeLeft(10)
-                .back(20)
+                .strafeLeft(0.1)
+                //.back(20)
                 .splineToConstantHeading(new Vector2d(59, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(38, 49), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
@@ -192,17 +196,18 @@ public class RedSpikeFar extends LinearOpMode {
         switch (recordedPropPosition) {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
+                drive.followTrajectorySequence(wait);
                 drive.followTrajectorySequence(preloadBackdropCenter);
                 break;
             case LEFT:
                 drive.followTrajectorySequence(preloadSpikeLeft);
-//                drive.followTrajectorySequence(wait);
+                drive.followTrajectorySequence(wait);
                 drive.followTrajectorySequence(preloadBackdropLeft);
 //                drive.followTrajectorySequence(parkLeft);
                 break;
             case RIGHT:
                 drive.followTrajectorySequence(preloadSpikeRight);
-//                drive.followTrajectorySequence(wait);
+                drive.followTrajectorySequence(wait);
                 drive.followTrajectorySequence(preloadBackdropRight);
 //                drive.followTrajectorySequence(parkRight);
                 break;

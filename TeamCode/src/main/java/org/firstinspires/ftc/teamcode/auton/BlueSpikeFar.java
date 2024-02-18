@@ -51,8 +51,8 @@ public class BlueSpikeFar extends LinearOpMode {
                 //.splineToLinearHeading(new Pose2d(-57, -40, Math.toRadians(-90)), Math.toRadians(-90))
                 //.setReversed(false)
                 //.splineToConstantHeading(new Vector2d(-57, -25), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-57, 10), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-39, 50), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-57, 14), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-33, 49), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -87,13 +87,13 @@ public class BlueSpikeFar extends LinearOpMode {
                 .waitSeconds(4)
                 .build();
         TrajectorySequence parkCenter = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
-                .strafeRight(25)
-                .back(10)
+                .strafeRight(28)
+                .back(11)
                 .build();
 
         TrajectorySequence preloadSpikeLeft = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineTo(new Vector2d(-38, -47), Math.toRadians(0))
+                .splineTo(new Vector2d(-38, -44), Math.toRadians(0))
                 .forward(17)
                 .turn(Math.toRadians(90))
                 .build();
@@ -102,9 +102,9 @@ public class BlueSpikeFar extends LinearOpMode {
                 .setReversed(true)
                 .setReversed(true)
                 .splineToLinearHeading(new Pose2d(-57, -8, Math.toRadians(270)), Math.toRadians(90))
-                .splineToLinearHeading(new Pose2d(-30, 52, Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-30, 47, Math.toRadians(270)), Math.toRadians(90))
                 //.splineToLinearHeading(new Pose2d(-42, 52, Math.toRadians(270)), Math.toRadians(90))
-//                .splineToConstantHeading(new Vector2d(-29, 52), Math.toRadians(90))
+                //                .splineToConstantHeading(new Vector2d(-29, 52), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -117,12 +117,12 @@ public class BlueSpikeFar extends LinearOpMode {
                 .waitSeconds(3)
                 .build();
         TrajectorySequence parkLeft = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
-                .strafeRight(25)
-                .back(10)
+                .strafeRight(28)
+                .back(11)
                 .build();
         TrajectorySequence parkRight = drive.trajectorySequenceBuilder(preloadBackdropRight.end())
-                .strafeRight(25)
-                .back(10)
+                .strafeRight(28)
+                .back(11)
                 .build();
 
 //        TrajectorySequence cycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
