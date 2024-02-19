@@ -29,7 +29,7 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDriveCancelable drive = new SampleMecanumDriveCancelable(hardwareMap);
+        SampleMecanumDriveCancelable drive = new SampleMecanumDriveCancelable(hardwareMap, AllianceColor.BLUE);
         robot = new Robot(hardwareMap, true);
         robot.cv.initProp(AllianceColor.BLUE);
         Pose2d startPose = new Pose2d(-62, 11, Math.toRadians(180));
@@ -45,7 +45,7 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
 
         TrajectorySequence preloadBackdropRight = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
                 .setReversed(false)
-                .splineToLinearHeading(new Pose2d(-30, 49, Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-30, 49.7, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -60,13 +60,13 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
 
         TrajectorySequence preloadSpikeCenter = drive.trajectorySequenceBuilder(startPose)
                 .setReversed(true)
-                .splineTo(new Vector2d(-39, 13), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(-48, 13, Math.toRadians(180)), Math.toRadians(180))
+                .splineTo(new Vector2d(-39.5, 11), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-49, 14, Math.toRadians(180)), Math.toRadians(180))
                 .build();
 
         TrajectorySequence preloadBackdropCenter = drive.trajectorySequenceBuilder(preloadSpikeCenter.end())
                 .setReversed(true)
-                .splineTo(new Vector2d(-32.7, 49.5), Math.toRadians(90))
+                .splineTo(new Vector2d(-33, 49.7), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -86,7 +86,7 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
                 .build();
 
         TrajectorySequence preloadBackdropLeft = drive.trajectorySequenceBuilder(preloadSpikeRight.end())
-                .splineToLinearHeading(new Pose2d(-39.5, 49, Math.toRadians(270)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(-39.5, 49.7, Math.toRadians(270)), Math.toRadians(90))
                 .addTemporalMarker(0, () -> {
                     this.robot.intake.setAngle(120);
                 })
@@ -102,8 +102,8 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
 
         TrajectorySequence centerCycle1ToStack = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(-13, -54.3), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(-9, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(-13, -55.1), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
@@ -129,19 +129,19 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
                     robot.stopIntake();
                 })
                 .setReversed(true)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-28, 47.7), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-9, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-29.5, 48.3), Math.toRadians(90))
                 .addTemporalMarker(1.2, () -> {
                     robot.startIntake();
                     robot.claw.setClawOpen();
                 })
-                .addTemporalMarker(2.2, () -> {
+                .addTemporalMarker(2.7, () -> {
                     robot.stopIntake();
                 })
                 .addTemporalMarker(8.5 - 4.72, () -> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(10 - 4.72, () -> {
+                .addTemporalMarker(10.6 - 4.72, () -> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(2.5)
@@ -161,7 +161,7 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
 
         TrajectorySequence cycle2ToStack = drive.trajectorySequenceBuilder(centerCycle1ToBackdrop.end())
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(-9, 20), Math.toRadians(-90))
                 .splineToConstantHeading(new Vector2d(-14, -57), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
@@ -189,8 +189,8 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
                     robot.stopIntake();
                 })
                 .waitSeconds(0.5)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-29, 47.35), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-9, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-31, 48.45), Math.toRadians(90))
                 .addTemporalMarker(1.2, () -> {
                     robot.startIntake();
                     robot.claw.setClawOpen();
@@ -200,8 +200,9 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
                 })
                 .addTemporalMarker(8.5 - 5.09, () -> {
                     robot.autoCycleDepositPreset();
+                    robot.slides.runToPosition(350);
                 })
-                .addTemporalMarker(10 - 5.09, () -> {
+                .addTemporalMarker(10.6 - 5.09, () -> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(2.5)
@@ -209,8 +210,8 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
 
         TrajectorySequence leftCycle1ToStack = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(-13, -54.3), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(-9, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(-13, -55.1), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
@@ -236,8 +237,8 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
                     robot.stopIntake();
                 })
                 .setReversed(true)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-28, 47.7), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-9, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-29.5, 48.3), Math.toRadians(90))
                 .addTemporalMarker(1.2, () -> {
                     robot.startIntake();
                     robot.claw.setClawOpen();
@@ -248,7 +249,7 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
                 .addTemporalMarker(8.5 - 4.72, () -> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(10 - 4.72, () -> {
+                .addTemporalMarker(10.6 - 4.72, () -> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(2.5)
@@ -256,8 +257,8 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
 
         TrajectorySequence rightCycle1ToStack = drive.trajectorySequenceBuilder(preloadBackdropRight.end())
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(-13, -54.3), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(-9, 20), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(-13, -55.1), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
@@ -283,8 +284,8 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
                     robot.stopIntake();
                 })
                 .setReversed(true)
-                .splineToConstantHeading(new Vector2d(-10, 20), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(-28, 47.7), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-9, 20), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(-29.5, 48.3), Math.toRadians(90))
                 .addTemporalMarker(1.2, () -> {
                     robot.startIntake();
                     robot.claw.setClawOpen();
@@ -295,7 +296,7 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
                 .addTemporalMarker(8.5 - 4.72, () -> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(10 - 4.72, () -> {
+                .addTemporalMarker(10.6 - 4.72, () -> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(2.5)
@@ -314,7 +315,7 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
             telemetry.addData("Camera State", robot.cv.visionPortal.getCameraState());
             telemetry.addData("Currently Detected Mass Center", "x: " + robot.cv.colourMassDetectionProcessor.getLargestContourX() + ", y: " + robot.cv.colourMassDetectionProcessor.getLargestContourY());
             telemetry.addData("Currently Detected Mass Area", robot.cv.colourMassDetectionProcessor.getLargestContourArea());
-
+            //telemetry.addData(drive.getAccelerationConstraint(54).toString(), " ");
             telemetry.update();
         }
 
@@ -343,8 +344,6 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
 
         robot.launchSubsystemThread(telemetry);
         recordedPropPosition = YoinkP2Pipeline.PropPositions.CENTER;
-        telemetry.addData(drive.getAccelerationConstraint(54).toString(), " ");
-        telemetry.update();
         switch (recordedPropPosition) {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);
