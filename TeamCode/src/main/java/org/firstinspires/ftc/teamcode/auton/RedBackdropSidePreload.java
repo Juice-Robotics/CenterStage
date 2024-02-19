@@ -101,51 +101,47 @@ public class RedBackdropSidePreload extends LinearOpMode {
         TrajectorySequence centerCycle1 = drive.trajectorySequenceBuilder(preloadBackdropCenter.end())
                 .setReversed(false)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(-90))
-                .splineToConstantHeading(new Vector2d(14, -55.25), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(14, -54.3), Math.toRadians(-90))
 //                .addTemporalMarker(2, () -> {
 //                    robot.autoIntake(3, 170);
 //                })
                 .setReversed(true)
                 .addTemporalMarker(2.3, () -> {
                     robot.intake.setAngle(182);
-                    robot.intake.intakeMotor.setSpeed((float)0.65);
+                    robot.intake.intakeMotor.setSpeed((float)0.3);
                 })
-                .back(8)
-                .addTemporalMarker(3.5, () -> {
-                    robot.intake.setAngle(182);
-                    robot.intake.intakeMotor.setSpeed((float)-0.5);
-                })
-                .forward(9)
-                .addTemporalMarker(4, () -> {
+                .back(7)
+                .forward(8)
+                .addTemporalMarker(4.5, () -> {
                     robot.startIntake();
                 })
 //                .addTemporalMarker(4.5, () -> {
 //                    robot.intake.reverseIntake();
 //                })
-                .addTemporalMarker(4.8, () -> {
+                .addTemporalMarker(5.5, () -> {
                     robot.stopIntake();
                 })
-                .waitSeconds(1)
+                .waitSeconds(2)
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(30, 37.7), Math.toRadians(90))
                 .waitSeconds(1)
-                .splineToConstantHeading(new Vector2d(33, 44.7), Math.toRadians(90))
-                .addTemporalMarker(5.8, () -> {
+                .splineToConstantHeading(new Vector2d(33, 45), Math.toRadians(90))
+                .addTemporalMarker(7, () -> {
                     robot.startIntake();
                     robot.claw.setClawOpen();
                 })
-                .addTemporalMarker(6.8, () -> {
+                .addTemporalMarker(8, () -> {
                     robot.stopIntake();
                 })
-                .addTemporalMarker(9, () -> {
+                .addTemporalMarker(10, () -> {
                     Pose2d newPose = robot.cv.relocalizeUsingBackdrop(drive.getPoseEstimate());
-                    if (newPose != null) {drive.setPoseEstimate(newPose);}
+                    drive.setPoseEstimate(newPose);
                 })
-                .addTemporalMarker(9.8, ()-> {
+                .addTemporalMarker(11, ()-> {
                     robot.slides.runToPosition(50);
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(11.5, ()-> {
+                .addTemporalMarker(12.7, ()-> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(2)
@@ -175,12 +171,12 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(8, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(30, 37.7), Math.toRadians(90))
                 .waitSeconds(1)
-                .splineToConstantHeading(new Vector2d(35.5, 41), Math.toRadians(90))
-                .addTemporalMarker(5.75, () -> {
+                .splineToConstantHeading(new Vector2d(36, 41.2), Math.toRadians(90))
+                .addTemporalMarker(5.5, () -> {
                     robot.startAutoIntake();
                     robot.claw.setClawOpen();
                 })
-                .addTemporalMarker(6.25, () -> {
+                .addTemporalMarker(6, () -> {
                     robot.stopIntake();
                 })
                 .addTemporalMarker(8.5, ()-> {
@@ -189,12 +185,12 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 })
                 .addTemporalMarker(7.8, () -> {
                     Pose2d newPose = robot.cv.relocalizeUsingBackdrop(drive.getPoseEstimate());
-                    if (newPose != null) {drive.setPoseEstimate(newPose);}
+                    drive.setPoseEstimate(newPose);
                 })
-                .addTemporalMarker(10, ()-> {
+                .addTemporalMarker(9.5, ()-> {
                     robot.smartClawOpen();
                 })
-                .waitSeconds(3)
+                .waitSeconds(2)
                 .build();
 
         TrajectorySequence leftCycle1 = drive.trajectorySequenceBuilder(preloadBackdropLeft.end())
@@ -223,7 +219,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(10, 20), Math.toRadians(90))
                 .splineToConstantHeading(new Vector2d(30, 37.7), Math.toRadians(90))
                 .waitSeconds(1)
-                .splineToConstantHeading(new Vector2d(30, 47.2), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(30, 47.7), Math.toRadians(90))
 //                .addTemporalMarker(6, () -> {
 //                    robot.startAutoIntake();
 //                    robot.claw.setClawOpen();
