@@ -343,6 +343,8 @@ public class BlueBackdropV1Cancelable extends LinearOpMode {
 
         robot.launchSubsystemThread(telemetry);
         recordedPropPosition = YoinkP2Pipeline.PropPositions.CENTER;
+        telemetry.addData(drive.getAccelerationConstraint(54).toString(), " ");
+        telemetry.update();
         switch (recordedPropPosition) {
             case CENTER:
                 drive.followTrajectorySequence(preloadSpikeCenter);

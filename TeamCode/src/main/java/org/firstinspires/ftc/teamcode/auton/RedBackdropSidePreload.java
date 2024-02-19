@@ -357,7 +357,7 @@ public class RedBackdropSidePreload extends LinearOpMode {
                 .addTemporalMarker(7.2, ()-> {
                     robot.autoCycleDepositPreset();
                 })
-                .addTemporalMarker(8, ()-> {
+                .addTemporalMarker(8.9, ()-> {
                     robot.smartClawOpen();
                 })
                 .waitSeconds(1.2)
