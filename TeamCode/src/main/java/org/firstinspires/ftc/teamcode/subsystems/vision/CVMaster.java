@@ -20,6 +20,7 @@ public class CVMaster {
     HardwareMap hardwareMap;
     AprilTagProcessor tagProcessor;
     AprilTagsRelocalization relocalization;
+    public PreloadPipeline preloadProcessor;
 
     public CVMaster(HardwareMap map) {
         hardwareMap = map;
@@ -68,6 +69,23 @@ public class CVMaster {
         relocalization = new AprilTagsRelocalization(tagProcessor);
     }
 
+    public void initPreload() {
+        tagProcessor = AprilTagProcessor.easyCreateWithDefaults();
+        preloadProcessor = new PreloadPipeline(tagProcessor, allianceColor);
+
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
+                .enableLiveView(true)
+                .setAutoStopLiveView(true)
+                .addProcessors(tagProcessor, preloadProcessor)
+//                .addProcessor(tagProcessor)
+                .build();
+        visionPortal.setProcessorEnabled(tagProcessor, true);
+        visionPortal.setProcessorEnabled(preloadProcessor, true);
+        relocalization = new AprilTagsRelocalization(tagProcessor);
+        startStreamingDashboard();
+    }
+
     public void initTags() {
         tagProcessor = AprilTagProcessor.easyCreateWithDefaults();
         visionPortal = new VisionPortal.Builder()
@@ -96,6 +114,6 @@ public class CVMaster {
     }
 
     public void startStreamingDashboard() {
-        FtcDashboard.getInstance().startCameraStream((CameraStreamSource) tagProcessor, 0);
+        FtcDashboard.getInstance().startCameraStream((CameraStreamSource) preloadProcessor, 0);
     }
 }
