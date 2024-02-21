@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.vision.VisionProcessor;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
@@ -39,7 +40,7 @@ public class PreloadPipeline implements VisionProcessor, CameraStreamSource {
 
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
-
+        lastFrame.set(Bitmap.createBitmap(1120, 630, Bitmap.Config.RGB_565));
     }
 
     @Override
@@ -74,8 +75,8 @@ public class PreloadPipeline implements VisionProcessor, CameraStreamSource {
                         int exclusionZoneWidth = (int) (tagWidth * 0.28);
                         int exclusionZoneHeight = (int) (tagHeight * 0.28);
 
-                        Rect leftInclusionZone = new Rect(tagCenterX - inclusionZoneWidth, tagCenterY - 110, inclusionZoneWidth, inclusionZoneHeight);
-                        Rect rightInclusionZone = new Rect(tagCenterX, tagCenterY - 110, inclusionZoneWidth, inclusionZoneHeight);
+                        Rect leftInclusionZone = new Rect(tagCenterX - inclusionZoneWidth, tagCenterY + 30, inclusionZoneWidth, inclusionZoneHeight);
+                        Rect rightInclusionZone = new Rect(tagCenterX, tagCenterY + 30, inclusionZoneWidth, inclusionZoneHeight);
 
                         Rect leftExclusionZone = new Rect(tagCenterX - (int) (inclusionZoneWidth * 0.64), tagCenterY - 90, exclusionZoneWidth, exclusionZoneHeight);
                         Rect rightExclusionZone = new Rect(tagCenterX + (int) (inclusionZoneWidth * 0.28), tagCenterY - 90, exclusionZoneWidth, exclusionZoneHeight);
@@ -91,11 +92,17 @@ public class PreloadPipeline implements VisionProcessor, CameraStreamSource {
 
                         preloadedZone = (leftZoneAverage > rightZoneAverage) ? YoinkP2Pipeline.PropPositions.LEFT : YoinkP2Pipeline.PropPositions.RIGHT;
                         System.out.println("PRELOADED ZONE: " + preloadedZone);
+
+
 //                        Globals.PRELOAD = preloadedZone;
                     }
                 }
             }
         }
+
+        Bitmap b = Bitmap.createBitmap(frame.width(), frame.height(), Bitmap.Config.RGB_565);
+        Utils.matToBitmap(frame, b);
+        lastFrame.set(b);
 
 
         return null;

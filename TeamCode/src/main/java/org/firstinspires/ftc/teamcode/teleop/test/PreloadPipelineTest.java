@@ -11,8 +11,10 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Robot;
+import org.firstinspires.ftc.teamcode.lib.AllianceColor;
 import org.firstinspires.ftc.teamcode.lib.Motor;
 import org.firstinspires.ftc.teamcode.subsystems.vision.CVMaster;
+import org.firstinspires.ftc.teamcode.subsystems.vision.YoinkP2Pipeline;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -41,7 +43,8 @@ public class PreloadPipelineTest extends LinearOpMode {
         telemetry.update();
 
         CVMaster cv = new CVMaster(hardwareMap);
-        cv.initPreload();
+        cv.initPreload(AllianceColor.RED);
+        cv.preloadProcessor.setTargetAprilTagID(YoinkP2Pipeline.PropPositions.CENTER);
         backLeft = new Motor(3, "leftRear", hardwareMap, true);       //0 left odometer
         backRight = new Motor(2, "rightRear", hardwareMap, false);        //1 right odometer
         frontLeft = new Motor(1, "leftFront", hardwareMap, true);         //2 middle odometer
