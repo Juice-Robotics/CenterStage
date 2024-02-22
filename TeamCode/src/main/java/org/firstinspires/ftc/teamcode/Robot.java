@@ -114,7 +114,7 @@ public class Robot {
         frontLeft = (Motor) components[2];
         frontRight = (Motor) components[3];
 
-        FtcDashboard.getInstance().getTelemetry().speak("Hello Mr. Juice");
+        //FtcDashboard.getInstance().getTelemetry().speak("Hello Mr. Juice");
     }
 
     // INTAKE
