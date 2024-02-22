@@ -29,9 +29,11 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
 
 public class YoinkP2Pipeline implements VisionProcessor, CameraStreamSource {
-    private final DoubleSupplier minArea, left, right;
-    private final Scalar upper; // lower bounds for masking
-    private final Scalar lower; // upper bounds for masking
+    private DoubleSupplier minArea;
+    private DoubleSupplier left;
+    private DoubleSupplier right;
+    private Scalar upper; // lower bounds for masking
+    private Scalar lower; // upper bounds for masking
     private final TextPaint textPaint;
     private final Paint linePaint;
     private final ArrayList<MatOfPoint> contours;
@@ -253,6 +255,14 @@ public class YoinkP2Pipeline implements VisionProcessor, CameraStreamSource {
         hierarchy.release();
         sel1.release();
         sel2.release();
+    }
+
+    public void changeConstants(@NonNull Scalar lower, @NonNull Scalar upper, DoubleSupplier minArea, DoubleSupplier left, DoubleSupplier right) {
+        this.lower = lower;
+        this.upper = upper;
+        this.minArea = minArea;
+        this.left = left;
+        this.right = right;
     }
 
     @Override

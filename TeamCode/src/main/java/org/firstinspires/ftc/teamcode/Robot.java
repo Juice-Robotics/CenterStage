@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 // IMPORT SUBSYSTEMS
 
+import com.acmerobotics.dashboard.CustomVariableConsumer;
+import com.acmerobotics.dashboard.DashboardCore;
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
@@ -110,6 +113,8 @@ public class Robot {
         backRight = (Motor) components[1];
         frontLeft = (Motor) components[2];
         frontRight = (Motor) components[3];
+
+        FtcDashboard.getInstance().getTelemetry().speak("Hello Mr. Juice");
     }
 
     // INTAKE
