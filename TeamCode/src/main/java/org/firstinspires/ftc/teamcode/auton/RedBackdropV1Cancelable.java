@@ -319,7 +319,6 @@ public class RedBackdropV1Cancelable extends LinearOpMode {
             telemetry.addData("Camera State", robot.cv.visionPortal.getCameraState());
             telemetry.addData("Currently Detected Mass Center", "x: " + robot.cv.colourMassDetectionProcessor.getLargestContourX() + ", y: " + robot.cv.colourMassDetectionProcessor.getLargestContourY());
             telemetry.addData("Currently Detected Mass Area", robot.cv.colourMassDetectionProcessor.getLargestContourArea());
-
             telemetry.update();
         }
 

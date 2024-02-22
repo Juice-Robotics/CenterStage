@@ -56,11 +56,11 @@ public class AprilTagsRelocalization {
         AprilTagPoseFtc tagRPose = getRelativePose();
         if (tagRPose == null) {
             // return current estimate if cannot see tags
-            return null;
+            return robotPose;
         }
         AprilTagPoseRaw fieldPosition = aprilTagDetection.rawPose;
 //        Pose2d tagPose = new Pose2d(29 - tagRPose.x, 48 - tagRPose.y, Math.toRadians(tagRPose.yaw-90));
-        Pose2d tagPose = new Pose2d(29 - tagRPose.x, 48 - tagRPose.y, robotPose.getHeading());
+        Pose2d tagPose = new Pose2d(29 - tagRPose.x, 48 - tagRPose.y, Math.toRadians(tagRPose.yaw-90));
         aprilTagDetection = null;
 
         return tagPose;

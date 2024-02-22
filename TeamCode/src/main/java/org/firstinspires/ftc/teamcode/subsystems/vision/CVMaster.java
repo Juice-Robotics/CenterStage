@@ -69,9 +69,26 @@ public class CVMaster {
         relocalization = new AprilTagsRelocalization(tagProcessor);
     }
 
-    public void initPreload(AllianceColor color) {
+    public void switchToAuton(AllianceColor allianceColor) {
+        kill();
         tagProcessor = AprilTagProcessor.easyCreateWithDefaults();
-        preloadProcessor = new PreloadPipeline(tagProcessor, color);
+        preloadProcessor = new PreloadPipeline(tagProcessor, allianceColor);
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
+                .addProcessors(tagProcessor, preloadProcessor)
+                .enableLiveView(true)
+                .setAutoStopLiveView(true)
+//                .addProcessor(tagProcessor)
+                .build();
+        visionPortal.setProcessorEnabled(tagProcessor, true);
+        visionPortal.setProcessorEnabled(preloadProcessor, true);
+        relocalization = new AprilTagsRelocalization(tagProcessor);
+        startStreamingDashboard();
+    }
+
+    public void initPreload(AllianceColor allianceColor) {
+        tagProcessor = AprilTagProcessor.easyCreateWithDefaults();
+        preloadProcessor = new PreloadPipeline(tagProcessor, allianceColor);
 
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
@@ -104,6 +121,10 @@ public class CVMaster {
         return relocalization.getAbsolutePose2d(currentPose);
     }
 
+    public YoinkP2Pipeline.PropPositions detectPreload() {
+        return preloadProcessor.getPreloadedZone();
+    }
+
     public void kill() {
         colourMassDetectionProcessor.close();
         visionPortal.close();
@@ -114,6 +135,6 @@ public class CVMaster {
     }
 
     public void startStreamingDashboard() {
-        FtcDashboard.getInstance().startCameraStream(preloadProcessor, 24);
+        FtcDashboard.getInstance().startCameraStream(preloadProcessor, 0);
     }
 }
