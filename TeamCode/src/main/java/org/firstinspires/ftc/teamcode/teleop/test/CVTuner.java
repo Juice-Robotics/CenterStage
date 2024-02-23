@@ -79,8 +79,16 @@ public class CVTuner extends LinearOpMode {
                     () -> RIGHT_BOUNDARY
             );
 
+            telemetry.addData("Currently Recorded Position", colourMassDetectionProcessor.getRecordedPropPosition());
+            telemetry.addData("Camera State", visionPortal.getCameraState());
+            telemetry.addData("Currently Detected Mass Center", "x: " + colourMassDetectionProcessor.getLargestContourX() + ", y: " + colourMassDetectionProcessor.getLargestContourY());
+            telemetry.addData("Currently Detected Mass Area", colourMassDetectionProcessor.getLargestContourArea());
 
+            telemetry.update();
 
         }
+
+        visionPortal.close();
+        colourMassDetectionProcessor.close();
     }
 }

@@ -31,16 +31,16 @@ public class RedSpikeFar extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Scalar lower = new Scalar(125, 60, 50); // the lower hsv threshold for your detection
-        Scalar upper = new Scalar(190, 255, 255); // the upper hsv threshold for your detection
+        Scalar lower = new Scalar(0, 50, 60); // the lower hsv threshold for your detection
+        Scalar upper = new Scalar(10, 255, 255); // the upper hsv threshold for your detection
         double minArea = 5000; // the minimum area for the detection to consider for your prop
 
         colourMassDetectionProcessor = new YoinkP2Pipeline(
                 lower,
                 upper,
                 () -> minArea, // these are lambda methods, in case we want to change them while the match is running, for us to tune them or something
-                () -> 213, // the left dividing line, in this case the left third of the frame
-                () -> 606 // the left dividing line, in this case the right third of the frame
+                () -> 200, // the left dividing line, in this case the left third of the frame
+                () -> 900 // the left dividing line, in this case the right third of the frame
         );
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1")) // the camera on your robot is named "Webcam 1" by default
